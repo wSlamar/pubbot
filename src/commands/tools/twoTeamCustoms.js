@@ -2,9 +2,9 @@ const { SlashCommandBuilder, PermissionFlagsBits, PermissionsBitField, GatewayIn
 const { EmbedBuilder } = require("discord.js");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { guildId } = process.env;
-const {adminChannel} = process.env;
+const { adminChannel } = process.env;
+let modMessage1;
 
-let modMessage;
 require('events').EventEmitter.prototype._maxListeners = 100;
 
 module.exports = {
@@ -181,10 +181,119 @@ module.exports = {
             );
 
           const channel = client.channels.cache.get(adminChannel);
-          modMessage = channel.send({ content: `<@${userNameID}> What player would you like to remove?\n**WARNING:** This message will be automatically deleted in 3 mintues.`, components: [blueButtons, redButtons] })
-            .then(msg => {
-              setTimeout(() => msg.delete(), 80000)
-            });
+          modMessage = await channel.send({
+            content: `<@${userNameID}> What player would you like to remove?\n`,
+            components: [blueButtons, redButtons]
+          });
+
+          modMessage1 = modMessage;
+
+          await buttonCollector.on('collect', i => {
+            switch (i.customId) {
+              case 'removeBluePlayer1':
+                removeUserReactions(playerMap.get("bluePlayer1")[1]);
+                setDefault(playerMap.get("bluePlayer1")[1]);
+                modMessage1.delete().catch(error => {
+                  if (error.code !== 10008) {
+                    console.error('Failed to delete the message:', error);
+                  }
+                });
+                break;
+
+              case 'removeBluePlayer2':
+                removeUserReactions(playerMap.get("bluePlayer2")[1]);
+                setDefault(playerMap.get("bluePlayer2")[1]);
+                modMessage.delete().catch(error => {
+                  if (error.code !== 10008) {
+                    console.error('Failed to delete the message:', error);
+                  }
+                });
+                break;
+
+              case 'removeBluePlayer3':
+                removeUserReactions(playerMap.get("bluePlayer3")[1]);
+                setDefault(playerMap.get("bluePlayer3")[1]);
+                modMessage.delete().catch(error => {
+                  if (error.code !== 10008) {
+                    console.error('Failed to delete the message:', error);
+                  }
+                });
+                break;
+
+              case 'removeBluePlayer4':
+                removeUserReactions(playerMap.get("bluePlayer4")[1]);
+                setDefault(playerMap.get("bluePlayer4")[1]);
+                modMessage.delete().catch(error => {
+                  if (error.code !== 10008) {
+                    console.error('Failed to delete the message:', error);
+                  }
+                });
+                break;
+
+              case 'removeBluePlayer5':
+                removeUserReactions(playerMap.get("bluePlayer5")[1]);
+                setDefault(playerMap.get("bluePlayer5")[1]);
+                modMessage.delete().catch(error => {
+                  if (error.code !== 10008) {
+                    console.error('Failed to delete the message:', error);
+                  }
+                });
+                break;
+
+              case 'removeRedPlayer1':
+                removeUserReactions(playerMap.get("redPlayer1")[1]);
+                setDefault(playerMap.get("redPlayer1")[1]);
+                modMessage1.delete().catch(error => {
+                  if (error.code !== 10008) {
+                    console.error('Failed to delete the message:', error);
+                  }
+                });
+                break;
+
+              case 'removeRedPlayer2':
+                removeUserReactions(playerMap.get("redPlayer2")[1]);
+                setDefault(playerMap.get("redPlayer2")[1]);
+                modMessage.delete().catch(error => {
+                  if (error.code !== 10008) {
+                    console.error('Failed to delete the message:', error);
+                  }
+                });
+                break;
+
+              case 'removeRedPlayer3':
+                removeUserReactions(playerMap.get("redPlayer3")[1]);
+                setDefault(playerMap.get("redPlayer3")[1]);
+                modMessage.delete().catch(error => {
+                  if (error.code !== 10008) {
+                    console.error('Failed to delete the message:', error);
+                  }
+                });
+                break;
+
+              case 'removeRedPlayer4':
+                removeUserReactions(playerMap.get("redPlayer4")[1]);
+                setDefault(playerMap.get("redPlayer4")[1]);
+                modMessage.delete().catch(error => {
+                  if (error.code !== 10008) {
+                    console.error('Failed to delete the message:', error);
+                  }
+                });
+                break;
+
+              case 'removeRedPlayer5':
+                removeUserReactions(playerMap.get("redPlayer5")[1]);
+                setDefault(playerMap.get("redPlayer5")[1]);
+                modMessage.delete().catch(error => {
+                  if (error.code !== 10008) {
+                    console.error('Failed to delete the message:', error);
+                  }
+                });
+                break;
+
+              default:
+                break;
+            }
+          });
         }
       }
 
@@ -245,77 +354,20 @@ module.exports = {
         }
       }
 
-      buttonCollector.on('collect', i => {
-        switch (i.customId) {
-          case 'removeBluePlayer1':
-            removeUserReactions(playerMap.get("bluePlayer1")[1]);
-            setDefault(playerMap.get("bluePlayer1")[1]);
-            break;
+          if (reaction.emoji.name === "🔵" || reaction.emoji.name === "🔴") {
+            const blueIDs = [playerMap.get("bluePlayer1")[1], playerMap.get("bluePlayer2")[1], playerMap.get("bluePlayer3")[1], playerMap.get("bluePlayer4")[1], playerMap.get("bluePlayer5")[1],];
+            const redIDs = [playerMap.get("redPlayer1")[1], playerMap.get("redPlayer2")[1], playerMap.get("redPlayer3")[1], playerMap.get("redPlayer4")[1], playerMap.get("redPlayer5")[1],];
 
-          case 'removeBluePlayer2':
-            removeUserReactions(playerMap.get("bluePlayer2")[1]);
-            setDefault(playerMap.get("bluePlayer2")[1]);
-            break;
-
-          case 'removeBluePlayer3':
-            removeUserReactions(playerMap.get("bluePlayer3")[1]);
-            setDefault(playerMap.get("bluePlayer3")[1]);
-            break;
-
-          case 'removeBluePlayer4':
-            removeUserReactions(playerMap.get("bluePlayer4")[1]);
-            setDefault(playerMap.get("bluePlayer4")[1]);
-            break;
-
-          case 'removeBluePlayer5':
-            removeUserReactions(playerMap.get("bluePlayer5")[1]);
-            setDefault(playerMap.get("bluePlayer5")[1]);
-            break;
-
-          case 'removeRedPlayer1':
-            removeUserReactions(playerMap.get("redPlayer1")[1]);
-            setDefault(playerMap.get("redPlayer1")[1]);
-            break;
-
-          case 'removeRedPlayer2':
-            removeUserReactions(playerMap.get("redPlayer2")[1]);
-            setDefault(playerMap.get("redPlayer2")[1]);
-            break;
-
-          case 'removeRedPlayer3':
-            removeUserReactions(playerMap.get("redPlayer3")[1]);
-            setDefault(playerMap.get("redPlayer3")[1]);
-            break;
-
-          case 'removeRedPlayer4':
-            removeUserReactions(playerMap.get("redPlayer4")[1]);
-            setDefault(playerMap.get("redPlayer4")[1]);
-            break;
-
-          case 'removeRedPlayer5':
-            removeUserReactions(playerMap.get("redPlayer5")[1]);
-            setDefault(playerMap.get("redPlayer5")[1]);
-            break;
-
-          default:
-            break;
-        }
-      });
-
-      if (reaction.emoji.name === "🔵" || reaction.emoji.name === "🔴") {
-        const blueIDs = [playerMap.get("bluePlayer1")[1], playerMap.get("bluePlayer2")[1], playerMap.get("bluePlayer3")[1], playerMap.get("bluePlayer4")[1], playerMap.get("bluePlayer5")[1],];
-        const redIDs = [playerMap.get("redPlayer1")[1], playerMap.get("redPlayer2")[1], playerMap.get("redPlayer3")[1], playerMap.get("redPlayer4")[1], playerMap.get("redPlayer5")[1],];
-
-        for (var i = 0; i < blueIDs.length; i++) {
-          for (var j = 0; j < redIDs.length; j++) {
-            if (blueIDs[i] == redIDs[j]) {
-              removeUserReactions(blueIDs[i]);
-              setDefault(blueIDs[i]);
+            for (var i = 0; i < blueIDs.length; i++) {
+              for (var j = 0; j < redIDs.length; j++) {
+                if (blueIDs[i] == redIDs[j]) {
+                  removeUserReactions(blueIDs[i]);
+                  setDefault(blueIDs[i]);
+                }
+              }
             }
           }
-        }
-      }
-    });
+      });
 
     collector.on("end", (collected) => {
       console.log(`Collected ${collected.size} items`);
@@ -346,7 +398,7 @@ module.exports = {
             inline: true,
           }
         );
-      message.edit({ embeds: [customsEmbed], content: '@everyone',});
+      message.edit({ embeds: [customsEmbed], content: '@everyone', });
     }
 
   },
