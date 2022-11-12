@@ -18,6 +18,16 @@ module.exports = {
       .setDescription("title of the event")
       .setRequired(true)
     )
+    .addStringOption((option) => option
+      .setName("event-description")
+      .setDescription("description of the event")
+      .setRequired(true)
+    )
+    .addStringOption((option) => option
+      .setName("event-ping")
+      .setDescription("what role you would like to ping for the event")
+      .setRequired(true)
+    )
     .addIntegerOption((option) => option
       .setName("event-month")
       .setDescription("month of the event")
@@ -53,7 +63,9 @@ module.exports = {
       ["redPlayer5", ["[PLAYER 5 OPEN SPOT]", "RED PLAYER 5 ID", "[EMPTY SPOT]"]],
     ]);
 
+    const eventDescription = interaction.options.getString("event-description");
     const eventTitle = interaction.options.getString("event-title");
+    const eventPing = interaction.options.getString("event-ping");
     const eventMonth = interaction.options.getInteger("event-month").toString();
     const eventDay = interaction.options.getInteger("event-day").toString();
     const eventYear = interaction.options.getInteger("event-year").toString();
@@ -74,15 +86,14 @@ module.exports = {
     const timeMilitary = `${convertTime12to24(timeStandard)}:00`
 
     const customsEmbed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor('#AB561C')
       .setTitle(eventTitle)
       .setDescription(`${timeStandard} on ${eventMonth}/${eventDay}/${eventYear}`)
-      .setFooter({ text: 'To be removed from a team, or change teams, react with ❌ to this message.\nThis event will start in' })
+      .setFooter({ text: `To be removed from a team, or change teams, react with ❌ to this message.\nThis event will start in 0 days, 0 hours, 0 minutes, and 0 seconds` })
       .addFields(
         {
-          name: "CLICK YOUR TEAM EMOJI BELOW TO GET ON THE LIST",
-          value:
-            "Customs will be held in the Customers Team 1 and Customs Team 2 chat",
+          name: "CLICK A TEAM EMOJI BELOW TO JOIN A TEAM",
+          value: `${eventDescription}`,
         },
         {
           name: "🔵 TEAM 1 🔵",
@@ -99,7 +110,7 @@ module.exports = {
       );
 
     const message = await interaction.reply({
-      content: '@everyone',
+      content: `${eventPing}`,
       embeds: [customsEmbed],
       fetchReply: true,
     });
@@ -436,14 +447,14 @@ module.exports = {
 
     function refreshEmbed(days, hours, minutes, seconds) {
       const customsEmbed = new EmbedBuilder()
-        .setColor(0x0099ff)
+        .setColor('#AB561C')
         .setTitle(eventTitle)
         .setDescription(`${timeStandard} on ${eventMonth}/${eventDay}/${eventYear}`)
-        .setFooter({ text: `To be removed from a team, or change teams, react with ❌ to this message.\nThis event will start in ${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds` })
+        .setFooter({ text: `To be removed from a team, or change teams, react with ❌ to this message.\nThis event will start in ${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds.` })
         .addFields(
           {
-            name: "CLICK YOUR TEAM EMOJI BELOW TO GET ON THE LIST",
-            value: "Customs will be held in the Customers Team 1 and Customs Team 2 chat",
+            name: "CLICK A TEAM EMOJI BELOW TO JOIN A TEAM",
+            value: `${eventDescription}`,
           },
           {
             name: "🔵 TEAM 1 🔵",
@@ -456,13 +467,13 @@ module.exports = {
             inline: true,
           }
         );
-      message.edit({ embeds: [customsEmbed], content: '@everyone', }).catch(error => {
+      message.edit({ embeds: [customsEmbed], content: `${eventPing}`, }).catch(error => {
         collector.stop()
         buttonCollector.stop()
         clearInterval(interval)
         if (error.code !== 10008) {
           console.error('Failed to delete the message:', error);
-        } 
+        }
       });
     }
   },
