@@ -3,15 +3,41 @@ const { EmbedBuilder } = require("discord.js");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { guildId } = process.env;
 const { adminChannel } = process.env;
-let modMessage1;
+const moment = require("moment");
+let interval;
 
 require('events').EventEmitter.prototype._maxListeners = 100;
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("pub-twoteamcustoms")
-    .setDescription("Replies with an embed")
-    .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog),
+    .setDescription("Replies with an polling embed for a two team event")
+    .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog)
+    .addStringOption((option) => option
+      .setName("event-title")
+      .setDescription("title of the event")
+      .setRequired(true)
+    )
+    .addIntegerOption((option) => option
+      .setName("event-month")
+      .setDescription("month of the event")
+      .setRequired(true)
+    )
+    .addIntegerOption((option) => option
+      .setName("event-day")
+      .setDescription("day of the event")
+      .setRequired(true)
+    )
+    .addIntegerOption((option) => option
+      .setName("event-year")
+      .setDescription("year of the event")
+      .setRequired(true)
+    )
+    .addStringOption((option) => option
+      .setName("event-time")
+      .setDescription("time of the event")
+      .setRequired(true)
+    ),
 
   async execute(interaction, client) {
     const playerMap = new Map([
@@ -27,25 +53,31 @@ module.exports = {
       ["redPlayer5", ["[PLAYER 5 OPEN SPOT]", "RED PLAYER 5 ID", "[EMPTY SPOT]"]],
     ]);
 
-    function padTo2Digits(num) {
-      return num.toString().padStart(2, "0");
+    const eventTitle = interaction.options.getString("event-title");
+    const eventMonth = interaction.options.getInteger("event-month").toString();
+    const eventDay = interaction.options.getInteger("event-day").toString();
+    const eventYear = interaction.options.getInteger("event-year").toString();
+    const timeStandard = interaction.options.getString("event-time");
+
+    const convertTime12to24 = (time12h) => {
+      const [time, modifier] = time12h.split(' ');
+      let [hours, minutes] = time.split(':');
+      if (hours === '12') {
+        hours = '00';
+      }
+      if (modifier === 'PM') {
+        hours = parseInt(hours, 10) + 12;
+      }
+      return `${hours}:${minutes}`;
     }
 
-    function formatDate(date) {
-      return [
-        padTo2Digits(date.getMonth() + 1),
-        padTo2Digits(date.getDate()),
-        date.getFullYear(),
-      ].join("/");
-    }
-
-    let date = formatDate(new Date());
+    const timeMilitary = `${convertTime12to24(timeStandard)}:00`
 
     const customsEmbed = new EmbedBuilder()
       .setColor(0x0099ff)
-      .setTitle("THURSDAY NIGHT CUSTOMS")
-      .setDescription(`6:00PM EST on ${date}`)
-      .setFooter({ text: 'To be removed from a team, or change teams, react with ❌ to this message.' })
+      .setTitle(eventTitle)
+      .setDescription(`${timeStandard} on ${eventMonth}/${eventDay}/${eventYear}`)
+      .setFooter({ text: 'To be removed from a team, or change teams, react with ❌ to this message.\nThis event will start in' })
       .addFields(
         {
           name: "CLICK YOUR TEAM EMOJI BELOW TO GET ON THE LIST",
@@ -80,12 +112,9 @@ module.exports = {
       return reaction.emoji.name === "🔵" || reaction.emoji.name === "🔴" || reaction.emoji.name === "❌" || reaction.emoji.name === "🔨";
     };
 
-    const collector = message.createReactionCollector({
-      filter,
-      time: 80000,
-    });
+    const collector = message.createReactionCollector({ filter, });
 
-    const buttonCollector = client.channels.cache.get(adminChannel).createMessageComponentCollector({ componentType: ComponentType.Button, time: 80000 })
+    const buttonCollector = client.channels.cache.get(adminChannel).createMessageComponentCollector({ componentType: ComponentType.Button })
 
     collector.on("collect", async (reaction, user) => {
       console.log(`Collected ${reaction.emoji.name} from ${user.tag}`);
@@ -186,14 +215,12 @@ module.exports = {
             components: [blueButtons, redButtons]
           });
 
-          modMessage1 = modMessage;
-
           await buttonCollector.on('collect', i => {
             switch (i.customId) {
               case 'removeBluePlayer1':
                 removeUserReactions(playerMap.get("bluePlayer1")[1]);
                 setDefault(playerMap.get("bluePlayer1")[1]);
-                modMessage1.delete().catch(error => {
+                modMessage.delete().catch(error => {
                   if (error.code !== 10008) {
                     console.error('Failed to delete the message:', error);
                   }
@@ -243,7 +270,7 @@ module.exports = {
               case 'removeRedPlayer1':
                 removeUserReactions(playerMap.get("redPlayer1")[1]);
                 setDefault(playerMap.get("redPlayer1")[1]);
-                modMessage1.delete().catch(error => {
+                modMessage.delete().catch(error => {
                   if (error.code !== 10008) {
                     console.error('Failed to delete the message:', error);
                   }
@@ -297,8 +324,6 @@ module.exports = {
         }
       }
 
-      refreshEmbed();
-
       async function removeUserReactions(duplicateUser) {
         const userReactions = message.reactions.cache.filter(reaction => reaction.users.cache.has(duplicateUser));
         try {
@@ -349,25 +374,24 @@ module.exports = {
               default:
                 break;
             }
-            refreshEmbed();
           }
         }
       }
 
-          if (reaction.emoji.name === "🔵" || reaction.emoji.name === "🔴") {
-            const blueIDs = [playerMap.get("bluePlayer1")[1], playerMap.get("bluePlayer2")[1], playerMap.get("bluePlayer3")[1], playerMap.get("bluePlayer4")[1], playerMap.get("bluePlayer5")[1],];
-            const redIDs = [playerMap.get("redPlayer1")[1], playerMap.get("redPlayer2")[1], playerMap.get("redPlayer3")[1], playerMap.get("redPlayer4")[1], playerMap.get("redPlayer5")[1],];
+      if (reaction.emoji.name === "🔵" || reaction.emoji.name === "🔴") {
+        const blueIDs = [playerMap.get("bluePlayer1")[1], playerMap.get("bluePlayer2")[1], playerMap.get("bluePlayer3")[1], playerMap.get("bluePlayer4")[1], playerMap.get("bluePlayer5")[1],];
+        const redIDs = [playerMap.get("redPlayer1")[1], playerMap.get("redPlayer2")[1], playerMap.get("redPlayer3")[1], playerMap.get("redPlayer4")[1], playerMap.get("redPlayer5")[1],];
 
-            for (var i = 0; i < blueIDs.length; i++) {
-              for (var j = 0; j < redIDs.length; j++) {
-                if (blueIDs[i] == redIDs[j]) {
-                  removeUserReactions(blueIDs[i]);
-                  setDefault(blueIDs[i]);
-                }
-              }
+        for (var i = 0; i < blueIDs.length; i++) {
+          for (var j = 0; j < redIDs.length; j++) {
+            if (blueIDs[i] == redIDs[j]) {
+              removeUserReactions(blueIDs[i]);
+              setDefault(blueIDs[i]);
             }
           }
-      });
+        }
+      }
+    });
 
     collector.on("end", (collected) => {
       console.log(`Collected ${collected.size} items`);
@@ -376,12 +400,46 @@ module.exports = {
       console.log(`Collected ${collected.size} items`);
     });
 
-    function refreshEmbed() {
+    const eventDayMoment = moment(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`);
+    const second = 1000;
+    const minute = second * 60;
+    const hour = minute * 60;
+    const day = hour * 24;
+
+    const countDownFn = () => {
+      const today = moment();
+      const timeSpan = eventDayMoment.diff(today);
+
+      if (timeSpan <= -today) {
+        console.log("Unfortunately we have past the event day");
+        clearInterval(interval);
+        collector.stop()
+        buttonCollector.stop()
+        return;
+      } else if (timeSpan <= 0) {
+        console.log("Today is the event day");
+        clearInterval(interval);
+        collector.stop()
+        buttonCollector.stop()
+        return;
+      } else {
+        const days = Math.floor(timeSpan / day);
+        const hours = Math.floor((timeSpan % day) / hour);
+        const minutes = Math.floor((timeSpan % hour) / minute);
+        const seconds = Math.floor((timeSpan % minute) / second);
+
+        refreshEmbed(days, hours, minutes, seconds);
+      }
+    };
+
+    interval = setInterval(countDownFn, second);
+
+    function refreshEmbed(days, hours, minutes, seconds) {
       const customsEmbed = new EmbedBuilder()
         .setColor(0x0099ff)
-        .setTitle("THURSDAY NIGHT CUSTOMS")
-        .setDescription(`6:00PM EST on ${date}`)
-        .setFooter({ text: 'To be removed from a team, or change teams, react with ❌ to this message.' })
+        .setTitle(eventTitle)
+        .setDescription(`${timeStandard} on ${eventMonth}/${eventDay}/${eventYear}`)
+        .setFooter({ text: `To be removed from a team, or change teams, react with ❌ to this message.\nThis event will start in ${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds` })
         .addFields(
           {
             name: "CLICK YOUR TEAM EMOJI BELOW TO GET ON THE LIST",
@@ -398,8 +456,14 @@ module.exports = {
             inline: true,
           }
         );
-      message.edit({ embeds: [customsEmbed], content: '@everyone', });
+      message.edit({ embeds: [customsEmbed], content: '@everyone', }).catch(error => {
+        collector.stop()
+        buttonCollector.stop()
+        clearInterval(interval)
+        if (error.code !== 10008) {
+          console.error('Failed to delete the message:', error);
+        } 
+      });
     }
-
   },
 };

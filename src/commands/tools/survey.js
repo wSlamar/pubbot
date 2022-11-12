@@ -14,46 +14,36 @@ module.exports = {
     )
     .addStringOption((option) =>
       option
-        .setName("firstemoji")
+        .setName("first-emoji")
         .setDescription("first emoji for the survey question")
         .setRequired(true)
     )
     .addStringOption((option) =>
       option
-        .setName("firstdescription")
+        .setName("first-description")
         .setDescription("first option description for the survey question")
         .setRequired(true)
     )
     .addStringOption((option) =>
       option
-        .setName("secondedemoji")
-        .setDescription("seconded emoji for the survey question")
+        .setName("second-emoji")
+        .setDescription("second emoji for the survey question")
         .setRequired(true)
     )
     .addStringOption((option) =>
       option
-        .setName("secondeddescription")
-        .setDescription("seconded option description for the survey question")
+        .setName("second-description")
+        .setDescription("second option description for the survey question")
         .setRequired(true)
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog)
   ),
   async execute(interaction, client) {
-    const password = interaction.options.getString("password");
     const question = interaction.options.getString("question");
-    const firstEmoji = interaction.options.getString("firstemoji");
-    const firstDescription = interaction.options.getString("firstdescription");
-    const secondedEmoji = interaction.options.getString("secondedemoji");
-    const secondedDescription = interaction.options.getString(
-      "secondeddescription"
-    );
-
-    const incorrectPasswordEmbed = new EmbedBuilder()
-      .setColor(0x0099ff)
-      .setTitle("INCORRECT PASSWORD")
-      .setDescription(
-        `Some of these commands are password protected to prevent spam in the server. Too many attempts of incorrect password attempts will be sent to the mods and could result in a ban.`
-      );
+    const firstEmoji = interaction.options.getString("first-emoji");
+    const firstDescription = interaction.options.getString("first-description");
+    const secondedEmoji = interaction.options.getString("second-emoji");
+    const secondedDescription = interaction.options.getString("second-description");
 
     const embed = new EmbedBuilder()
       .setColor(0x0099ff)
@@ -61,16 +51,14 @@ module.exports = {
       .setDescription(question)
       .addFields({
         name: "REACTIONS:",
-        value: `${firstEmoji} ${firstDescription} ${firstEmoji}
-                \n${secondedEmoji} ${secondedDescription} ${secondedEmoji}`,
+        value: `${firstEmoji} ${firstDescription} ${firstEmoji}\n${secondedEmoji} ${secondedDescription} ${secondedEmoji}`,
       });
 
-      const message = await interaction.reply({
-        embeds: [embed],
-        fetchReply: true,
-      })
-      message.react(firstEmoji)
-      message.react(secondedEmoji)
-      ;
+    const message = await interaction.reply({
+      embeds: [embed],
+      fetchReply: true,
+    })
+    message.react(firstEmoji);
+    message.react(secondedEmoji);
   },
 };
