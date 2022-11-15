@@ -69,59 +69,58 @@ module.exports = {
       ["redPlayer5", ["[PLAYER 5 OPEN SPOT]", "RED PLAYER 5 ID", "[EMPTY SPOT]"]],
     ]);
 
-      const customsEmbed = new EmbedBuilder()
-        .setColor('#AB561C')
-        .setTitle('TITLE OF THE EVENT')
-        .setDescription(`00/00/0000 on 00/00/000`)
-        .setFooter({ text: `To be removed from a team, or change teams, react with ❌ to this message.\nThis event will start in 0 days, 0 hours, 0 minutes, and 0 seconds` })
-        .addFields(
-          {
-            name: "CLICK A TEAM EMOJI BELOW TO JOIN A TEAM",
-            value: `Description of the event that will be taking place.`,
-          },
-          {
-            name: "🔵 TEAM 1 🔵",
-            value:
-              "[PLAYER 1 OPEN SPOT]\n[PLAYER 2 OPEN SPOT]\n[PLAYER 3 OPEN SPOT]\n[PLAYER 4 OPEN SPOT]\n[PLAYER 5 OPEN SPOT]",
-            inline: true,
-          },
-          {
-            name: "🔴 TEAM 2 🔴",
-            value:
-              "[PLAYER 1 OPEN SPOT]\n[PLAYER 2 OPEN SPOT]\n[PLAYER 3 OPEN SPOT]\n[PLAYER 4 OPEN SPOT]\n[PLAYER 5 OPEN SPOT]",
-            inline: true,
-          }
-        );
-
-      const message = await interaction.reply({
-        embeds: [customsEmbed],
-        fetchReply: true,
-      });
-
-      if (zeroTimeStamp == undefined || zeroTimeStamp == '0, 0, 0, 0') {
-
-        const eventDescription = interaction.options.getString("event-description");
-        const eventTitle = interaction.options.getString("event-title");
-        const eventPing = interaction.options.getString("event-ping");
-        eventMonth = interaction.options.getInteger("event-month").toString();
-        eventDay = interaction.options.getInteger("event-day").toString();
-        eventYear = interaction.options.getInteger("event-year").toString();
-        timeStandard = interaction.options.getString("event-time");
-  
-        const convertTime12to24 = (time12h) => {
-          const [time, modifier] = time12h.split(' ');
-          let [hours, minutes] = time.split(':');
-          if (hours === '12') {
-            hours = '00';
-          }
-          if (modifier === 'PM') {
-            hours = parseInt(hours, 10) + 12;
-          }
-          return `${hours}:${minutes}`;
+    const customsEmbed = new EmbedBuilder()
+      .setColor('#AB561C')
+      .setTitle('TITLE OF THE EVENT')
+      .setDescription(`00:00 PM on 00/00/0000`)
+      .setFooter({ text: `To be removed from a team, or change teams, react with ❌ to this message.\nThis event will start in 0 days, 0 hours, 0 minutes, and 0 seconds` })
+      .addFields(
+        {
+          name: "CLICK A TEAM EMOJI BELOW TO JOIN A TEAM",
+          value: `Description of the event that will be taking place.`,
+        },
+        {
+          name: "🔵 TEAM 1 🔵",
+          value:
+            "[PLAYER 1 OPEN SPOT]\n[PLAYER 2 OPEN SPOT]\n[PLAYER 3 OPEN SPOT]\n[PLAYER 4 OPEN SPOT]\n[PLAYER 5 OPEN SPOT]",
+          inline: true,
+        },
+        {
+          name: "🔴 TEAM 2 🔴",
+          value:
+            "[PLAYER 1 OPEN SPOT]\n[PLAYER 2 OPEN SPOT]\n[PLAYER 3 OPEN SPOT]\n[PLAYER 4 OPEN SPOT]\n[PLAYER 5 OPEN SPOT]",
+          inline: true,
         }
-  
-        const timeMilitary = `${convertTime12to24(timeStandard)}:00`
+      );
 
+    const message = await interaction.reply({
+      embeds: [customsEmbed],
+      fetchReply: true,
+    });
+
+    if (zeroTimeStamp == undefined || zeroTimeStamp == '0, 0, 0, 0') {
+
+      const eventDescription = interaction.options.getString("event-description");
+      const eventTitle = interaction.options.getString("event-title");
+      const eventPing = interaction.options.getString("event-ping");
+      eventMonth = interaction.options.getInteger("event-month").toString();
+      eventDay = interaction.options.getInteger("event-day").toString();
+      eventYear = interaction.options.getInteger("event-year").toString();
+      timeStandard = interaction.options.getString("event-time");
+
+      const convertTime12to24 = (time12h) => {
+        const [time, modifier] = time12h.split(' ');
+        let [hours, minutes] = time.split(':');
+        if (hours === '12') {
+          hours = '00';
+        }
+        if (modifier === 'PM' || modifier === 'pm') {
+          hours = parseInt(hours, 10) + 12;
+        }
+        return `${hours}:${minutes}`;
+      }
+
+      const timeMilitary = `${convertTime12to24(timeStandard)}:00`
 
       message.react("🔵");
       message.react("🔴");
@@ -477,36 +476,59 @@ module.exports = {
           );
         zeroTimeStamp = `${days}, ${hours}, ${minutes}, ${seconds}`
 
-        message.edit({ embeds: [customsEmbed], content: `${eventPing}`, }).catch(error => {
+        if (isNaN(days) || !timeStandard.includes('AM' | 'PM')) {
           collector.stop()
           buttonCollector.stop()
           clearInterval(interval)
           zeroTimeStamp = '0, 0, 0, 0'
-          console.log('There was an error')
-          if (error.code !== 10008) {
-            console.error('Failed to delete the message:', error);
-          }
-        });
-        // if (isNaN(days)) {
-        //   collector.stop()
-        //   buttonCollector.stop()
-        //   clearInterval(interval)
-        //   zeroTimeStamp = '0, 0, 0, 0'
-        //   console.log('There was an error')
 
-        //   interaction.followUp({
-        //     content: `Bruh.. Looks like you didn't enter in a parameter in the correct format`,
-        //     ephemeral: true
-        // })
-        // message.delete();
-        // }
+          const formatEmbed = new EmbedBuilder()
+            .setColor('#AB561C')
+            .setTitle('INCORRECT FORMAT ERROR')
+            .setDescription(`Looks like you didn't enter in one of the parameters in the correct format. With the dates and time, the best rule of the thumb to follow is:\n\n **IF THERE IS A SINGLE DIGIT, 0 MUST COME BEFORE IT.**\n\n Below are some examples of how you should format the parameters:`)
+            .setFooter({ text: `You can delete the above message you tried to send as it will not work.` })
+            .addFields(
+              {
+                name: "[event-month]",
+                value: `*11* **OR** *07*`,
+              },
+              {
+                name: "[event-day]",
+                value: `*21* **OR** *09*`,
+              },
+              {
+                name: "[event-year]",
+                value: `*2022* **OR** *2023*`,
+              },
+              {
+                name: "[event-time]",
+                value: `*12:30 PM* **OR** *07:05 AM*`,
+              },
+            );
+
+          interaction.followUp({
+            embeds: [formatEmbed],
+            ephemeral: true
+          })
+        } else {
+          message.edit({ embeds: [customsEmbed], content: `${eventPing}`, }).catch(error => {
+            collector.stop()
+            buttonCollector.stop()
+            clearInterval(interval)
+            zeroTimeStamp = '0, 0, 0, 0'
+            console.log('There was an error with the message.edit')
+            if (error.code !== 10008) {
+              console.error('Failed to delete the message:', error);
+            }
+          });
+        }
       }
-    }else {
+    } else {
       interaction.followUp({
-          content: `There is already an iteration of this event currently happening. You must wait until the current event is over to use this command again. You may use this command again on **${eventMonth}/${eventDay}/${eventYear}** at **${timeStandard}**.`,
-          ephemeral: true
+        content: `There is already an iteration of this event currently happening. You must wait until the current event is over to use this command again. You may use this command again on **${eventMonth}/${eventDay}/${eventYear}** at **${timeStandard}**.`,
+        ephemeral: true
       })
       message.delete();
-  }
+    }
   }
 };
