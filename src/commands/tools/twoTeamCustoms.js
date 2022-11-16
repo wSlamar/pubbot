@@ -1,22 +1,19 @@
 const { SlashCommandBuilder, PermissionFlagsBits, PermissionsBitField, GatewayIntentBits, ComponentType } = require("discord.js");
 const { EmbedBuilder } = require("discord.js");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const { guildId } = process.env;
 const { adminChannel } = process.env;
 const moment = require("moment");
-const { inflateSync } = require("zlib");
 let interval;
 let zeroTimeStamp;
 let eventMonth;
 let eventDay;
 let eventYear;
 let timeStandard;
-
 require('events').EventEmitter.prototype._maxListeners = 100;
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("pub-twoteamcustoms")
+    .setName("pub-twoteamevent")
     .setDescription("replies with an polling embed for a two team event")
     .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog)
     .addStringOption((option) => option
@@ -147,6 +144,7 @@ module.exports = {
           }
         }
         checkIDs(userNameID);
+
         if (reaction.emoji.name === "🔵" && playerMap.get("bluePlayer1").includes("[PLAYER 1 OPEN SPOT]") && usernameNoTag !== "Pub Bot" && !valuesArray.includes(true)) {
           playerMap.set("bluePlayer1", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
         } else if (reaction.emoji.name === "🔵" && playerMap.get("bluePlayer2").includes("[PLAYER 2 OPEN SPOT]") && usernameNoTag !== "Pub Bot" && !valuesArray.includes(true)) {
@@ -418,6 +416,29 @@ module.exports = {
         console.log(`Collected ${collected.size} items`);
       });
 
+      const formatEmbed = new EmbedBuilder()
+        .setColor('#AB561C')
+        .setTitle('INCORRECT FORMAT ERROR')
+        .setDescription(`Looks like you didn't enter in one of the parameters in the correct format. With the dates and time, the best rule of the thumb to follow is:\n\n **IF THERE IS A SINGLE DIGIT, 0 MUST COME BEFORE IT.**\n\n Below are some examples of how you should format the parameters:`)
+        .addFields(
+          {
+            name: "[event-month]",
+            value: `*11* **OR** *07*`,
+          },
+          {
+            name: "[event-day]",
+            value: `*21* **OR** *09*`,
+          },
+          {
+            name: "[event-year]",
+            value: `*2022* **OR** *2023*`,
+          },
+          {
+            name: "[event-time]",
+            value: `*12:30 PM* **OR** *07:05 AM*`,
+          },
+        );
+
       const eventDayMoment = moment(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`);
       const second = 1000;
       const minute = second * 60;
@@ -429,16 +450,18 @@ module.exports = {
         const timeSpan = eventDayMoment.diff(today);
 
         if (timeSpan <= -today) {
-          console.log("Unfortunately we have past the event day");
           clearInterval(interval);
           collector.stop()
           buttonCollector.stop()
           return;
         } else if (timeSpan <= 0) {
-          console.log("Today is the event day");
           clearInterval(interval);
           collector.stop()
           buttonCollector.stop()
+
+          interaction.followUp({
+            content: `${eventPing} **${eventTitle}** has started!`
+          })
           return;
         } else {
           const days = Math.floor(timeSpan / day);
@@ -446,7 +469,25 @@ module.exports = {
           const minutes = Math.floor((timeSpan % hour) / minute);
           const seconds = Math.floor((timeSpan % minute) / second);
 
-          refreshEmbed(days, hours, minutes, seconds);
+          if (eventDayMoment.isValid()) {
+            refreshEmbed(days, hours, minutes, seconds);
+          } else {
+            collector.stop()
+            buttonCollector.stop()
+            clearInterval(interval)
+            zeroTimeStamp = '0, 0, 0, 0'
+
+            interaction.followUp({
+              embeds: [formatEmbed],
+              ephemeral: true
+            })
+
+            message.delete().catch(error => {
+              if (error.code !== 10008) {
+                console.error('Failed to delete the message:', error);
+              }
+            });
+          }
         }
       };
 
@@ -475,53 +516,16 @@ module.exports = {
             }
           );
         zeroTimeStamp = `${days}, ${hours}, ${minutes}, ${seconds}`
-
-        if (isNaN(days) || !timeStandard.includes('AM' | 'PM')) {
+        message.edit({ embeds: [customsEmbed], content: `${eventPing}`, }).catch(error => {
           collector.stop()
           buttonCollector.stop()
           clearInterval(interval)
           zeroTimeStamp = '0, 0, 0, 0'
-
-          const formatEmbed = new EmbedBuilder()
-            .setColor('#AB561C')
-            .setTitle('INCORRECT FORMAT ERROR')
-            .setDescription(`Looks like you didn't enter in one of the parameters in the correct format. With the dates and time, the best rule of the thumb to follow is:\n\n **IF THERE IS A SINGLE DIGIT, 0 MUST COME BEFORE IT.**\n\n Below are some examples of how you should format the parameters:`)
-            .setFooter({ text: `You can delete the above message you tried to send as it will not work.` })
-            .addFields(
-              {
-                name: "[event-month]",
-                value: `*11* **OR** *07*`,
-              },
-              {
-                name: "[event-day]",
-                value: `*21* **OR** *09*`,
-              },
-              {
-                name: "[event-year]",
-                value: `*2022* **OR** *2023*`,
-              },
-              {
-                name: "[event-time]",
-                value: `*12:30 PM* **OR** *07:05 AM*`,
-              },
-            );
-
-          interaction.followUp({
-            embeds: [formatEmbed],
-            ephemeral: true
-          })
-        } else {
-          message.edit({ embeds: [customsEmbed], content: `${eventPing}`, }).catch(error => {
-            collector.stop()
-            buttonCollector.stop()
-            clearInterval(interval)
-            zeroTimeStamp = '0, 0, 0, 0'
-            console.log('There was an error with the message.edit')
-            if (error.code !== 10008) {
-              console.error('Failed to delete the message:', error);
-            }
-          });
-        }
+          console.log('There was an error with the message.edit')
+          if (error.code !== 10008) {
+            console.error('Failed to delete the message:', error);
+          }
+        });
       }
     } else {
       interaction.followUp({
