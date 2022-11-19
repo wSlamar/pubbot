@@ -3,13 +3,15 @@ const { EmbedBuilder } = require("discord.js");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { adminChannel } = process.env;
 const moment = require("moment");
+require('events').EventEmitter.prototype._maxListeners = 100;
+const embeds = require('../../events/client/embeds.js')
+
 let interval;
 let zeroTimeStamp;
 let eventMonth;
 let eventDay;
 let eventYear;
 let timeStandard;
-require('events').EventEmitter.prototype._maxListeners = 100;
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -66,37 +68,12 @@ module.exports = {
       ["redPlayer5", ["[PLAYER 5 OPEN SPOT]", "RED PLAYER 5 ID", "[EMPTY SPOT]"]],
     ]);
 
-    const customsEmbed = new EmbedBuilder()
-      .setColor('#AB561C')
-      .setTitle('TITLE OF THE EVENT')
-      .setDescription(`00:00 PM on 00/00/0000`)
-      .setFooter({ text: `To be removed from a team, or change teams, react with ❌ to this message.\nThis event will start in 0 days, 0 hours, 0 minutes, and 0 seconds` })
-      .addFields(
-        {
-          name: "CLICK A TEAM EMOJI BELOW TO JOIN A TEAM",
-          value: `Description of the event that will be taking place.`,
-        },
-        {
-          name: "🔵 TEAM 1 🔵",
-          value:
-            "[PLAYER 1 OPEN SPOT]\n[PLAYER 2 OPEN SPOT]\n[PLAYER 3 OPEN SPOT]\n[PLAYER 4 OPEN SPOT]\n[PLAYER 5 OPEN SPOT]",
-          inline: true,
-        },
-        {
-          name: "🔴 TEAM 2 🔴",
-          value:
-            "[PLAYER 1 OPEN SPOT]\n[PLAYER 2 OPEN SPOT]\n[PLAYER 3 OPEN SPOT]\n[PLAYER 4 OPEN SPOT]\n[PLAYER 5 OPEN SPOT]",
-          inline: true,
-        }
-      );
-
     const message = await interaction.reply({
-      embeds: [customsEmbed],
+      embeds: [embeds.customsEmbed],
       fetchReply: true,
     });
 
     if (zeroTimeStamp == undefined || zeroTimeStamp == '0, 0, 0, 0') {
-
       const eventDescription = interaction.options.getString("event-description");
       const eventTitle = interaction.options.getString("event-title");
       const eventPing = interaction.options.getString("event-ping");
@@ -119,9 +96,9 @@ module.exports = {
 
       const timeMilitary = `${convertTime12to24(timeStandard)}:00`
 
-      message.react("🔵");
-      message.react("🔴");
-      message.react("❌");
+      message.react("🔵").catch(error => { if (error.code !== 10008) { console.error('Error on blue reaction:', error); } });
+      message.react("🔴").catch(error => { if (error.code !== 10008) { console.error('Error on red reaction:', error); } });
+      message.react("❌").catch(error => { if (error.code !== 10008) { console.error('Error on X reaction:', error); } });
 
       const filter = (reaction, user) => {
         return reaction.emoji.name === "🔵" || reaction.emoji.name === "🔴" || reaction.emoji.name === "❌" || reaction.emoji.name === "🔨";
@@ -236,101 +213,61 @@ module.exports = {
                 case 'removeBluePlayer1':
                   removeUserReactions(playerMap.get("bluePlayer1")[1]);
                   setDefault(playerMap.get("bluePlayer1")[1]);
-                  modMessage.delete().catch(error => {
-                    if (error.code !== 10008) {
-                      console.error('Failed to delete the message:', error);
-                    }
-                  });
+                  modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removeBluePlayer1 button:', error); } });
                   break;
 
                 case 'removeBluePlayer2':
                   removeUserReactions(playerMap.get("bluePlayer2")[1]);
                   setDefault(playerMap.get("bluePlayer2")[1]);
-                  modMessage.delete().catch(error => {
-                    if (error.code !== 10008) {
-                      console.error('Failed to delete the message:', error);
-                    }
-                  });
+                  modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removeBluePlayer2 button:', error); } });
                   break;
 
                 case 'removeBluePlayer3':
                   removeUserReactions(playerMap.get("bluePlayer3")[1]);
                   setDefault(playerMap.get("bluePlayer3")[1]);
-                  modMessage.delete().catch(error => {
-                    if (error.code !== 10008) {
-                      console.error('Failed to delete the message:', error);
-                    }
-                  });
+                  modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removeBluePlayer3 button:', error); } });
                   break;
 
                 case 'removeBluePlayer4':
                   removeUserReactions(playerMap.get("bluePlayer4")[1]);
                   setDefault(playerMap.get("bluePlayer4")[1]);
-                  modMessage.delete().catch(error => {
-                    if (error.code !== 10008) {
-                      console.error('Failed to delete the message:', error);
-                    }
-                  });
+                  modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removeBluePlayer4 button:', error); } });
                   break;
 
                 case 'removeBluePlayer5':
                   removeUserReactions(playerMap.get("bluePlayer5")[1]);
                   setDefault(playerMap.get("bluePlayer5")[1]);
-                  modMessage.delete().catch(error => {
-                    if (error.code !== 10008) {
-                      console.error('Failed to delete the message:', error);
-                    }
-                  });
+                  modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removeBluePlayer5 button:', error); } });
                   break;
 
                 case 'removeRedPlayer1':
                   removeUserReactions(playerMap.get("redPlayer1")[1]);
                   setDefault(playerMap.get("redPlayer1")[1]);
-                  modMessage.delete().catch(error => {
-                    if (error.code !== 10008) {
-                      console.error('Failed to delete the message:', error);
-                    }
-                  });
+                  modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removeRedPlayer1 button:', error); } });
                   break;
 
                 case 'removeRedPlayer2':
                   removeUserReactions(playerMap.get("redPlayer2")[1]);
                   setDefault(playerMap.get("redPlayer2")[1]);
-                  modMessage.delete().catch(error => {
-                    if (error.code !== 10008) {
-                      console.error('Failed to delete the message:', error);
-                    }
-                  });
+                  modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removeRedPlayer2 button:', error); } });
                   break;
 
                 case 'removeRedPlayer3':
                   removeUserReactions(playerMap.get("redPlayer3")[1]);
                   setDefault(playerMap.get("redPlayer3")[1]);
-                  modMessage.delete().catch(error => {
-                    if (error.code !== 10008) {
-                      console.error('Failed to delete the message:', error);
-                    }
-                  });
+                  modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removeRedPlayer3 button:', error); } });
                   break;
 
                 case 'removeRedPlayer4':
                   removeUserReactions(playerMap.get("redPlayer4")[1]);
                   setDefault(playerMap.get("redPlayer4")[1]);
-                  modMessage.delete().catch(error => {
-                    if (error.code !== 10008) {
-                      console.error('Failed to delete the message:', error);
-                    }
-                  });
+                  modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removeRedPlayer4 button:', error); } });
                   break;
 
                 case 'removeRedPlayer5':
                   removeUserReactions(playerMap.get("redPlayer5")[1]);
                   setDefault(playerMap.get("redPlayer5")[1]);
-                  modMessage.delete().catch(error => {
-                    if (error.code !== 10008) {
-                      console.error('Failed to delete the message:', error);
-                    }
-                  });
+                  modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removeRedPlayer5 button:', error); } });
                   break;
 
                 default:
@@ -347,7 +284,7 @@ module.exports = {
               await reaction.users.remove(duplicateUser);
             }
           } catch (error) {
-            console.error('Failed to remove reactions.');
+            console.error('Error on removing reacitons.');
           }
         }
 
@@ -416,29 +353,6 @@ module.exports = {
         console.log(`Collected ${collected.size} items`);
       });
 
-      const formatEmbed = new EmbedBuilder()
-        .setColor('#AB561C')
-        .setTitle('INCORRECT FORMAT ERROR')
-        .setDescription(`Looks like you didn't enter in one of the parameters in the correct format. With the dates and time, the best rule of the thumb to follow is:\n\n **IF THERE IS A SINGLE DIGIT, 0 MUST COME BEFORE IT.**\n\n Below are some examples of how you should format the parameters:`)
-        .addFields(
-          {
-            name: "[event-month]",
-            value: `*11* **OR** *07*`,
-          },
-          {
-            name: "[event-day]",
-            value: `*21* **OR** *09*`,
-          },
-          {
-            name: "[event-year]",
-            value: `*2022* **OR** *2023*`,
-          },
-          {
-            name: "[event-time]",
-            value: `*12:30 PM* **OR** *07:05 AM*`,
-          },
-        );
-
       const eventDayMoment = moment(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`);
       const second = 1000;
       const minute = second * 60;
@@ -478,15 +392,10 @@ module.exports = {
             zeroTimeStamp = '0, 0, 0, 0'
 
             interaction.followUp({
-              embeds: [formatEmbed],
+              embeds: [embeds.formatEmbed],
               ephemeral: true
             })
-
-            message.delete().catch(error => {
-              if (error.code !== 10008) {
-                console.error('Failed to delete the message:', error);
-              }
-            });
+            message.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removing message with incorrect format', error); } });
           }
         }
       };
@@ -521,11 +430,7 @@ module.exports = {
           buttonCollector.stop()
           clearInterval(interval)
           zeroTimeStamp = '0, 0, 0, 0'
-          console.log('There was an error with the message.edit')
-          if (error.code !== 10008) {
-            console.error('Failed to delete the message:', error);
-          }
-        });
+          if (error.code !== 10008) {console.error('Error on message edit:', error);}});
       }
     } else {
       interaction.followUp({

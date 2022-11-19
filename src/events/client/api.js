@@ -20,7 +20,7 @@ module.exports = () => new Promise((resolve, reject) => {
         response.on('end', () => {
             try {
                 var json = JSON.parse(data)
-                resolve({title: json.events[0].title, who: json.events[0].who})
+                resolve({title: json.events[0].title, who: json.events[0].who, description: json.events[0].notes, startdate: json.events[0].start_dt})
             } catch (error) {
                 console.error(error.message);
             };
