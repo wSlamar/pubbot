@@ -430,7 +430,8 @@ module.exports = {
           buttonCollector.stop()
           clearInterval(interval)
           zeroTimeStamp = '0, 0, 0, 0'
-          if (error.code !== 10008) {console.error('Error on message edit:', error);}});
+          if (error.code !== 10008) { console.error('Error on message edit:', error); }
+        });
       }
     } else {
       interaction.followUp({

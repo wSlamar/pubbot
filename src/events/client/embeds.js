@@ -4,7 +4,7 @@ module.exports = Object.freeze({
     customsEmbed: new EmbedBuilder()
         .setColor('#AB561C')
         .setTitle('TITLE OF THE EVENT')
-        .setDescription(`00:00 PM on 00/00/0000`)
+        .setDescription(`0:00 PM on 00/00/0000`)
         .setFooter({ text: `To be removed from a team, or change teams, react with ❌ to this message.\nThis event will start in 0 days, 0 hours, 0 minutes, and 0 seconds` })
         .addFields(
             {
@@ -27,7 +27,7 @@ module.exports = Object.freeze({
     formatEmbed: new EmbedBuilder()
         .setColor('#AB561C')
         .setTitle('INCORRECT FORMAT ERROR')
-        .setDescription(`Looks like you didn't enter in one of the parameters in the correct format. With the dates and time, the best rule of the thumb to follow is:\n\n **IF THERE IS A SINGLE DIGIT, 0 MUST COME BEFORE IT.**\n\n Below are some examples of how you should format the parameters:`)
+        .setDescription(`Looks like you didn't enter in one of the parameters in the correct format. With the dates, the best rule of the thumb to follow is:\n\n **IF THERE IS A SINGLE DIGIT, 0 MUST COME BEFORE IT.**\n\n Below are some examples of how you should format the parameters:`)
         .addFields(
             {
                 name: "[event-month]",
@@ -43,7 +43,7 @@ module.exports = Object.freeze({
             },
             {
                 name: "[event-time]",
-                value: `*12:30 PM* **OR** *07:05 AM*`,
+                value: `*12:30 PM* **OR** *7:05 AM*`,
             },
         )
 });
