@@ -12,13 +12,13 @@ module.exports = Object.freeze({
                 value: `Description of the event that will be taking place.`,
             },
             {
-                name: "🔵 TEAM 1 🔵",
+                name: "  TEAM 1  ",
                 value:
                     "[PLAYER 1 OPEN SPOT]\n[PLAYER 2 OPEN SPOT]\n[PLAYER 3 OPEN SPOT]\n[PLAYER 4 OPEN SPOT]\n[PLAYER 5 OPEN SPOT]",
                 inline: true,
             },
             {
-                name: "🔴 TEAM 2 🔴",
+                name: "  TEAM 2  ",
                 value:
                     "[PLAYER 1 OPEN SPOT]\n[PLAYER 2 OPEN SPOT]\n[PLAYER 3 OPEN SPOT]\n[PLAYER 4 OPEN SPOT]\n[PLAYER 5 OPEN SPOT]",
                 inline: true,
@@ -45,5 +45,22 @@ module.exports = Object.freeze({
                 name: "[event-time]",
                 value: `*12:30 PM* **OR** *7:05 AM*`,
             },
+        ),
+    customsEmbed2: new EmbedBuilder()
+        .setColor('#AB561C')
+        .setTitle('TITLE OF THE EVENT')
+        .setDescription(`0:00 PM on 00/00/0000`)
+        .setFooter({ text: `To be removed from this event list, react with ❌ to this message.\nThis event will start in 0 days, 0 hours, 0 minutes, and 0 seconds` })
+        .addFields(
+            {
+                name: "CLICK THE PLAYER EMOJI BELOW TO JOIN THE EVENT",
+                value: `Description of the event that will be taking place.`,
+            },
+            {
+                name: "  PLAYERS  ",
+                value:
+                    "[PLAYER 1 OPEN SPOT]\n[PLAYER 2 OPEN SPOT]\n[PLAYER 3 OPEN SPOT]\n[PLAYER 4 OPEN SPOT]\n[PLAYER 5 OPEN SPOT]\n[PLAYER 6 OPEN SPOT]\n[PLAYER 7 OPEN SPOT]\n[PLAYER 8 OPEN SPOT]",
+                inline: true,
+            }
         )
 });

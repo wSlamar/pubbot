@@ -1,26 +1,17 @@
 const { apiKey } = process.env;
 const { calendarId } = process.env;
+const moment = require("moment");
 
 module.exports = () => new Promise((resolve, reject) => {
 
-    Date.prototype.addDays = function (days) {
-        this.setDate(this.getDate() + parseInt(days));
-        return this;
-    };
-
-    Date.prototype.reomveDays = function (days) {
-        this.setDate(this.getDate() - parseInt(days));
-        return this;
-    };
-
-    let currentDate = new Date();
-    let todayUpdated = currentDate.reomveDays(1).toISOString().slice(0, 10);
-    const threeDaysOutDate = currentDate.addDays(3).toISOString().slice(0, 10);
+    var date = moment().subtract(5, 'hours');
+    var today = date.toISOString().slice(0, 10);
+    let threeDaysOut = date.add(3, 'days').toISOString().slice(0, 10);
 
     const http = require('https');
     const options = {
         hostname: 'api.teamup.com',
-        path: `/${calendarId}/events?startDate=${todayUpdated}&endDate=${threeDaysOutDate}`,
+        path: `/${calendarId}/events?startDate=${today}&endDate=${threeDaysOut}`,
         method: 'GET',
         headers: {
             'Teamup-Token': apiKey,
@@ -35,18 +26,20 @@ module.exports = () => new Promise((resolve, reject) => {
         response.on('end', () => {
             try {
                 var json = JSON.parse(data)
-                let firstTitle, secondTitle, thirdTitle, fourthTitle, fifthTitle, sixthTitle;
-                let firstWho, secondWho, thirdWho, forthWho, fifthWho, sixthWho;
-                let firstDescription, secondDescription, thirdDescription, forthDescription, fifthDescription, sixthDescription;
-                let firstStartDate, secondStartDate, thirdStartDate, forthStartDate, fifthStartDate, sixthStartDate;
+                let firstTitle, secondTitle, thirdTitle, fourthTitle, fifthTitle;
+                let firstWho, secondWho, thirdWho, forthWho, fifthWho;
+                let firstDescription, secondDescription, thirdDescription, forthDescription, fifthDescription;
+                let firstStartDate, secondStartDate, thirdStartDate, forthStartDate, fifthStartDate;
+                let firstButton;
 
                 if (json.events[0] != undefined) {
                     firstTitle = json.events[0].title
                     firstWho = json.events[0].who
                     firstDescription = json.events[0].notes
                     firstStartDate = json.events[0].start_dt
+                    firstButton = (`${firstTitle} (${moment(firstStartDate).format('L')} at ${moment(firstStartDate).format('LT')})`)
                 } else {
-                    firstTitle, firstStartDate = "TBD EVENT"
+                    firstButton = "TBD EVENT"
                 }
                 if (json.events[1] != undefined) {
                     secondTitle = json.events[1].title
@@ -80,20 +73,13 @@ module.exports = () => new Promise((resolve, reject) => {
                 } else {
                     fifthTitle = "TBD EVENT"
                 }
-                if (json.events[5] != undefined) {
-                    sixthTitle = json.events[5].title
-                    sixthWho = json.events[5].who
-                    sixthDescription = json.events[5].notes
-                    sixthStartDate = json.events[5].start_dt
-                } else {
-                    sixthTitle = "TBD EVENT"
-                }
 
                 resolve({
-                    firstTitle: firstTitle, secondTitle: secondTitle, thirdTitle: thirdTitle, fourthTitle: fourthTitle, fifthTitle: fifthTitle, sixthTitle: sixthTitle,
-                    firstWho: firstWho, secondWho: secondWho, thirdWho: thirdWho, forthWho: forthWho, fifthWho: fifthWho, sixthWho: sixthWho,
-                    firstDescription: firstDescription, secondDescription: secondDescription, thirdDescription: thirdDescription, forthDescription: forthDescription, fifthDescription: fifthDescription, sixthDescription: sixthDescription,
-                    firstStartDate: firstStartDate, secondStartDate: secondStartDate, thirdStartDate: thirdStartDate, forthStartDate: forthStartDate, fifthStartDate: fifthStartDate, sixthStartDate: sixthStartDate
+                    firstTitle: firstTitle, secondTitle: secondTitle, thirdTitle: thirdTitle, fourthTitle: fourthTitle, fifthTitle: fifthTitle, 
+                    firstWho: firstWho, secondWho: secondWho, thirdWho: thirdWho, forthWho: forthWho, fifthWho: fifthWho, 
+                    firstDescription: firstDescription, secondDescription: secondDescription, thirdDescription: thirdDescription, forthDescription: forthDescription, fifthDescription: fifthDescription, 
+                    firstStartDate: firstStartDate, secondStartDate: secondStartDate, thirdStartDate: thirdStartDate, forthStartDate: forthStartDate, fifthStartDate: fifthStartDate,
+                    firstButton: firstButton
                 })
             } catch (error) {
                 console.error(error.message);

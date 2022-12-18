@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits, PermissionsBitField, GatewayIntentBits, ComponentType } = require("discord.js");
-const getAPIValues = require('../../events/client/api.js')
-const embeds = require('../../events/client/embeds.js')
+const getAPIValues = require('./api.js')
+const embeds = require('../events/client/embeds.js')
 const { EmbedBuilder } = require("discord.js");
 const moment = require("moment");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
@@ -13,13 +13,13 @@ module.exports = {
         .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog),
     async execute(interaction, client) {
 
-        getAPIValues().then(async ({ firstTitle, secondTitle, thirdTitle, fourthTitle, fifthTitle, sixthTitle, firstWho, secondWho, thirdWho, forthWho, fifthWho, sixthWho, firstDescription, secondDescription, thirdDescription, forthDescription, fifthDescription, sixthDescription, firstStartDate, secondStartDate, thirdStartDate, forthStartDate, fifthStartDate, sixthStartDate }) => {
+        getAPIValues().then(async ({ firstButton, firstTitle, secondTitle, thirdTitle, fourthTitle, fifthTitle, firstWho, secondWho, thirdWho, forthWho, fifthWho, firstDescription, secondDescription, thirdDescription, forthDescription, fifthDescription, firstStartDate, secondStartDate, thirdStartDate, forthStartDate, fifthStartDate }) => {
 
             const eventButtons = new ActionRowBuilder()
                 .addComponents(
                     new ButtonBuilder()
                         .setCustomId('firstEvent')
-                        .setLabel(`${fifthTitle} - ${firstStartDate}`)
+                        .setLabel(firstButton)
                         .setStyle(ButtonStyle.Primary),
                     new ButtonBuilder()
                         .setCustomId('secondEvent')
