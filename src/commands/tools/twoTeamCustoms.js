@@ -5,7 +5,6 @@ const { adminChannel } = process.env;
 const moment = require("moment");
 require('events').EventEmitter.prototype._maxListeners = 100;
 const embeds = require('../../events/client/embeds.js')
-// const oneTeamCustomTest = require('../../commands/tools/oneTeamCustoms.js')
 
 let interval;
 let zeroTimeStamp;
