@@ -16,7 +16,7 @@ let timeStandard;
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("pub-5v5")
-    .setDescription("replies with an polling embed for a two team event")
+    .setDescription("Replies with an embed for a 5v5 two team event")
     .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
     .addStringOption((option) => option
       .setName("event-title")

@@ -5,7 +5,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("pub-bug")
-        .setDescription("Reporting command for logging bugs and issues")
+        .setDescription("Replies with an embed for logging bugs and issues")
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
         .addStringOption((option) => option
             .setName("bug-title")
@@ -31,7 +31,7 @@ module.exports = {
         const bugEmbed = new EmbedBuilder()
             .setColor('#AB561C')
             .setTitle("BUG REPORT")
-            .setDescription("Please describe the bug / issue below and provide a screenshot:")
+            .setDescription("Please describe the bug or issue below and provide a screenshot:")
             .setImage(bugScreenshot.attachment)
             .addFields(
                 {

@@ -5,7 +5,7 @@ require("dotenv").config();
 module.exports = {
   data: (poll = new SlashCommandBuilder()
     .setName("pub-poll")
-    .setDescription("Create a custom poll")
+    .setDescription("Replies with an embed for creating a custom poll")
     .addStringOption((option) =>
       option
         .setName("poll-question")
