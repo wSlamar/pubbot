@@ -7,11 +7,11 @@ require('events').EventEmitter.prototype._maxListeners = 100;
 const embeds = require('../../events/client/embeds.js')
 
 let interval;
-let zeroTimeStamp;
 let eventMonth;
 let eventDay;
 let eventYear;
 let timeStandard;
+let zeroTimeStamp;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -76,15 +76,17 @@ module.exports = {
             ["bluePlayer8", ["[PLAYER 8 OPEN SPOT]", "BLUE PLAYER 8 ID", "[EMPTY SPOT]"]],
         ]);
 
+        const eventPing = interaction.options.getString("event-ping");
+
         const message = await interaction.reply({
             embeds: [embeds.customsEmbed2],
+            content: eventPing,
             fetchReply: true,
         });
 
         if (zeroTimeStamp == undefined || zeroTimeStamp == '0, 0, 0, 0') {
             const eventDescription = interaction.options.getString("event-description");
             const eventTitle = interaction.options.getString("event-title");
-            const eventPing = interaction.options.getString("event-ping");
             const eventImage = interaction.options.getString("event-image");
             const playerEmoji = interaction.options.getString("player-emoji");
             eventMonth = interaction.options.getInteger("event-month").toString();
@@ -154,6 +156,8 @@ module.exports = {
                     removeUserReactions(userNameID);
                 }
 
+                refreshEmbed()
+
                 const member = message.guild.members.cache.get(userNameID);
                 if (reaction.emoji.name === "🔨" && usernameNoTag !== "Pub Bot") {
                     message.reactions.cache.get("🔨").remove();
@@ -176,13 +180,13 @@ module.exports = {
                                     .setCustomId('removeBluePlayer4')
                                     .setLabel(`${playerMap.get("bluePlayer4")[2]}`)
                                     .setStyle(ButtonStyle.Primary),
+                            );
+                        const blueButtons2 = new ActionRowBuilder()
+                            .addComponents(
                                 new ButtonBuilder()
                                     .setCustomId('removeBluePlayer5')
                                     .setLabel(`${playerMap.get("bluePlayer5")[2]}`)
                                     .setStyle(ButtonStyle.Primary),
-                            );
-                        const blueButtons2 = new ActionRowBuilder()
-                            .addComponents(
                                 new ButtonBuilder()
                                     .setCustomId('removebluePlayer6')
                                     .setLabel(`${playerMap.get("bluePlayer6")[2]}`)
@@ -199,7 +203,7 @@ module.exports = {
 
                         const channel = client.channels.cache.get(adminChannel);
                         modMessage = await channel.send({
-                            content: `<@${userNameID}> What player would you like to remove?\n`,
+                            content: `<@${userNameID}> Which player would you like to remove from **${eventTitle}**?\n`,
                             components: [blueButtons1, blueButtons2]
                         });
 
@@ -304,6 +308,7 @@ module.exports = {
                                 default:
                                     break;
                             }
+                            refreshEmbed()
                         }
                     }
                 }
@@ -335,7 +340,7 @@ module.exports = {
                     clearInterval(interval);
                     collector.stop()
                     buttonCollector.stop()
-
+                    refreshCounter('0', '0', '0', '0')
                     interaction.followUp({
                         content: `${eventPing} **${eventTitle}** has started!`
                     })
@@ -347,7 +352,7 @@ module.exports = {
                     const seconds = Math.floor((timeSpan % minute) / second);
 
                     if (eventDayMoment.isValid()) {
-                        refreshEmbed(days, hours, minutes, seconds);
+                        refreshCounter(days, hours, minutes, seconds)
                     } else {
                         collector.stop()
                         buttonCollector.stop()
@@ -363,29 +368,39 @@ module.exports = {
                 }
             };
 
-            interval = setInterval(countDownFn, second);
+            interval = setInterval(countDownFn, 5000);
 
-            function refreshEmbed(days, hours, minutes, seconds) {
-                const customsEmbed = new EmbedBuilder()
-                    .setColor('#AB561C')
-                    .setTitle(eventTitle)
-                    .setDescription(`${timeStandard} EST on ${eventMonth}/${eventDay}/${eventYear}`)
-                    .setThumbnail(eventImage)
-                    .setFooter({ text: `To be removed from this event list, react with ❌ to this message.\nThis event will start in ${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds.` })
-                    .addFields(
+            const customsEmbed = new EmbedBuilder()
+                .setColor('#AB561C')
+                .setTitle(eventTitle)
+                .setDescription(`${timeStandard} EST on ${eventMonth}/${eventDay}/${eventYear}`)
+                .setFooter({ text: `To be removed from this event list, react with ❌ to this message.\nThis event will start in 0 days, 0 hours, 0 minutes, and 0 seconds.` })
+                .setThumbnail(eventImage)
+                .addFields(
+                    {
+                        name: `CLICK THE PLAYER EMOJI BELOW TO JOIN THE EVENT`,
+                        value: `${eventDescription}`,
+                    },
+                    {
+                        name: `${playerEmoji} PLAYERS ${playerEmoji}`,
+                        value: `${playerMap.get("bluePlayer1")[0]}\n${playerMap.get("bluePlayer2")[0]}\n${playerMap.get("bluePlayer3")[0]}\n${playerMap.get("bluePlayer4")[0]}\n${playerMap.get("bluePlayer5")[0]}\n${playerMap.get("bluePlayer6")[0]}\n${playerMap.get("bluePlayer7")[0]}\n${playerMap.get("bluePlayer8")[0]}`,
+                        inline: true,
+                    },
+                );
+
+            function refreshEmbed() {
+                message.edit({
+                    embeds: [customsEmbed.setFields(
                         {
                             name: `CLICK THE PLAYER EMOJI BELOW TO JOIN THE EVENT`,
                             value: `${eventDescription}`,
                         },
                         {
                             name: `${playerEmoji} PLAYERS ${playerEmoji}`,
-                            value: `${playerMap.get("bluePlayer1")[0]}\n${playerMap.get("bluePlayer2")[0]}\n${playerMap.get("bluePlayer3")[0]}\n${playerMap.get("bluePlayer4")[0]}\n${playerMap.get("bluePlayer5")[0]}\n${playerMap.get("bluePlayer6")[0]}\n${playerMap.get("bluePlayer7")[0]}\n${playerMap.get("bluePlayer8")[0]}`,
-                            inline: true,
-                        },
-                    );
-                zeroTimeStamp = `${days}, ${hours}, ${minutes}, ${seconds}`
-
-                message.edit({ embeds: [customsEmbed], content: `${eventPing}`, }).catch(error => {
+                            value: `${playerMap.get("bluePlayer1")[0]}\n${playerMap.get("bluePlayer2")[0]}\n${playerMap.get("bluePlayer3")[0]}\n${playerMap.get("bluePlayer4")[0]}\n${playerMap.get("bluePlayer5")[0]}\n${playerMap.get("bluePlayer6")[0]}\n${playerMap.get("bluePlayer7")[0]}\n${playerMap.get("bluePlayer8")[0]}`, inline: true,
+                        })],
+                    content: `${eventPing}`,
+                }).catch(error => {
                     collector.stop()
                     buttonCollector.stop()
                     clearInterval(interval)
@@ -394,6 +409,16 @@ module.exports = {
                 });
             }
 
+            function refreshCounter(days, hours, minutes, seconds) {
+                zeroTimeStamp = `${days}, ${hours}, ${minutes}, ${seconds}`
+                message.edit({ embeds: [customsEmbed.setFooter({ text: `To be removed from this event list, react with ❌ to this message.\nThis event will start in ${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds.` })] }).catch(error => {
+                    collector.stop()
+                    buttonCollector.stop()
+                    clearInterval(interval)
+                    zeroTimeStamp = '0, 0, 0, 0'
+                    if (error.code !== 10008) { console.error('Error on message edit:', error); }
+                });
+            }
         } else {
             interaction.followUp({
                 content: `There is already an iteration of this event currently happening. You must wait until the current event is over to use this command again. You may use this command again on **${eventMonth}/${eventDay}/${eventYear}** at **${timeStandard}**.`,
