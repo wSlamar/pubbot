@@ -352,7 +352,7 @@ module.exports = {
                     const seconds = Math.floor((timeSpan % minute) / second);
 
                     if (eventDayMoment.isValid()) {
-                        refreshCounter(days, hours, minutes, seconds)
+                        refreshCounter(days, hours, minutes)
                     } else {
                         collector.stop()
                         buttonCollector.stop()
@@ -374,7 +374,7 @@ module.exports = {
                 .setColor('#AB561C')
                 .setTitle(eventTitle)
                 .setDescription(`${timeStandard} EST on ${eventMonth}/${eventDay}/${eventYear}`)
-                .setFooter({ text: `To be removed from this event list, react with ❌ to this message.\nThis event will start in 0 days, 0 hours, 0 minutes, and 0 seconds.` })
+                .setFooter({ text: `To be removed from this event list, react with ❌ to this message.\nThis event will start in 0 days, 0 hours, and 0 minutes.` })
                 .setThumbnail(eventImage)
                 .addFields(
                     {
@@ -409,9 +409,9 @@ module.exports = {
                 });
             }
 
-            function refreshCounter(days, hours, minutes, seconds) {
-                zeroTimeStamp = `${days}, ${hours}, ${minutes}, ${seconds}`
-                message.edit({ embeds: [customsEmbed.setFooter({ text: `To be removed from this event list, react with ❌ to this message.\nThis event will start in ${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds.` })] }).catch(error => {
+            function refreshCounter(days, hours, minutes) {
+                zeroTimeStamp = `${days}, ${hours}, ${minutes}, 0`;
+                message.edit({ embeds: [customsEmbed.setFooter({ text: `To be removed from this event list, react with ❌ to this message.\nThis event will start in ${days} days, ${hours} hours, and ${minutes} minutes`})]}).catch(error => {
                     collector.stop()
                     buttonCollector.stop()
                     clearInterval(interval)

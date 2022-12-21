@@ -176,7 +176,7 @@ module.exports = {
         const member = message.guild.members.cache.get(userNameID);
         if (reaction.emoji.name === "🔨" && usernameNoTag !== "Pub Bot") {
           message.reactions.cache.get("🔨").remove();
-          if (member.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
+          if (member.permissions.has(PermissionFlagsBits.BanMembers)) {
             const blueButtons = new ActionRowBuilder()
               .addComponents(
                 new ButtonBuilder()
@@ -407,7 +407,7 @@ module.exports = {
           const seconds = Math.floor((timeSpan % minute) / second);
 
           if (eventDayMoment.isValid()) {
-            refreshCounter(days, hours, minutes, seconds)
+            refreshCounter(days, hours, minutes)
           } else {
             collector.stop()
             buttonCollector.stop()
@@ -430,7 +430,7 @@ module.exports = {
         .setTitle(eventTitle)
         .setDescription(`${timeStandard} EST on ${eventMonth}/${eventDay}/${eventYear}`)
         .setThumbnail(eventImage)
-        .setFooter({ text: `To be removed from a team, or change teams, react with ❌ to this message.\nThis event will start in 0 days, 0 hours, 0 minutes, and 0 seconds.` })
+        .setFooter({ text: `To be removed from a team, or change teams, react with ❌ to this message.\nThis event will start in 0 days, 0 hours, and 0 minutes` })
         .addFields(
           {
             name: "CLICK A TEAM EMOJI BELOW TO JOIN A TEAM",
@@ -476,9 +476,9 @@ module.exports = {
         });
       }
 
-      function refreshCounter(days, hours, minutes, seconds) {
-        zeroTimeStamp = `${days}, ${hours}, ${minutes}, ${seconds}`
-        message.edit({ embeds: [customsEmbed.setFooter({ text: `To be removed from a team, or change teams, react with ❌ to this message.\nThis event will start in ${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds.` })] }).catch(error => {
+      function refreshCounter(days, hours, minutes) {
+        zeroTimeStamp = `${days}, ${hours}, ${minutes}, 0`
+        message.edit({ embeds: [customsEmbed.setFooter({ text: `To be removed from a team, or change teams, react with ❌ to this message.\nThis event will start in ${days} days, ${hours} hours, and ${minutes} minutes` })] }).catch(error => {
           collector.stop()
           buttonCollector.stop()
           clearInterval(interval)

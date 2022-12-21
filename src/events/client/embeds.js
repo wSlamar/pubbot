@@ -5,7 +5,7 @@ module.exports = Object.freeze({
         .setColor('#AB561C')
         .setTitle('TITLE OF THE EVENT')
         .setDescription(`0:00 PM on 00/00/0000`)
-        .setFooter({ text: `To be removed from a team, or change teams, react with ❌ to this message.\nThis event will start in 0 days, 0 hours, 0 minutes, and 0 seconds` })
+        .setFooter({ text: `To be removed from a team, or change teams, react with ❌ to this message.\nThis event will start in 0 days, 0 hours, and 0 minutes` })
         .addFields(
             {
                 name: "CLICK A TEAM EMOJI BELOW TO JOIN A TEAM",
@@ -50,7 +50,7 @@ module.exports = Object.freeze({
         .setColor('#AB561C')
         .setTitle('TITLE OF THE EVENT')
         .setDescription(`0:00 PM on 00/00/0000`)
-        .setFooter({ text: `To be removed from this event list, react with ❌ to this message.\nThis event will start in 0 days, 0 hours, 0 minutes, and 0 seconds` })
+        .setFooter({ text: `To be removed from this event list, react with ❌ to this message.\nThis event will start in 0 days, 0 hours, and 0 minutes` })
         .addFields(
             {
                 name: "CLICK THE PLAYER EMOJI BELOW TO JOIN THE EVENT",
