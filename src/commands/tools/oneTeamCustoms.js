@@ -88,7 +88,16 @@ module.exports = {
             const eventDescription = interaction.options.getString("event-description");
             const eventTitle = interaction.options.getString("event-title");
             const eventImage = interaction.options.getString("event-image");
-            const playerEmoji = interaction.options.getString("player-emoji");
+            const prePlayerEmoji = interaction.options.getString("player-emoji");
+
+            let playerEmoji;
+
+            if (prePlayerEmoji.includes(':')) {
+                playerEmoji = prePlayerEmoji.split(':')[1]
+            } else {
+                playerEmoji = prePlayerEmoji
+            }
+
             eventMonth = interaction.options.getInteger("event-month").toString();
             eventDay = interaction.options.getInteger("event-day").toString();
             eventYear = interaction.options.getInteger("event-year").toString();
@@ -108,7 +117,22 @@ module.exports = {
 
             const timeMilitary = `${convertTime12to24(timeStandard)}:00`
 
-            message.react(playerEmoji).catch(error => { if (error.code !== 10008) { console.error('Error on blue reaction:', error); } });
+            message.react(prePlayerEmoji).catch(error => {
+                if (error.code == 10014) {
+                    collector.stop()
+                    buttonCollector.stop()
+                    clearInterval(interval)
+                    zeroTimeStamp = '0, 0, 0, 0'
+                    interaction.followUp({
+                        embeds: [embeds.emojiEmbed],
+                        ephemeral: true
+                    })
+                    message.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removing message with unknown emoji', error); } });
+                }
+                if (error.code !== 10008) {
+                    console.error('Error on player emoji:', error);
+                }
+            });
             message.react("❌").catch(error => { if (error.code !== 10008) { console.error('Error on X reaction:', error); } });
 
             const filter = (reaction, user) => {
@@ -382,7 +406,7 @@ module.exports = {
                         value: `${eventDescription}`,
                     },
                     {
-                        name: `${playerEmoji} PLAYERS ${playerEmoji}`,
+                        name: `${prePlayerEmoji} PLAYERS ${prePlayerEmoji}`,
                         value: `${playerMap.get("bluePlayer1")[0]}\n${playerMap.get("bluePlayer2")[0]}\n${playerMap.get("bluePlayer3")[0]}\n${playerMap.get("bluePlayer4")[0]}\n${playerMap.get("bluePlayer5")[0]}\n${playerMap.get("bluePlayer6")[0]}\n${playerMap.get("bluePlayer7")[0]}\n${playerMap.get("bluePlayer8")[0]}`,
                         inline: true,
                     },
@@ -396,7 +420,7 @@ module.exports = {
                             value: `${eventDescription}`,
                         },
                         {
-                            name: `${playerEmoji} PLAYERS ${playerEmoji}`,
+                            name: `${prePlayerEmoji} PLAYERS ${prePlayerEmoji}`,
                             value: `${playerMap.get("bluePlayer1")[0]}\n${playerMap.get("bluePlayer2")[0]}\n${playerMap.get("bluePlayer3")[0]}\n${playerMap.get("bluePlayer4")[0]}\n${playerMap.get("bluePlayer5")[0]}\n${playerMap.get("bluePlayer6")[0]}\n${playerMap.get("bluePlayer7")[0]}\n${playerMap.get("bluePlayer8")[0]}`, inline: true,
                         })],
                     content: `${eventPing}`,
@@ -411,7 +435,7 @@ module.exports = {
 
             function refreshCounter(days, hours, minutes) {
                 zeroTimeStamp = `${days}, ${hours}, ${minutes}, 0`;
-                message.edit({ embeds: [customsEmbed.setFooter({ text: `To be removed from this event list, react with ❌ to this message.\nThis event will start in ${days} days, ${hours} hours, and ${minutes} minutes`})]}).catch(error => {
+                message.edit({ embeds: [customsEmbed.setFooter({ text: `To be removed from this event list, react with ❌ to this message.\nThis event will start in ${days} days, ${hours} hours, and ${minutes} minutes` })] }).catch(error => {
                     collector.stop()
                     buttonCollector.stop()
                     clearInterval(interval)

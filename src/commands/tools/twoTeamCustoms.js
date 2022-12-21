@@ -95,8 +95,24 @@ module.exports = {
       const eventDescription = interaction.options.getString("event-description");
       const eventTitle = interaction.options.getString("event-title");
       const eventImage = interaction.options.getString("event-image");
-      const team1Emoji = interaction.options.getString("team-1-emoji");
-      const team2Emoji = interaction.options.getString("team-2-emoji");
+      const preTeam1Emoji = interaction.options.getString("team-1-emoji");
+      const preTeam2Emoji = interaction.options.getString("team-2-emoji");
+
+      let team1Emoji;
+      let team2Emoji
+
+      if (preTeam1Emoji.includes(':')) {
+        team1Emoji = preTeam1Emoji.split(':')[1]
+      } else {
+        team1Emoji = preTeam1Emoji
+      }
+
+      if (preTeam2Emoji.includes(':')) {
+        team2Emoji = preTeam2Emoji.split(':')[1]
+      } else {
+        team2Emoji = preTeam2Emoji
+      }
+
       eventMonth = interaction.options.getInteger("event-month").toString();
       eventDay = interaction.options.getInteger("event-day").toString();
       eventYear = interaction.options.getInteger("event-year").toString();
@@ -116,8 +132,38 @@ module.exports = {
 
       const timeMilitary = `${convertTime12to24(timeStandard)}:00`
 
-      message.react(team1Emoji).catch(error => { if (error.code !== 10008) { console.error('Error on blue reaction:', error); } });
-      message.react(team2Emoji).catch(error => { if (error.code !== 10008) { console.error('Error on red reaction:', error); } });
+      message.react(preTeam1Emoji).catch(error => {
+        if (error.code == 10014) {
+          collector.stop()
+          buttonCollector.stop()
+          clearInterval(interval)
+          zeroTimeStamp = '0, 0, 0, 0'
+          interaction.followUp({
+            embeds: [embeds.emojiEmbed],
+            ephemeral: true
+          })
+          message.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removing message with unknown emoji', error); } });
+        }
+        if (error.code !== 10008) {
+          console.error('Error on team 1 emoji:', error);
+        }
+      });
+      message.react(preTeam2Emoji).catch(error => {
+        if (error.code == 10014) {
+          collector.stop()
+          buttonCollector.stop()
+          clearInterval(interval)
+          zeroTimeStamp = '0, 0, 0, 0'
+          interaction.followUp({
+            embeds: [embeds.emojiEmbed],
+            ephemeral: true
+          })
+          message.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removing message with unknown emoji', error); } });
+        }
+        if (error.code !== 10008) {
+          console.error('Error on team 2 emoji:', error);
+        }
+      });
       message.react("❌").catch(error => { if (error.code !== 10008) { console.error('Error on X reaction:', error); } });
 
       const filter = (reaction, user) => {
@@ -437,12 +483,12 @@ module.exports = {
             value: `${eventDescription}`,
           },
           {
-            name: `${team1Emoji} TEAM 1 ${team1Emoji}`,
+            name: `${preTeam1Emoji} TEAM 1 ${preTeam1Emoji}`,
             value: `${playerMap.get("bluePlayer1")[0]}\n${playerMap.get("bluePlayer2")[0]}\n${playerMap.get("bluePlayer3")[0]}\n${playerMap.get("bluePlayer4")[0]}\n${playerMap.get("bluePlayer5")[0]}`,
             inline: true,
           },
           {
-            name: `${team2Emoji} TEAM 2 ${team2Emoji}`,
+            name: `${preTeam2Emoji} TEAM 2 ${preTeam2Emoji}`,
             value: `${playerMap.get("redPlayer1")[0]}\n${playerMap.get("redPlayer2")[0]}\n${playerMap.get("redPlayer3")[0]}\n${playerMap.get("redPlayer4")[0]}\n${playerMap.get("redPlayer5")[0]}`,
             inline: true,
           }
@@ -456,12 +502,12 @@ module.exports = {
               value: `${eventDescription}`,
             },
             {
-              name: `${team1Emoji} TEAM 1 ${team1Emoji}`,
+              name: `${preTeam1Emoji} TEAM 1 ${preTeam1Emoji}`,
               value: `${playerMap.get("bluePlayer1")[0]}\n${playerMap.get("bluePlayer2")[0]}\n${playerMap.get("bluePlayer3")[0]}\n${playerMap.get("bluePlayer4")[0]}\n${playerMap.get("bluePlayer5")[0]}`,
               inline: true,
             },
             {
-              name: `${team2Emoji} TEAM 2 ${team2Emoji}`,
+              name: `${preTeam2Emoji} TEAM 2 ${preTeam2Emoji}`,
               value: `${playerMap.get("redPlayer1")[0]}\n${playerMap.get("redPlayer2")[0]}\n${playerMap.get("redPlayer3")[0]}\n${playerMap.get("redPlayer4")[0]}\n${playerMap.get("redPlayer5")[0]}`,
               inline: true,
             }

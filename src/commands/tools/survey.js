@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const { EmbedBuilder } = require("discord.js");
 require("dotenv").config();
+const embeds = require('../../events/client/embeds.js')
 
 module.exports = {
   data: (poll = new SlashCommandBuilder()
@@ -61,7 +62,29 @@ module.exports = {
       embeds: [embed],
       fetchReply: true,
     })
-    message.react(firstEmoji);
-    message.react(secondedEmoji);
+    message.react(firstEmoji).catch(error => {
+      if (error.code == 10014) {
+        interaction.followUp({
+          embeds: [embeds.emojiEmbed],
+          ephemeral: true
+        })
+        message.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removing message with unknown emoji', error); } });
+      }
+      if (error.code !== 10008) {
+        console.error('Error on first emoji reaction:', error);
+      }
+    });
+    message.react(secondedEmoji).catch(error => {
+      if (error.code == 10014) {
+        interaction.followUp({
+          embeds: [embeds.emojiEmbed],
+          ephemeral: true
+        })
+        message.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removing message with unknown emoji', error); } });
+      }
+      if (error.code !== 10008) {
+        console.error('Error on seconded emoji reaction:', error);
+      }
+    });
   },
 };

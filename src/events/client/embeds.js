@@ -27,7 +27,8 @@ module.exports = Object.freeze({
     formatEmbed: new EmbedBuilder()
         .setColor('#AB561C')
         .setTitle('INCORRECT FORMAT ERROR')
-        .setDescription(`Looks like you didn't enter in one of the parameters in the correct format. With the dates, the best rule of the thumb to follow is:\n\n **IF THERE IS A SINGLE DIGIT, 0 MUST COME BEFORE IT.**\n\n Below are some examples of how you should format the parameters:`)
+        .setURL('https://youneedawiki.com/app/page/1Th5IlY3BP6nHH6hNliqa_xQ7fYxbnI1v')
+        .setDescription(`Looks like you didn't enter in one of the parameters in the correct format. Click the link above for more information.\n\nWith the dates, the best rule of the thumb to follow is:\n\n **IF THERE IS A SINGLE DIGIT, 0 MUST COME BEFORE IT.**\n\n Below are some examples of how you should format the parameters:`)
         .addFields(
             {
                 name: "[event-month]",
@@ -62,5 +63,10 @@ module.exports = Object.freeze({
                     "[PLAYER 1 OPEN SPOT]\n[PLAYER 2 OPEN SPOT]\n[PLAYER 3 OPEN SPOT]\n[PLAYER 4 OPEN SPOT]\n[PLAYER 5 OPEN SPOT]\n[PLAYER 6 OPEN SPOT]\n[PLAYER 7 OPEN SPOT]\n[PLAYER 8 OPEN SPOT]",
                 inline: true,
             }
-        )
+        ),
+    emojiEmbed: new EmbedBuilder()
+        .setColor('#AB561C')
+        .setTitle('UNKNOWN EMOJI ERROR')
+        .setURL('https://youneedawiki.com/app/page/1Th5IlY3BP6nHH6hNliqa_xQ7fYxbnI1v')
+        .setDescription(`Looks like you tried to enter an emoji that does not have any relation to the server. The emojis that can be used with this command can either be standard emojis or custom emojis that have been uploaded to the server. Click the link above for more information.`)
 });
