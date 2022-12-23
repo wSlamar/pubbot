@@ -144,7 +144,10 @@ module.exports = {
             const buttonCollector = client.channels.cache.get(adminChannel).createMessageComponentCollector({ componentType: ComponentType.Button })
 
             collector.on("collect", async (reaction, user) => {
-                console.log(`Collected ${reaction.emoji.name} from ${user.tag}`);
+                const timeElapsed = Date.now();
+                const timeStamp = new Date(timeElapsed);
+                const localTimeStamp = new Date(timeStamp);
+                console.log(`Collected [${reaction.emoji.name}] from [${user.tag}] at [${localTimeStamp.toLocaleString()}]`);
                 const fullUserName = user.tag.toString();
                 const userNameID = user.id.toString();
                 usernameNoTag = fullUserName.substring(0, fullUserName.length - 5);
@@ -395,7 +398,7 @@ module.exports = {
             interval = setInterval(countDownFn, 5000);
 
             const customsEmbed = new EmbedBuilder()
-                .setColor('#AB561C')
+                .setColor('#165316')
                 .setTitle(eventTitle)
                 .setDescription(`${timeStandard} EST on ${eventMonth}/${eventDay}/${eventYear}`)
                 .setFooter({ text: `To be removed from this event list, react with ❌ to this message.\nThis event will start in 0 days, 0 hours, and 0 minutes.` })
