@@ -12,6 +12,7 @@ let eventDay;
 let eventYear;
 let timeStandard;
 let zeroTimeStamp;
+let channelMessageSentIn;
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -91,6 +92,9 @@ module.exports = {
       fetchReply: true,
     });
 
+    const channelEvent = message.channelId
+    channelMessageSentIn = client.channels.cache.get(channelEvent)
+
     if (zeroTimeStamp == undefined || zeroTimeStamp == '0, 0, 0, 0') {
       const eventDescription = interaction.options.getString("event-description");
       const eventTitle = interaction.options.getString("event-title");
@@ -138,7 +142,7 @@ module.exports = {
           buttonCollector.stop()
           clearInterval(interval)
           zeroTimeStamp = '0, 0, 0, 0'
-          interaction.followUp({
+          message.reply({
             embeds: [embeds.emojiEmbed],
             ephemeral: true
           })
@@ -154,7 +158,7 @@ module.exports = {
           buttonCollector.stop()
           clearInterval(interval)
           zeroTimeStamp = '0, 0, 0, 0'
-          interaction.followUp({
+          message.reply({
             embeds: [embeds.emojiEmbed],
             ephemeral: true
           })
@@ -220,7 +224,7 @@ module.exports = {
           removeUserReactions(userNameID);
         }
 
-        refreshEmbed()
+        // refreshEmbed()
 
         const member = message.guild.members.cache.get(userNameID);
         if (reaction.emoji.name === "🔨" && usernameNoTag !== "Pub Bot") {
@@ -398,7 +402,7 @@ module.exports = {
                 default:
                   break;
               }
-              refreshEmbed()
+              // refreshEmbed()
             }
           }
         }
@@ -425,61 +429,68 @@ module.exports = {
         console.log(`Collected ${collected.size} items`);
       });
 
-      const eventDayMoment = moment(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`);
-      const second = 1000;
-      const minute = second * 60;
-      const hour = minute * 60;
-      const day = hour * 24;
+      async function eventTimer() {
+        const eventDayMoment = moment(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`);
+        const second = 1000;
+        const minute = second * 60;
+        const hour = minute * 60;
+        const day = hour * 24;
 
-      const countDownFn = () => {
-        const today = moment();
-        const timeSpan = eventDayMoment.diff(today);
+        const countDownFn = () => {
+          const today = moment();
+          const timeSpan = eventDayMoment.diff(today);
 
-        if (timeSpan <= -today) {
-          clearInterval(interval);
-          collector.stop()
-          buttonCollector.stop()
-          return;
-        } else if (timeSpan <= 0) {
-          clearInterval(interval);
-          collector.stop()
-          buttonCollector.stop()
-          refreshCounter('0', '0', '0', '0')
-          interaction.followUp({
-            content: `${eventPing} **${eventTitle}** has started!`
-          })
-          return;
-        } else {
-          const days = Math.floor(timeSpan / day);
-          const hours = Math.floor((timeSpan % day) / hour);
-          const minutes = Math.floor((timeSpan % hour) / minute);
-          const seconds = Math.floor((timeSpan % minute) / second);
-
-          if (eventDayMoment.isValid()) {
-            refreshCounter(days, hours, minutes)
-          } else {
+          if (timeSpan <= -today) {
+            clearInterval(interval);
             collector.stop()
             buttonCollector.stop()
-            clearInterval(interval)
-            zeroTimeStamp = '0, 0, 0, 0'
+            return;
+          } else if (timeSpan <= 0) {
+            clearInterval(interval);
+            collector.stop()
+            buttonCollector.stop()
+            refreshCounter('0', '0', '0', '0')
 
-            interaction.followUp({
-              embeds: [embeds.formatEmbed],
-              ephemeral: true
-            })
-            message.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removing message with incorrect format', error); } });
+            const eventEnd = message.reply({
+              content: `${eventPing} **${eventTitle}** has started!`,
+            });
+
+            return;
+          } else {
+            const days = Math.floor(timeSpan / day);
+            const hours = Math.floor((timeSpan % day) / hour);
+            const minutes = Math.floor((timeSpan % hour) / minute);
+            const seconds = Math.floor((timeSpan % minute) / second);
+
+            if (eventDayMoment.isValid()) {
+              refreshCounter(days, hours, minutes)
+              refreshEmbed()
+            } else {
+              message.reply({
+                embeds: [embeds.formatEmbed],
+              })
+
+              collector.stop()
+              buttonCollector.stop()
+              clearInterval(interval)
+              zeroTimeStamp = '0, 0, 0, 0'
+
+              message.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removing message with incorrect format', error); } });
+            }
           }
-        }
-      };
+        };
+        interval = setInterval(countDownFn, second);
+      }
 
-      interval = setInterval(countDownFn, 5000);
+      eventTimer()
 
       const customsEmbed = new EmbedBuilder()
         .setColor('#165316')
         .setTitle(eventTitle)
+        .setImage('https://media.discordapp.net/attachments/682333765972131914/1053480482790183004/RGM.png')
         .setDescription(`${timeStandard} EST on ${eventMonth}/${eventDay}/${eventYear}`)
         .setThumbnail(eventImage)
-        .setFooter({ text: `To be removed from a team, or change teams, react with ❌ to this message.\nThis event will start in 0 days, 0 hours, and 0 minutes` })
+        .setFooter({ text: `To be removed from a team or change teams, react with ❌ to this event.\nThis event will start in 0 days, 0 hours, and 0 minutes` })
         .addFields(
           {
             name: "CLICK A TEAM EMOJI BELOW TO JOIN A TEAM",
@@ -497,7 +508,7 @@ module.exports = {
           }
         );
 
-      function refreshEmbed() {
+      async function refreshEmbed() {
         message.edit({
           embeds: [customsEmbed.setFields(
             {
@@ -525,9 +536,9 @@ module.exports = {
         });
       }
 
-      function refreshCounter(days, hours, minutes) {
+      async function refreshCounter(days, hours, minutes) {
         zeroTimeStamp = `${days}, ${hours}, ${minutes}, 0`
-        message.edit({ embeds: [customsEmbed.setFooter({ text: `To be removed from a team, or change teams, react with ❌ to this message.\nThis event will start in ${days} days, ${hours} hours, and ${minutes} minutes` })] }).catch(error => {
+        message.edit({ embeds: [customsEmbed.setFooter({ text: `To be removed from a team or change teams, react with ❌ to this event.\nThis event will start in ${days} days, ${hours} hours, and ${minutes} minutes` })] }).catch(error => {
           collector.stop()
           buttonCollector.stop()
           clearInterval(interval)

@@ -7,15 +7,15 @@ require('events').EventEmitter.prototype._maxListeners = 100;
 const embeds = require('../../events/client/embeds.js')
 
 let interval;
+let zeroTimeStamp;
 let eventMonth;
 let eventDay;
 let eventYear;
 let timeStandard;
-let zeroTimeStamp;
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("pub-8-player")
+        .setName("pub-8-player-old")
         .setDescription("Replies with an embed for an 8 player event")
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
         .addStringOption((option) => option
@@ -76,17 +76,15 @@ module.exports = {
             ["bluePlayer8", ["[PLAYER 8 OPEN SPOT]", "BLUE PLAYER 8 ID", "[EMPTY SPOT]"]],
         ]);
 
-        const eventPing = interaction.options.getString("event-ping");
-
         const message = await interaction.reply({
             embeds: [embeds.customsEmbed2],
-            content: eventPing,
             fetchReply: true,
         });
 
         if (zeroTimeStamp == undefined || zeroTimeStamp == '0, 0, 0, 0') {
             const eventDescription = interaction.options.getString("event-description");
             const eventTitle = interaction.options.getString("event-title");
+            const eventPing = interaction.options.getString("event-ping");
             const eventImage = interaction.options.getString("event-image");
             const prePlayerEmoji = interaction.options.getString("player-emoji");
 
@@ -144,10 +142,7 @@ module.exports = {
             const buttonCollector = client.channels.cache.get(adminChannel).createMessageComponentCollector({ componentType: ComponentType.Button })
 
             collector.on("collect", async (reaction, user) => {
-                const timeElapsed = Date.now();
-                const timeStamp = new Date(timeElapsed);
-                const localTimeStamp = new Date(timeStamp);
-                console.log(`Collected [${reaction.emoji.name}] from [${user.tag}] at [${localTimeStamp.toLocaleString()}]`);
+                console.log(`Collected ${reaction.emoji.name} from ${user.tag}`);
                 const fullUserName = user.tag.toString();
                 const userNameID = user.id.toString();
                 usernameNoTag = fullUserName.substring(0, fullUserName.length - 5);
@@ -183,12 +178,10 @@ module.exports = {
                     removeUserReactions(userNameID);
                 }
 
-                refreshEmbed()
-
                 const member = message.guild.members.cache.get(userNameID);
                 if (reaction.emoji.name === "🔨" && usernameNoTag !== "Pub Bot") {
                     message.reactions.cache.get("🔨").remove();
-                    if (member.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
+                    if (member.permissions.has(PermissionFlagsBits.BanMembers)) {
                         const blueButtons1 = new ActionRowBuilder()
                             .addComponents(
                                 new ButtonBuilder()
@@ -207,13 +200,13 @@ module.exports = {
                                     .setCustomId('removeBluePlayer4')
                                     .setLabel(`${playerMap.get("bluePlayer4")[2]}`)
                                     .setStyle(ButtonStyle.Primary),
-                            );
-                        const blueButtons2 = new ActionRowBuilder()
-                            .addComponents(
                                 new ButtonBuilder()
                                     .setCustomId('removeBluePlayer5')
                                     .setLabel(`${playerMap.get("bluePlayer5")[2]}`)
                                     .setStyle(ButtonStyle.Primary),
+                            );
+                        const blueButtons2 = new ActionRowBuilder()
+                            .addComponents(
                                 new ButtonBuilder()
                                     .setCustomId('removebluePlayer6')
                                     .setLabel(`${playerMap.get("bluePlayer6")[2]}`)
@@ -230,7 +223,7 @@ module.exports = {
 
                         const channel = client.channels.cache.get(adminChannel);
                         modMessage = await channel.send({
-                            content: `<@${userNameID}> Which player would you like to remove from **${eventTitle}**?\n`,
+                            content: `<@${userNameID}> What player would you like to remove?\n`,
                             components: [blueButtons1, blueButtons2]
                         });
 
@@ -335,7 +328,6 @@ module.exports = {
                                 default:
                                     break;
                             }
-                            refreshEmbed()
                         }
                     }
                 }
@@ -348,91 +340,78 @@ module.exports = {
                 console.log(`Collected ${collected.size} items`);
             });
 
-            async function eventTimer() {
-                const eventDayMoment = moment(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`);
-                const second = 1000;
-                const minute = second * 60;
-                const hour = minute * 60;
-                const day = hour * 24;
+            const eventDayMoment = moment(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`);
+            const second = 1000;
+            const minute = second * 60;
+            const hour = minute * 60;
+            const day = hour * 24;
 
-                const countDownFn = () => {
-                    const today = moment();
-                    const timeSpan = eventDayMoment.diff(today);
+            const countDownFn = () => {
+                const today = moment();
+                const timeSpan = eventDayMoment.diff(today);
 
-                    if (timeSpan <= -today) {
-                        clearInterval(interval);
-                        collector.stop()
-                        buttonCollector.stop()
-                        return;
-                    } else if (timeSpan <= 0) {
-                        clearInterval(interval);
-                        collector.stop()
-                        buttonCollector.stop()
-                        refreshCounter('0', '0', '0', '0')
-                        interaction.followUp({
-                            content: `${eventPing} **${eventTitle}** has started!`
-                        })
-                        return;
+                if (timeSpan <= -today) {
+                    clearInterval(interval);
+                    collector.stop()
+                    buttonCollector.stop()
+                    return;
+                } else if (timeSpan <= 0) {
+                    clearInterval(interval);
+                    collector.stop()
+                    buttonCollector.stop()
+
+                    const eventEnd = message.reply({
+                        content: `${eventPing} **${eventTitle}** has started!`,
+                    });
+                    
+                    return;
+                } else {
+                    const days = Math.floor(timeSpan / day);
+                    const hours = Math.floor((timeSpan % day) / hour);
+                    const minutes = Math.floor((timeSpan % hour) / minute);
+                    const seconds = Math.floor((timeSpan % minute) / second);
+
+                    if (eventDayMoment.isValid()) {
+                        refreshEmbed(days, hours, minutes, seconds);
                     } else {
-                        const days = Math.floor(timeSpan / day);
-                        const hours = Math.floor((timeSpan % day) / hour);
-                        const minutes = Math.floor((timeSpan % hour) / minute);
-                        const seconds = Math.floor((timeSpan % minute) / second);
+                        collector.stop()
+                        buttonCollector.stop()
+                        clearInterval(interval)
+                        zeroTimeStamp = '0, 0, 0, 0'
 
-                        if (eventDayMoment.isValid()) {
-                            refreshCounter(days, hours, minutes)
-                            refreshEmbed()
-                        } else {
-                            collector.stop()
-                            buttonCollector.stop()
-                            clearInterval(interval)
-                            zeroTimeStamp = '0, 0, 0, 0'
-
-                            interaction.followUp({
-                                embeds: [embeds.formatEmbed],
-                                ephemeral: true
-                            })
-                            message.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removing message with incorrect format', error); } });
-                        }
+                        interaction.followUp({
+                            embeds: [embeds.formatEmbed],
+                            ephemeral: true
+                        })
+                        message.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removing message with incorrect format', error); } });
                     }
-                };
-                interval = setInterval(countDownFn, 5000);
-            }
+                }
+            };
 
-            eventTimer()
+            interval = setInterval(countDownFn, second);
 
-            const customsEmbed = new EmbedBuilder()
-                .setColor('#165316')
-                .setTitle(eventTitle)
-                .setDescription(`${timeStandard} EST on ${eventMonth}/${eventDay}/${eventYear}`)
-                .setFooter({ text: `To be removed from this event, react with ❌ to this event.\nThis event will start in 0 days, 0 hours, and 0 minutes.` })
-                .setImage('https://media.discordapp.net/attachments/682333765972131914/1053475598317658183/TFT.png')
-                .setThumbnail(eventImage)
-                .addFields(
-                    {
-                        name: `CLICK THE PLAYER EMOJI BELOW TO JOIN THE EVENT`,
-                        value: `${eventDescription}`,
-                    },
-                    {
-                        name: `${prePlayerEmoji} PLAYERS ${prePlayerEmoji}`,
-                        value: `${playerMap.get("bluePlayer1")[0]}\n${playerMap.get("bluePlayer2")[0]}\n${playerMap.get("bluePlayer3")[0]}\n${playerMap.get("bluePlayer4")[0]}\n${playerMap.get("bluePlayer5")[0]}\n${playerMap.get("bluePlayer6")[0]}\n${playerMap.get("bluePlayer7")[0]}\n${playerMap.get("bluePlayer8")[0]}`,
-                        inline: true,
-                    },
-                );
-
-            async function refreshEmbed() {
-                message.edit({
-                    embeds: [customsEmbed.setFields(
+            function refreshEmbed(days, hours, minutes, seconds) {
+                const customsEmbed = new EmbedBuilder()
+                    .setColor('#165316')
+                    .setTitle(eventTitle)
+                    .setDescription(`${timeStandard} EST on ${eventMonth}/${eventDay}/${eventYear}`)
+                    .setThumbnail('https://i.imgur.com/jDBV1eG.png')
+                    .setImage(eventImage)
+                    .setFooter({ text: `To be removed from this event list, react with ❌ to this message.\nThis event will start in ${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds.` })
+                    .addFields(
                         {
-                            name: `CLICK THE PLAYER EMOJI BELOW TO JOIN THE EVENT`,
+                            name: `CLICK THE PLAYER EMOJI BELOW TO JOIN US`,
                             value: `${eventDescription}`,
                         },
                         {
                             name: `${prePlayerEmoji} PLAYERS ${prePlayerEmoji}`,
-                            value: `${playerMap.get("bluePlayer1")[0]}\n${playerMap.get("bluePlayer2")[0]}\n${playerMap.get("bluePlayer3")[0]}\n${playerMap.get("bluePlayer4")[0]}\n${playerMap.get("bluePlayer5")[0]}\n${playerMap.get("bluePlayer6")[0]}\n${playerMap.get("bluePlayer7")[0]}\n${playerMap.get("bluePlayer8")[0]}`, inline: true,
-                        })],
-                    content: `${eventPing}`,
-                }).catch(error => {
+                            value: `${playerMap.get("bluePlayer1")[0]}\n${playerMap.get("bluePlayer2")[0]}\n${playerMap.get("bluePlayer3")[0]}\n${playerMap.get("bluePlayer4")[0]}\n${playerMap.get("bluePlayer5")[0]}\n${playerMap.get("bluePlayer6")[0]}\n${playerMap.get("bluePlayer7")[0]}\n${playerMap.get("bluePlayer8")[0]}`,
+                            inline: true,
+                        },
+                    );
+                zeroTimeStamp = `${days}, ${hours}, ${minutes}, ${seconds}`
+
+                message.edit({ embeds: [customsEmbed], content: `${eventPing}`, }).catch(error => {
                     collector.stop()
                     buttonCollector.stop()
                     clearInterval(interval)
@@ -441,16 +420,6 @@ module.exports = {
                 });
             }
 
-            async function refreshCounter(days, hours, minutes) {
-                zeroTimeStamp = `${days}, ${hours}, ${minutes}, 0`;
-                message.edit({ embeds: [customsEmbed.setFooter({ text: `To be removed from this event, react with ❌ to this event.\nThis event will start in ${days} days, ${hours} hours, and ${minutes} minutes` })] }).catch(error => {
-                    collector.stop()
-                    buttonCollector.stop()
-                    clearInterval(interval)
-                    zeroTimeStamp = '0, 0, 0, 0'
-                    if (error.code !== 10008) { console.error('Error on message edit:', error); }
-                });
-            }
         } else {
             interaction.followUp({
                 content: `There is already an iteration of this event currently happening. You must wait until the current event is over to use this command again. You may use this command again on **${eventMonth}/${eventDay}/${eventYear}** at **${timeStandard}**.`,
@@ -460,4 +429,3 @@ module.exports = {
         }
     },
 }
-
