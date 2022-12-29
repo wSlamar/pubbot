@@ -534,7 +534,7 @@ module.exports = {
         async function intervals() {
             let interval;
             const countDownFn = () => {
-                const today = moment();
+                const today = momentTZ().tz(eventTimezone);
                 const timeSpan = eventDayMoment.diff(today);
 
                 if (timeSpan <= -today) {
