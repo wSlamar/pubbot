@@ -49,7 +49,7 @@ module.exports = {
         )
         .addIntegerOption((option) => option
             .setName("event-day")
-            .setDescription("day of the event - MUST BE IN ISO FORMAT - EXAMPLE: 29 or 07")
+            .setDescription("day of the event")
             .setRequired(true)
         )
         .addIntegerOption((option) => option
@@ -114,7 +114,7 @@ module.exports = {
             .setRequired(true)
             .addChoices(
                 { name: 'EST', value: 'EST' },
-                { name: 'GMT', value: 'GMT' },
+                { name: 'PST', value: 'PST8PDT' },
             )
         )
         .addStringOption((option) => option
@@ -235,6 +235,15 @@ module.exports = {
         }
 
         const timeMilitary = `${convertTime12to24(timeStandard)}:00`
+
+        function convertTZ(date, tzString) {
+            return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", { timeZone: tzString }));
+        }
+
+        let todayTimezoneConvert = convertTZ(`${moment()}`, `${eventTimezone}`)
+
+        const eventDayMomentUnix = momentTZ.tz(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`, `${eventTimezone}`).unix()
+        let today = moment(todayTimezoneConvert);
 
         message.react(preTeam1Emoji).catch(error => {
             if (error.code == 10014) {
@@ -522,9 +531,7 @@ module.exports = {
             console.log(`Collected ${collected.size} items`);
         });
 
-        const eventDayMoment = momentTZ(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`).tz(eventTimezone);
-        console.log(eventDayMoment)
-        const eventDayMomentUnix = moment(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`).unix();
+        const eventDayMoment = moment(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`);
 
         const second = 1000;
         const minute = second * 60;
@@ -534,9 +541,7 @@ module.exports = {
         async function intervals() {
             let interval;
             const countDownFn = () => {
-                const today = momentTZ().tz(eventTimezone);
                 const timeSpan = eventDayMoment.diff(today);
-
                 if (timeSpan <= -today) {
                     clearInterval(interval);
                     collector.stop()
