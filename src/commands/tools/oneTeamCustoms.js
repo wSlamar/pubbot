@@ -3,6 +3,7 @@ const { EmbedBuilder } = require("discord.js");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { adminChannel } = process.env;
 const moment = require("moment");
+const momentTZ = require("moment-timezone");
 require('events').EventEmitter.prototype._maxListeners = 100;
 const embeds = require('../../events/client/embeds.js')
 const { hiddenLink } = process.env;
@@ -108,6 +109,17 @@ module.exports = {
             )
         )
         .addStringOption((option) => option
+            .setName("event-timezone")
+            .setDescription("timezone that you are currently in")
+            .setRequired(true)
+            .addChoices(
+                { name: 'Eastern Standard Time (EST)', value: 'EST' },
+                { name: 'Pacific Standard Time (PST)', value: 'PST8PDT' },
+                { name: 'Mountain Standard Time (MST)', value: 'MST' },
+                { name: 'Central Standard Time (CST)', value: 'CST6CDT' },
+            )
+        )
+        .addStringOption((option) => option
             .setName("event-image")
             .setDescription("image that will be associated with the event")
             .setRequired(true)
@@ -174,6 +186,7 @@ module.exports = {
         let eventAmPm = interaction.options.getString("event-am-pm").toString();
         let eventMinute = interaction.options.getString("event-minute").toString();
         let eventHour = interaction.options.getString("event-hour");
+        let eventTimezone = interaction.options.getString("event-timezone");
 
         if (eventDay.toString().length == 1) {
             const zeroPad = (num, places) => String(num).padStart(places, '0')
@@ -200,6 +213,12 @@ module.exports = {
         }
 
         const timeMilitary = `${convertTime12to24(timeStandard)}:00`
+
+        function convertTZ(date, tzString) {
+            return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", { timeZone: tzString }));
+        }
+
+        const eventDayMomentUnix = momentTZ.tz(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`, `${eventTimezone}`).unix()
 
         message.react(prePlayerEmoji).catch(error => {
             if (error.code == 10014) {
@@ -428,7 +447,6 @@ module.exports = {
         });
 
         const eventDayMoment = moment(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`);
-        const eventDayMomentUnix = moment(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`).unix();
 
         const second = 1000;
         const minute = second * 60;
@@ -438,9 +456,8 @@ module.exports = {
         async function intervals() {
             let interval;
             const countDownFn = () => {
-                const today = moment();
+                const today = convertTZ(`${moment()}`, `${eventTimezone}`)
                 const timeSpan = eventDayMoment.diff(today);
-
                 if (timeSpan <= -today) {
                     clearInterval(interval);
                     collector.stop()

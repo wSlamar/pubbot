@@ -3,7 +3,7 @@ const { token } = process.env;
 const { Client, Collection, GatewayIntentBits } = require("discord.js");
 const fs = require("fs");
 
-const client = new Client({ intents: 32767 });
+const client = new Client({ intents: 32767, allowedMentions: { parse: ["roles", "everyone", "users"] } });
 client.commands = new Collection();
 client.commandArray = [];
 

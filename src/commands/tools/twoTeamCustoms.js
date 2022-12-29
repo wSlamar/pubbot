@@ -113,8 +113,10 @@ module.exports = {
             .setDescription("timezone that you are currently in")
             .setRequired(true)
             .addChoices(
-                { name: 'EST', value: 'EST' },
-                { name: 'PST', value: 'PST8PDT' },
+                { name: 'Eastern Standard Time (EST)', value: 'EST' },
+                { name: 'Pacific Standard Time (PST)', value: 'PST8PDT' },
+                { name: 'Mountain Standard Time (MST)', value: 'MST' },
+                { name: 'Central Standard Time (CST)', value: 'CST6CDT' },
             )
         )
         .addStringOption((option) => option
@@ -240,10 +242,7 @@ module.exports = {
             return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", { timeZone: tzString }));
         }
 
-        let todayTimezoneConvert = convertTZ(`${moment()}`, `${eventTimezone}`)
-
         const eventDayMomentUnix = momentTZ.tz(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`, `${eventTimezone}`).unix()
-        let today = moment(todayTimezoneConvert);
 
         message.react(preTeam1Emoji).catch(error => {
             if (error.code == 10014) {
@@ -284,7 +283,8 @@ module.exports = {
         const buttonCollector = client.channels.cache.get(adminChannel).createMessageComponentCollector({ componentType: ComponentType.Button })
 
         collector.on("collect", async (reaction, user) => {
-            console.log(`Collected ${reaction.emoji.name} from ${user.tag}`);
+            const estDateLog = new Date()
+            console.log(`Collected [${reaction.emoji.name}] from [${user.tag}] at [${convertTZ(estDateLog, 'EST').toLocaleString()}]`);
             const fullUserName = user.tag.toString();
             const userNameID = user.id.toString();
             usernameNoTag = fullUserName.substring(0, fullUserName.length - 5);
@@ -541,6 +541,7 @@ module.exports = {
         async function intervals() {
             let interval;
             const countDownFn = () => {
+                const today = convertTZ(`${moment()}`, `${eventTimezone}`)
                 const timeSpan = eventDayMoment.diff(today);
                 if (timeSpan <= -today) {
                     clearInterval(interval);
