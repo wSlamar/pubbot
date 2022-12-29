@@ -6,12 +6,6 @@ const moment = require("moment");
 require('events').EventEmitter.prototype._maxListeners = 100;
 const embeds = require('../../events/client/embeds.js')
 
-let interval;
-let eventMonth;
-let eventDay;
-let eventYear;
-let timeStandard;
-
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("pub-5v5")
@@ -27,15 +21,29 @@ module.exports = {
             .setDescription("description of the event")
             .setRequired(true)
         )
-        .addStringOption((option) => option
+        .addMentionableOption((option) => option
             .setName("event-ping")
             .setDescription("what role you would like to ping for the event")
             .setRequired(true)
         )
         .addIntegerOption((option) => option
             .setName("event-month")
-            .setDescription("month of the event - MUST BE IN ISO FORMAT - EXAMPLE: 11 or 06")
+            .setDescription("month of the event")
             .setRequired(true)
+            .addChoices(
+                { name: 'January', value: 1 },
+                { name: 'Feburary', value: 2 },
+                { name: 'March', value: 3 },
+                { name: 'April', value: 4 },
+                { name: 'May', value: 5 },
+                { name: 'June', value: 6 },
+                { name: 'July', value: 7 },
+                { name: 'August', value: 8 },
+                { name: 'September', value: 9 },
+                { name: 'October', value: 10 },
+                { name: 'November', value: 11 },
+                { name: 'December', value: 12 },
+            )
         )
         .addIntegerOption((option) => option
             .setName("event-day")
@@ -44,23 +52,83 @@ module.exports = {
         )
         .addIntegerOption((option) => option
             .setName("event-year")
-            .setDescription("year of the event - MUST BE IN ISO FORMAT - EXAMPLE: 2022")
+            .setDescription("year of the event")
             .setRequired(true)
+            .addChoices(
+                { name: '2022', value: 2022 },
+                { name: '2023', value: 2023 },
+            )
         )
         .addStringOption((option) => option
-            .setName("event-time")
-            .setDescription("time of the event - MUST BE IN ISO FORMAT - EXAMPLE: 08:30 PM or 11:05 AM")
+            .setName("event-hour")
+            .setDescription("hour of the event")
             .setRequired(true)
+            .addChoices(
+                { name: '1', value: '01' },
+                { name: '2', value: '02' },
+                { name: '3', value: '03' },
+                { name: '4', value: '04' },
+                { name: '5', value: '05' },
+                { name: '6', value: '06' },
+                { name: '7', value: '07' },
+                { name: '8', value: '08' },
+                { name: '9', value: '09' },
+                { name: '10', value: '10' },
+                { name: '11', value: '11' },
+                { name: '12', value: '12' },
+            )
+        )
+        .addStringOption((option) => option
+            .setName("event-minute")
+            .setDescription("minute")
+            .setRequired(true)
+            .addChoices(
+                { name: '00', value: '00' },
+                { name: '05', value: '05' },
+                { name: '10', value: '10' },
+                { name: '15', value: '15' },
+                { name: '20', value: '20' },
+                { name: '25', value: '25' },
+                { name: '30', value: '30' },
+                { name: '35', value: '35' },
+                { name: '40', value: '40' },
+                { name: '45', value: '45' },
+                { name: '50', value: '50' },
+                { name: '55', value: '55' },
+            )
+        )
+        .addStringOption((option) => option
+            .setName("event-am-pm")
+            .setDescription("am or pm")
+            .setRequired(true)
+            .addChoices(
+                { name: 'AM', value: 'AM' },
+                { name: 'PM', value: 'PM' },
+            )
         )
         .addStringOption((option) => option
             .setName("event-image")
             .setDescription("imgur link of the image")
             .setRequired(true)
+            .addChoices(
+                { name: 'TFT', value: 'https://i.imgur.com/OiNyojp.png' },
+                { name: 'Custom ARAM', value: 'https://i.imgur.com/LPyzExv.png' },
+                { name: 'Draft Normals', value: 'https://i.imgur.com/2wInBA3.png' },
+                { name: 'St Pats Day Events & Gaming', value: 'https://i.imgur.com/br1woyw.png' },
+                { name: 'Christmas Events & Gaming', value: 'https://i.imgur.com/seYI4bu.png' },
+                { name: 'Halloween Events & Gaming', value: 'https://i.imgur.com/JBfz472.png' },
+                { name: '420 Events & Gaming', value: 'https://i.imgur.com/SkXsZ4h.png' },
+                { name: 'Valentines Day Events & Gaming', value: 'https://i.imgur.com/OIA69Um.png' },
+                { name: '4th of July Events & Gaming', value: 'https://i.imgur.com/tEo7KGx.png' },
+            )
         )
         .addStringOption((option) => option
             .setName("event-thumbnail")
             .setDescription("imgur link of the thumbnail")
             .setRequired(true)
+            .addChoices(
+                { name: 'ARAM Customs', value: 'https://i.imgur.com/zqIudjm.png' },
+            )
         )
         .addStringOption((option) => option
             .setName("team-1-emoji")
@@ -87,17 +155,18 @@ module.exports = {
             ["redPlayer5", ["[PLAYER 5 OPEN SPOT]", "RED PLAYER 5 ID", "[EMPTY SPOT]"]],
         ]);
 
+        const eventPing = interaction.options.getMentionable("event-ping");
+
         const message = await interaction.reply({
             embeds: [embeds.customsEmbed],
+            content: `${eventPing}`,
             fetchReply: true,
         });
 
         const eventDescription = interaction.options.getString("event-description");
         const eventTitle = interaction.options.getString("event-title");
-        const eventPing = interaction.options.getString("event-ping");
         const eventImage = interaction.options.getString("event-image");
         const eventThumbnail = interaction.options.getString("event-thumbnail");
-
         const preTeam1Emoji = interaction.options.getString("team-1-emoji");
         const preTeam2Emoji = interaction.options.getString("team-2-emoji");
 
@@ -116,10 +185,25 @@ module.exports = {
             team2Emoji = preTeam2Emoji
         }
 
-        eventMonth = interaction.options.getInteger("event-month").toString();
-        eventDay = interaction.options.getInteger("event-day").toString();
-        eventYear = interaction.options.getInteger("event-year").toString();
-        timeStandard = interaction.options.getString("event-time");
+        let eventMonth = interaction.options.getInteger("event-month").toString();
+        let eventDay = interaction.options.getInteger("event-day").toString();
+        let eventYear = interaction.options.getInteger("event-year").toString();
+
+        let eventAmPm = interaction.options.getString("event-am-pm").toString();
+        let eventMinute = interaction.options.getString("event-minute").toString();
+        let eventHour = interaction.options.getString("event-hour");
+
+        if (eventDay.toString().length == 1) {
+            const zeroPad = (num, places) => String(num).padStart(places, '0')
+            eventDay = zeroPad(eventDay, 2)
+        }
+
+        if (eventMonth.toString().length == 1) {
+            const zeroPad = (num, places) => String(num).padStart(places, '0')
+            eventMonth = zeroPad(eventMonth, 2)
+        }
+
+        let timeStandard = `${eventHour}:${eventMinute} ${eventAmPm}`
 
         const convertTime12to24 = (time12h) => {
             const [time, modifier] = time12h.split(' ');
@@ -139,7 +223,6 @@ module.exports = {
             if (error.code == 10014) {
                 collector.stop()
                 buttonCollector.stop()
-                clearInterval(interval)
                 interaction.followUp({
                     embeds: [embeds.emojiEmbed],
                     ephemeral: true
@@ -154,7 +237,6 @@ module.exports = {
             if (error.code == 10014) {
                 collector.stop()
                 buttonCollector.stop()
-                clearInterval(interval)
                 interaction.followUp({
                     embeds: [embeds.emojiEmbed],
                     ephemeral: true
@@ -431,50 +513,54 @@ module.exports = {
         const hour = minute * 60;
         const day = hour * 24;
 
-        const countDownFn = () => {
-            const today = moment();
-            const timeSpan = eventDayMoment.diff(today);
+        async function intervals() {
+            let interval;
+            const countDownFn = () => {
+                const today = moment();
+                const timeSpan = eventDayMoment.diff(today);
 
-            if (timeSpan <= -today) {
-                clearInterval(interval);
-                collector.stop()
-                buttonCollector.stop()
-                return;
-            } else if (timeSpan <= 0) {
-                clearInterval(interval);
-                collector.stop()
-                buttonCollector.stop()
-
-                const eventEnd = message.reply({
-                    content: `${eventPing} **${eventTitle}** has started!`,
-                });
-
-                message.edit({ content: `${eventPing}` }).catch(error => {
+                if (timeSpan <= -today) {
+                    clearInterval(interval);
                     collector.stop()
                     buttonCollector.stop()
-                    clearInterval(interval)
-                    if (error.code !== 10008) { console.error('Error on message edit:', error); }
-                });
-
-                return;
-
-            } else {
-                if (eventDayMoment.isValid()) {} else {
+                    return;
+                } else if (timeSpan <= 0) {
+                    clearInterval(interval);
                     collector.stop()
                     buttonCollector.stop()
-                    clearInterval(interval)
-                    interaction.followUp({
-                        embeds: [embeds.formatEmbed],
-                        ephemeral: true
-                    })
-                    message.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removing message with incorrect format', error); } });
+
+                    const eventEnd = message.reply({
+                        content: `${eventPing} **${eventTitle}** has started!`,
+                    });
+
+                    message.edit({ content: `${eventPing}` }).catch(error => {
+                        collector.stop()
+                        buttonCollector.stop()
+                        clearInterval(interval)
+                        if (error.code !== 10008) { console.error('Error on message edit:', error); }
+                    });
+
+                    return;
+
+                } else {
+                    if (eventDayMoment.isValid()) { } else {
+                        collector.stop()
+                        buttonCollector.stop()
+                        clearInterval(interval)
+                        interaction.followUp({
+                            embeds: [embeds.formatEmbed],
+                            ephemeral: true
+                        })
+                        message.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removing message with incorrect format', error); } });
+                    }
                 }
-            }
-        };
+            };
+            interval = setInterval(countDownFn, second);
+        }
 
-        interval = setInterval(countDownFn, second);
+        intervals()
 
-        function refreshEmbed() {
+        async function refreshEmbed() {
             const customsEmbed = new EmbedBuilder()
                 .setColor('#165316')
                 .setTitle(eventTitle)
