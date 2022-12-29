@@ -1,6 +1,8 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const { EmbedBuilder } = require("discord.js");
 const moment = require("moment");
+const embeds = require("../events/client/embeds");
+
 let eventMonth;
 let eventDay;
 let eventYear;
@@ -32,15 +34,21 @@ module.exports = {
             .setRequired(true)
         ),
 
+    timerEmbed: new EmbedBuilder()
+        .setTitle(`<t:1672279999:R>`)
+        .setDescription(`<t:1672279999:R>`)
+        .setFooter({ text: `<t:1672279999:R>` })
+        .addFields(
+            {
+                name: `<t:1672279999:R>`,
+                value: `<t:1672279999:R>`,
+            }),
+        // .setTimestamp(1672279999),
+
     async execute(interaction, client) {
-
-        const timeEmbed = new EmbedBuilder()
-            .setTitle('TITLE OF THE EVENT')
-            .setDescription(`Event Description`)
-            .setFooter({text: `Days: 0 - Hours: 0 - Mintues: 0`})
-
         const message = await interaction.reply({
-            embeds: [timeEmbed],
+            content: `Test <t:1672279999:R>`,
+            embeds: [this.timerEmbed],
             fetchReply: true
         });
 
@@ -61,10 +69,12 @@ module.exports = {
             return `${hours}:${minutes}`;
         }
 
-        const timeMilitary = `${convertTime12to24(time)}:00`
+        const timeConverted = `${convertTime12to24(time)}:00`
 
         let interval;
-        const eventDayMoment = moment(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`);
+        const eventDayMoment = moment(`${eventYear}-${eventMonth}-${eventDay} ${timeConverted}`);
+        const eventDayMoment2 = moment(`${eventYear}-${eventMonth}-${eventDay} ${timeConverted}`).unix();
+        console.log(eventDayMoment2)
 
         const second = 1000;
         const minute = second * 60;
@@ -89,12 +99,12 @@ module.exports = {
                 const minutes = Math.floor((timeSpan % hour) / minute);
                 const seconds = Math.floor((timeSpan % minute) / second);
 
-                message.edit({
-                    embeds: [timeEmbed.setFooter({text: `Days: ${days} - Hours: ${hours} - Mintues: ${minutes} - Seconds: ${seconds}`})],
-                })
-                zeroTimeStamp = `${days}, ${hours}, ${minutes}, ${seconds}`
+                // message.edit({
+                //     embeds: [this.timerEmbed.setFooter({ text: `This event will start in ${days} days, ${hours} hours, ${minutes} mintues and ${seconds} seconds` })]
+                // })
             }
         };
-        interval = setInterval(countDownFn, 3000);
+
+        interval = setInterval(countDownFn, second);
     }
 };
