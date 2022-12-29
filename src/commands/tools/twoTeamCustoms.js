@@ -3,8 +3,10 @@ const { EmbedBuilder } = require("discord.js");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { adminChannel } = process.env;
 const moment = require("moment");
+const momentTZ = require("moment-timezone");
 require('events').EventEmitter.prototype._maxListeners = 100;
 const embeds = require('../../events/client/embeds.js')
+const { hiddenLink } = process.env;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -80,7 +82,7 @@ module.exports = {
         )
         .addStringOption((option) => option
             .setName("event-minute")
-            .setDescription("minute")
+            .setDescription("minute of the event")
             .setRequired(true)
             .addChoices(
                 { name: '00', value: '00' },
@@ -107,8 +109,17 @@ module.exports = {
             )
         )
         .addStringOption((option) => option
+            .setName("event-timezone")
+            .setDescription("timezone that you are currently in")
+            .setRequired(true)
+            .addChoices(
+                { name: 'EST', value: 'EST' },
+                { name: 'GMT', value: 'GMT' },
+            )
+        )
+        .addStringOption((option) => option
             .setName("event-image")
-            .setDescription("imgur link of the image")
+            .setDescription("image that will be associated with the event")
             .setRequired(true)
             .addChoices(
                 { name: 'TFT', value: 'https://i.imgur.com/OiNyojp.png' },
@@ -124,10 +135,10 @@ module.exports = {
         )
         .addStringOption((option) => option
             .setName("event-thumbnail")
-            .setDescription("imgur link of the thumbnail")
+            .setDescription("thumbnail that will be associated with the event")
             .setRequired(true)
             .addChoices(
-                { name: 'ARAM Customs', value: 'https://i.imgur.com/zqIudjm.png' },
+                { name: 'Custom ARAM', value: 'https://i.imgur.com/aGu93Fk.png' },
             )
         )
         .addStringOption((option) => option
@@ -138,6 +149,11 @@ module.exports = {
         .addStringOption((option) => option
             .setName("team-2-emoji")
             .setDescription("emoji that will be associated with the team 2 reaction")
+            .setRequired(true)
+        )
+        .addChannelOption((option) => option
+            .setName("event-voice-channel")
+            .setDescription("voice channel that the event will take place in")
             .setRequired(true)
         ),
 
@@ -169,6 +185,7 @@ module.exports = {
         const eventThumbnail = interaction.options.getString("event-thumbnail");
         const preTeam1Emoji = interaction.options.getString("team-1-emoji");
         const preTeam2Emoji = interaction.options.getString("team-2-emoji");
+        const eventChannel = interaction.options.getChannel("event-voice-channel");
 
         let team1Emoji;
         let team2Emoji
@@ -188,10 +205,10 @@ module.exports = {
         let eventMonth = interaction.options.getInteger("event-month").toString();
         let eventDay = interaction.options.getInteger("event-day").toString();
         let eventYear = interaction.options.getInteger("event-year").toString();
-
         let eventAmPm = interaction.options.getString("event-am-pm").toString();
         let eventMinute = interaction.options.getString("event-minute").toString();
         let eventHour = interaction.options.getString("event-hour");
+        let eventTimezone = interaction.options.getString("event-timezone");
 
         if (eventDay.toString().length == 1) {
             const zeroPad = (num, places) => String(num).padStart(places, '0')
@@ -505,7 +522,8 @@ module.exports = {
             console.log(`Collected ${collected.size} items`);
         });
 
-        const eventDayMoment = moment(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`);
+        const eventDayMoment = momentTZ(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`).tz(eventTimezone);
+        console.log(eventDayMoment)
         const eventDayMomentUnix = moment(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`).unix();
 
         const second = 1000;
@@ -530,7 +548,7 @@ module.exports = {
                     buttonCollector.stop()
 
                     const eventEnd = message.reply({
-                        content: `${eventPing} **${eventTitle}** has started!`,
+                        content: `${eventPing} **${eventTitle}** has started! ${hiddenLink} https://discord.com/channels/${eventChannel.guild.id}/${eventChannel.id}`,
                     });
 
                     message.edit({ content: `${eventPing}` }).catch(error => {
@@ -564,7 +582,7 @@ module.exports = {
             const customsEmbed = new EmbedBuilder()
                 .setColor('#165316')
                 .setTitle(eventTitle)
-                .setDescription(`${timeStandard} on ${eventMonth}/${eventDay}/${eventYear}`)
+                .setDescription(`<t:${eventDayMomentUnix}:F>`)
                 .setThumbnail(eventThumbnail)
                 .setImage(eventImage)
                 .setFooter({ text: `To be removed from a team or change teams, react with ❌ to this event.` })
@@ -582,6 +600,10 @@ module.exports = {
                         name: `${preTeam2Emoji} TEAM 2 ${preTeam2Emoji}`,
                         value: `${playerMap.get("redPlayer1")[0]}\n${playerMap.get("redPlayer2")[0]}\n${playerMap.get("redPlayer3")[0]}\n${playerMap.get("redPlayer4")[0]}\n${playerMap.get("redPlayer5")[0]}`,
                         inline: true,
+                    },
+                    {
+                        name: 'VOICE CHANNEL',
+                        value: `This event will be held in ${eventChannel}`
                     }
                 );
             message.edit({ embeds: [customsEmbed], content: `${eventPing} this event will start <t:${eventDayMomentUnix}:R>`, }).catch(error => {

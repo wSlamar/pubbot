@@ -1,19 +1,27 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 
 module.exports = {
-  data: new SlashCommandBuilder()
+    data: new SlashCommandBuilder()
         .setName("pub-ping")
-        .setDescription("Return thy ping")
-        .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog),
+        .setDescription("Return ping")
+        .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog)
+        .addMentionableOption((option) => option
+            .setName("ping")
+            .setDescription("ping role")
+            .setRequired(true)
+        ),
     async execute(interaction, client) {
-        const message = await interaction.deferReply({
-            fetchReply: true
-        });
+        const eventPing = interaction.options.getMentionable("ping");
 
-        const newMessage = `API Latency: ${client.ws.ping}\nClient Ping: ${message.createdTimestamp - interaction.createdTimestamp}`
-        await interaction.editReply({
-            content: newMessage
+        // this does not mention the role
+        const message = await interaction.reply({
+            content: `${eventPing}`,
+            fetchReply: true
+        })
+
+        // this will mention the role
+        const messageReply = message.reply({
+            content: `${eventPing}`,
         });
     }
-    
 };
