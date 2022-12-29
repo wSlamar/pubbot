@@ -53,7 +53,7 @@ module.exports = {
     const pollImage = interaction.options.getAttachment("poll-image");
 
     const embed = new EmbedBuilder()
-      .setColor('#165316')
+      .setColor('#f9e512')
       .setImage(pollImage.attachment)
       .setTitle("PUB POLL")
       .setDescription(`${question}\n\n${firstEmoji}  ${firstDescription}  ${firstEmoji}\n\n${secondedEmoji}  ${secondedDescription}  ${secondedEmoji}`)

@@ -586,7 +586,7 @@ module.exports = {
 
         async function refreshEmbed() {
             const customsEmbed = new EmbedBuilder()
-                .setColor('#165316')
+                .setColor('#f9e512')
                 .setTitle(eventTitle)
                 .setDescription(`<t:${eventDayMomentUnix}:F>`)
                 .setThumbnail(eventThumbnail)

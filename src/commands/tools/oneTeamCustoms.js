@@ -245,7 +245,8 @@ module.exports = {
         const buttonCollector = client.channels.cache.get(adminChannel).createMessageComponentCollector({ componentType: ComponentType.Button })
 
         collector.on("collect", async (reaction, user) => {
-            console.log(`Collected ${reaction.emoji.name} from ${user.tag}`);
+            const estDateLog = new Date()
+            console.log(`Collected [${reaction.emoji.name}] from [${user.tag}] at [${convertTZ(estDateLog, 'EST').toLocaleString()}]`);
             const fullUserName = user.tag.toString();
             const userNameID = user.id.toString();
             usernameNoTag = fullUserName.substring(0, fullUserName.length - 5);
@@ -502,7 +503,7 @@ module.exports = {
 
         function refreshEmbed() {
             const customsEmbed = new EmbedBuilder()
-                .setColor('#165316')
+                .setColor('#f9e512')
                 .setTitle(eventTitle)
                 .setDescription(`<t:${eventDayMomentUnix}:F>`)
                 .setThumbnail('https://i.imgur.com/jDBV1eG.png')
