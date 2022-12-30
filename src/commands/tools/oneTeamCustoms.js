@@ -147,6 +147,7 @@ module.exports = {
         ),
 
     async execute(interaction, client) {
+        console.log('\x1b[36m','/pub-8-player has been kicked off','\x1b[0m')
         const playerMap = new Map([
             ["bluePlayer1", ["[PLAYER 1 OPEN SPOT]", "BLUE PLAYER 1 ID", "[EMPTY SPOT]"]],
             ["bluePlayer2", ["[PLAYER 2 OPEN SPOT]", "BLUE PLAYER 2 ID", "[EMPTY SPOT]"]],
@@ -246,7 +247,7 @@ module.exports = {
 
         collector.on("collect", async (reaction, user) => {
             const estDateLog = new Date()
-            console.log(`Collected [${reaction.emoji.name}] from [${user.tag}] at [${convertTZ(estDateLog, 'EST').toLocaleString()}]`);
+            console.log('\x1b[36m','/pub-8-player:','\x1b[32m',`Collected [${reaction.emoji.name}] from [${user.tag}] at [${convertTZ(estDateLog, 'EST').toLocaleString()}]`,'\x1b[0m');
             const fullUserName = user.tag.toString();
             const userNameID = user.id.toString();
             usernameNoTag = fullUserName.substring(0, fullUserName.length - 5);

@@ -24,29 +24,13 @@ module.exports = Object.freeze({
                 inline: true,
             }
         ),
+
     formatEmbed: new EmbedBuilder()
         .setColor('#167301')
-        .setTitle('INCORRECT FORMAT ERROR')
+        .setTitle('INCORRECT DAY ERROR')
         .setURL('https://youneedawiki.com/app/page/1Th5IlY3BP6nHH6hNliqa_xQ7fYxbnI1v')
-        .setDescription(`Looks like you didn't enter in one of the parameters in the correct format. Click the link above for more information.\n\nWith the dates, the best rule of the thumb to follow is:\n\n **IF THERE IS A SINGLE DIGIT, 0 MUST COME BEFORE IT.**\n\n Below are some examples of how you should format the parameters:`)
-        .addFields(
-            {
-                name: "[event-month]",
-                value: `*11* **OR** *07*`,
-            },
-            {
-                name: "[event-day]",
-                value: `*21* **OR** *09*`,
-            },
-            {
-                name: "[event-year]",
-                value: `*2022* **OR** *2023*`,
-            },
-            {
-                name: "[event-time]",
-                value: `*12:30 PM* **OR** *7:05 AM*`,
-            },
-        ),
+        .setDescription(`Looks like you didn't enter in event-day parameter correctly.\nClick the link above for more information.`),
+
     customsEmbed2: new EmbedBuilder()
         .setColor('#167301')
         .setTitle('TITLE OF THE EVENT')
@@ -64,6 +48,7 @@ module.exports = Object.freeze({
                 inline: true,
             }
         ),
+        
     emojiEmbed: new EmbedBuilder()
         .setColor('#167301')
         .setTitle('UNKNOWN EMOJI ERROR')

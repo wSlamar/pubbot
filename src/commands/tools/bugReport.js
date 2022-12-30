@@ -24,6 +24,7 @@ module.exports = {
         ),
 
     async execute(interaction, client) {
+        console.log('\x1b[36m','/pub-bug has been kicked off','\x1b[0m')
         const bugTitle = interaction.options.getString("bug-title");
         const bugDescription = interaction.options.getString("bug-description");
         const bugScreenshot = interaction.options.getAttachment("bug-screenshot");

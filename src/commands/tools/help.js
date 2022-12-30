@@ -9,7 +9,7 @@ module.exports = {
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
 
     async execute(interaction, client) {
-
+        console.log('\x1b[36m','/pub-help has been kicked off','\x1b[0m')
         const helpEmbed = new EmbedBuilder()
             .setColor('#167301')
             .setFooter({text: 'Made with ❤️ by meatbuck'})
@@ -19,19 +19,19 @@ module.exports = {
             .addFields(
                 {
                     name: "🍺  /pub-5v5 command",
-                    value: "This commands main function is to track a list of players who want to participate in a 5 VS 5 team event. Once this command is used by a moderator, users are able to react to the embed and choose which team they would like to be on for the event. The users @ tag will be populated in the list and will display within the embed under the team that they chose.\n\n🍷  **event-title:** Title of the event\n🍷  **event-description:** Description of the event\n🍷  **event-ping:** What role or user you would like to ping for the event\n🍷  **event-month:** Month of the event\n🍷  **event-day:** Day of the event\n🍷  **event-year:** Year of the event\n🍷  **event-time:** Time of the event\n🍷  **event-image:** Imgur link of the image to be displayed in the embed\n🍷  **team-1-emoji:** Emoji that will be associated with the Team 1 reaction\n🍷  **team-2-emoji:** Emoji that will be associated with the Team 2 reaction\n‎",
+                    value: "This commands main function is to track a list of players who want to participate in a 5 VS 5 team event. Once this command has been kicked off, users are able to react to the embed and choose which team they would like to be on for the event. The users @ tag will be populated in the list and will display within the embed under the team that they chose. Once this command has ended at its set time, users will be unable to react to the embed and a follow up message will be sent with a link to the voice channel that the event will take place in.\n‎",
                 }, 
                 {
                     name: "🍺  /pub-8-player command",
-                    value: "This commands main function is to track a list of players who want to participate in an 8 player event. Once this command is used by a moderator, users are able to react to the embed and the users @ tag will be populated in the list, displaying within the embed under the PLAYERS header.\n\n🍷  **event-title:** Title of the event\n🍷  **event-description:** Description of the event\n🍷  **event-ping:** What role or user you would like to ping for the event\n🍷  **event-month:** Month of the event\n🍷  **event-day:** Day of the event\n🍷  **event-year:** Year of the event\n🍷  **event-time:** Time of the event\n🍷  **event-image:** Imgur link of the image to be displayed in the embed\n🍷  **player-emoji:** Emoji that will be associated with the player reaction\n‎",
+                    value: "This commands main function is to track a list of players who want to participate in an 8 player event. Once this command has been kicked off, users are able to react to the embed and the users @ tag will be populated in the list displaying within the embed under the PLAYERS header. Once this command has ended at its set time, users will be unable to react to the embed and a follow up message will be sent with a link to the voice channel that the event will take place in.\n‎",
                 },
                 {
                     name: "🍺  /pub-poll command",
-                    value: "This command's main function is to create a two option poll that users can react to.\n\n🍷  **poll-question:** The question associated with the poll\n🍷  **poll-first-emoji:** The emoji that will be associated with the first option\n🍷  **poll-first-description:** The description of the first option\n🍷  **poll-second-emoji:** The emoji that will be associated with the second option\n🍷  **poll-second-description:** The description on the second option\n🍷  **poll-image:** Image that will be associated with the poll\n‎",
+                    value: "This command's main function is to create a two option poll that users can react to.\n‎",
                 },
                 {
                     name: "🍺  /pub-bug command",
-                    value: "This command's main function is to track any bugs or issues associated with the bot.\n\n🍷  **bug-title:** Title of the bug\n🍷  **bug-description:** Description of the bug\n🍷  **bug-screenshot:** Screenshot of the bug\n‎",
+                    value: "This command's main function is to track any bugs or issues associated with the bot.\n‎",
                 },
             )
 

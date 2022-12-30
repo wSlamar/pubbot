@@ -58,6 +58,7 @@ module.exports = {
     .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
   ),
   async execute(interaction, client) {
+    console.log('\x1b[36m','/pub-poll has been kicked off','\x1b[0m')
     const question = interaction.options.getString("poll-question");
     let firstEmoji = interaction.options.getString("poll-first-emoji");
     const firstDescription = interaction.options.getString("poll-first-description");
@@ -108,7 +109,7 @@ module.exports = {
     });
 
     setTimeout(() => {
-      message.edit({ content: `This poll has ended` })
+      message.edit({ content: `This poll has ended` }).catch(error => { if (error.code !== 10008) { console.error('Error on editing message', error); } });
 
       if (firstEmoji.includes(':')) {
         firstEmoji = firstEmoji.split(':')[2]
@@ -126,17 +127,17 @@ module.exports = {
       if (firstEmojicount > secondEmojicount) {
         const pollEnd = message.reply({
           content: `**${firstDescription}** is the winner of this poll!`,
-        });
+        }).catch(error => { if (error.code !== 10008) { console.error('Error on replying', error); } });;
       }
       if (firstEmojicount < secondEmojicount) {
         const pollEnd = message.reply({
           content: `**${secondedDescription}** is the winner of this poll!`,
-        });
+        }).catch(error => { if (error.code !== 10008) { console.error('Error on replying', error); } });;
       }
       if (firstEmojicount == secondEmojicount) {
         const pollEnd = message.reply({
           content: `**${firstDescription}** and **${secondedDescription}** have tied in this poll!`,
-        });
+        }).catch(error => { if (error.code !== 10008) { console.error('Error on replying', error); } });;
       }
     }, pollHourTime * 1000 * 60 * 60);
   },

@@ -4,6 +4,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { adminChannel } = process.env;
 const moment = require("moment");
 const momentTZ = require("moment-timezone");
+const { clearInterval } = require("timers");
 require('events').EventEmitter.prototype._maxListeners = 100;
 const embeds = require('../../events/client/embeds.js')
 const { hiddenLink } = process.env;
@@ -160,6 +161,7 @@ module.exports = {
         ),
 
     async execute(interaction, client) {
+        console.log('\x1b[36m','/pub-5v5 has been kicked off','\x1b[0m')
         const playerMap = new Map([
             ["bluePlayer1", ["[PLAYER 1 OPEN SPOT]", "BLUE PLAYER 1 ID", "[EMPTY SPOT]"]],
             ["bluePlayer2", ["[PLAYER 2 OPEN SPOT]", "BLUE PLAYER 2 ID", "[EMPTY SPOT]"]],
@@ -284,7 +286,7 @@ module.exports = {
 
         collector.on("collect", async (reaction, user) => {
             const estDateLog = new Date()
-            console.log(`Collected [${reaction.emoji.name}] from [${user.tag}] at [${convertTZ(estDateLog, 'EST').toLocaleString()}]`);
+            console.log('\x1b[36m','/pub-5v5:','\x1b[32m',`Collected [${reaction.emoji.name}] from [${user.tag}] at [${convertTZ(estDateLog, 'EST').toLocaleString()}]`,'\x1b[0m');
             const fullUserName = user.tag.toString();
             const userNameID = user.id.toString();
             usernameNoTag = fullUserName.substring(0, fullUserName.length - 5);
