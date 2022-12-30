@@ -503,10 +503,10 @@ module.exports = {
 
         function refreshEmbed() {
             const customsEmbed = new EmbedBuilder()
-                .setColor('#f9e512')
+                .setColor('#167301')
                 .setTitle(eventTitle)
                 .setDescription(`<t:${eventDayMomentUnix}:F>`)
-                .setThumbnail('https://i.imgur.com/jDBV1eG.png')
+                .setThumbnail('https://i.imgur.com/mmPyxuH.png')
                 .setImage(eventImage)
                 .setFooter({ text: `To be removed from this event list, react with ❌ to this event.` })
                 .addFields(

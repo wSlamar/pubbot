@@ -11,7 +11,7 @@ module.exports = {
     async execute(interaction, client) {
 
         const helpEmbed = new EmbedBuilder()
-            .setColor('#165316')
+            .setColor('#167301')
             .setFooter({text: 'Made with ❤️ by meatbuck'})
             .setTitle("BOT HELP")
             .setURL('https://youneedawiki.com/app/page/1Th5IlY3BP6nHH6hNliqa_xQ7fYxbnI1v')

@@ -29,7 +29,7 @@ module.exports = {
         const bugScreenshot = interaction.options.getAttachment("bug-screenshot");
 
         const bugEmbed = new EmbedBuilder()
-            .setColor('#165316')
+            .setColor('#167301')
             .setTitle("BUG REPORT")
             .setDescription("Please describe the bug or issue below and provide a screenshot:")
             .setImage(bugScreenshot.attachment)
