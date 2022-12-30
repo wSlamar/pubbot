@@ -53,6 +53,11 @@ module.exports = {
         { name: '3 Hours', value: 3 },
         { name: '4 Hours', value: 4 },
         { name: '5 Hours', value: 5 },
+        { name: '6 Hours', value: 6 },
+        { name: '7 Hours', value: 7 },
+        { name: '8 Hours', value: 8 },
+        { name: '9 Hours', value: 9 },
+        { name: '10 Hours', value: 10 },
       )
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
@@ -126,17 +131,17 @@ module.exports = {
 
       if (firstEmojicount > secondEmojicount) {
         const pollEnd = message.reply({
-          content: `**${firstDescription}** is the winner of this poll!`,
+          content: `*${question}*\n**${firstDescription}** is the winner of this poll!`,
         }).catch(error => { if (error.code !== 10008) { console.error('Error on replying', error); } });;
       }
       if (firstEmojicount < secondEmojicount) {
         const pollEnd = message.reply({
-          content: `**${secondedDescription}** is the winner of this poll!`,
+          content: `*${question}*\n**${secondedDescription}** is the winner of this poll!`,
         }).catch(error => { if (error.code !== 10008) { console.error('Error on replying', error); } });;
       }
       if (firstEmojicount == secondEmojicount) {
         const pollEnd = message.reply({
-          content: `**${firstDescription}** and **${secondedDescription}** have tied in this poll!`,
+          content: `*${question}*\n**${firstDescription}** and **${secondedDescription}** have tied in this poll!`,
         }).catch(error => { if (error.code !== 10008) { console.error('Error on replying', error); } });;
       }
     }, pollHourTime * 1000 * 60 * 60);
