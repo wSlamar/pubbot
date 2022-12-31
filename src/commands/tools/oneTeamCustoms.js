@@ -288,7 +288,7 @@ module.exports = {
             const member = message.guild.members.cache.get(userNameID);
             if (reaction.emoji.name === "🔨" && usernameNoTag !== "Pub Bot") {
                 message.reactions.cache.get("🔨").remove();
-                if (member.permissions.has(PermissionFlagsBits.BanMembers)) {
+                if (member.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
                     const blueButtons1 = new ActionRowBuilder()
                         .addComponents(
                             new ButtonBuilder()
@@ -507,7 +507,7 @@ module.exports = {
                 .setColor('#167301')
                 .setTitle(eventTitle)
                 .setDescription(`<t:${eventDayMomentUnix}:F>`)
-                .setThumbnail('https://i.imgur.com/mmPyxuH.png')
+                .setThumbnail('https://i.imgur.com/3I4v0tV.png')
                 .setImage(eventImage)
                 .setFooter({ text: `To be removed from this event list, react with ❌ to this event.` })
                 .addFields(

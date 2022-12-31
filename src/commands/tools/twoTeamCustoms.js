@@ -141,7 +141,8 @@ module.exports = {
             .setDescription("thumbnail that will be associated with the event")
             .setRequired(true)
             .addChoices(
-                { name: 'Custom ARAM', value: 'https://i.imgur.com/aGu93Fk.png' },
+                { name: 'ARAM', value: 'https://i.imgur.com/6ZfWcjq.png' },
+                { name: 'Summoners Rift', value: 'https://i.imgur.com/E1FruW1.png' },
             )
         )
         .addStringOption((option) => option
@@ -333,7 +334,7 @@ module.exports = {
             const member = message.guild.members.cache.get(userNameID);
             if (reaction.emoji.name === "🔨" && usernameNoTag !== "Pub Bot") {
                 message.reactions.cache.get("🔨").remove();
-                if (member.permissions.has(PermissionFlagsBits.BanMembers)) {
+                if (member.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
                     const blueButtons = new ActionRowBuilder()
                         .addComponents(
                             new ButtonBuilder()
