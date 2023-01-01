@@ -37,7 +37,6 @@ module.exports = {
 
         const message = await interaction.reply({
             embeds: [helpEmbed],
-            fetchReply: true,
             ephemeral: true
         });
     }
