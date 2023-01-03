@@ -552,11 +552,15 @@ module.exports = {
                     buttonCollector.stop()
 
                     const eventEnd = message.reply({
-                        content: `${eventPing} **${eventTitle}** has started!\n\n${preTeam1Emoji} **TEAM 1** ${preTeam1Emoji} will join: ${hiddenLink} https://discord.com/channels/${team1Channel.guild.id}/${team1Channel.id}`,
+                        content: `${eventPing} **${eventTitle}** has started!`,
                     });
 
                     const channelSent = client.channels.cache.get(message.channelId);
                     const eventEnd2 = channelSent.send({
+                        content: `${preTeam1Emoji} **TEAM 1** ${preTeam1Emoji} will join: ${hiddenLink} https://discord.com/channels/${team1Channel.guild.id}/${team1Channel.id}`,
+                    });
+
+                    const eventEnd3 = channelSent.send({
                         content: `${preTeam2Emoji} **TEAM 2** ${preTeam2Emoji} will join: ${hiddenLink} https://discord.com/channels/${team2Channel.guild.id}/${team2Channel.id}`,
                     });
 
@@ -611,8 +615,13 @@ module.exports = {
                         inline: true,
                     },
                     {
-                        name: 'VOICE CHANNEL',
-                        value: `**TEAM 1** will join ${team1Channel}\n**TEAM 2** will join ${team2Channel}\n`
+                        name: `${preTeam1Emoji} TEAM 1 VOICE CHANNEL ${preTeam1Emoji}`,
+                        value: `Team 1 will join ${team1Channel}`,
+                    },
+                    {
+                        name: `${preTeam2Emoji} TEAM 2 VOICE CHANNEL ${preTeam2Emoji}`,
+                        value: `Team 2 will join ${team2Channel}`,
+                        inline: true,
                     }
                 );
             message.edit({ embeds: [customsEmbed], content: `${eventPing} this event will start <t:${eventDayMomentUnix}:R>`, }).catch(error => {
