@@ -612,7 +612,7 @@ module.exports = {
                     },
                     {
                         name: 'VOICE CHANNEL',
-                        value: `${preTeam1Emoji} **TEAM 1** ${preTeam1Emoji} will join ${team1Channel}\n${preTeam2Emoji} **TEAM 2** ${preTeam2Emoji} will join ${team2Channel}\n`
+                        value: `**TEAM 1** will join ${team1Channel}\n**TEAM 2** will join ${team2Channel}\n`
                     }
                 );
             message.edit({ embeds: [customsEmbed], content: `${eventPing} this event will start <t:${eventDayMomentUnix}:R>`, }).catch(error => {
