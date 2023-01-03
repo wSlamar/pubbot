@@ -14,16 +14,32 @@ module.exports = {
             .setDescription(`Welcome to The Local Pub! Please react to receive the corresponding role!\n‎`)
             .addFields(
                 {
-                    name: "<:aram:1058233548038996028>  ARAM  <:aram:1058233548038996028>",
-                    value: `Gives access to ARAM related channels\n‎`,
+                    name: "<:ARAM:1059647165628153999>  ARAM  <:ARAM:1059647165628153999>",
+                    value: `Gives access to ARAM related channels.\n‎`,
                 },
                 {
-                    name: "<:summonersRift:1059164807187677275>  SUMMONERS RIFT  <:summonersRift:1059164807187677275>",
-                    value: `Gives access to SUMMONERS RIFT related channels\n‎`,
+                    name: "<:summonersRift:1059647173526032504>  Summoners Rift  <:summonersRift:1059647173526032504>",
+                    value: `Gives access to Summoners Rift related channels.\n‎`,
                 },
                 {
-                    name: "<:loltft:1058233549297287198>  TFT  <:loltft:1058233549297287198>",
-                    value: `Gives access to TFT related channels`,
+                    name: "<:TFT:1059647175388319815>  TFT  <:TFT:1059647175388319815>",
+                    value: `Gives access to TFT related channels.\n‎`,
+                },
+                {
+                    name: "<:customARAM:1059650622334435398>  Custom ARAM  <:customARAM:1059650622334435398>",
+                    value: `Gives access to ARAM related channels **AND** will also grant you the ability to be pinged when custom ARAM events are started.\n‎`,
+                },
+                {
+                    name: "<:customRift:1059650624171544607>  Custom Summoners Rift  <:customRift:1059650624171544607>",
+                    value: `Gives access to Summoners Rift related channels **AND** will also grant you the ability to be pinged when custom Summoners Rift events are started.\n‎`,
+                },
+                {
+                    name: "<:customTFT:1059650626352590898>  Custom TFT  <:customTFT:1059650626352590898>",
+                    value: `Gives access to TFT related channels **AND** will also grant you the ability to be pinged when custom TFT events are started.\n‎`,
+                },
+                {
+                    name: ":video_game: Other Games :video_game:",
+                    value: `Gives access to other games related channels.`,
                 },
             )
 

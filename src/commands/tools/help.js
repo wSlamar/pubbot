@@ -6,7 +6,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("pub-help")
         .setDescription("Replies with an embed for displaying helpful tips on the commands")
-        .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
+        .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog),
 
     async execute(interaction, client) {
         console.log('\x1b[36m','/pub-help has been kicked off','\x1b[0m')

@@ -6,7 +6,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("pub-bug")
         .setDescription("Replies with an embed for logging bugs and issues")
-        .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
+        .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog)
         .addStringOption((option) => option
             .setName("bug-title")
             .setDescription("title of the bug")

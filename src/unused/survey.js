@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const { EmbedBuilder } = require("discord.js");
 require("dotenv").config();
-const embeds = require('../../events/client/embeds.js')
+const embeds = require('../events/client/embeds.js')
 const moment = require("moment");
 
 module.exports = {
