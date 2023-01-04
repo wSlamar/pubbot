@@ -7,7 +7,6 @@ const momentTZ = require("moment-timezone");
 const { clearInterval } = require("timers");
 require('events').EventEmitter.prototype._maxListeners = 100;
 const embeds = require('../../events/client/embeds.js')
-const { hiddenLink } = process.env;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -146,12 +145,12 @@ module.exports = {
             .setRequired(true)
         )
         .addChannelOption((option) => option
-            .setName("team1-voice-channel")
+            .setName("team-1-voice-channel")
             .setDescription("voice channel that team 1 will be held")
             .setRequired(true)
         )
         .addChannelOption((option) => option
-            .setName("team2-voice-channel")
+            .setName("team-2-voice-channel")
             .setDescription("voice channel that team 2 will be held")
             .setRequired(true)
         ),
@@ -171,8 +170,8 @@ module.exports = {
             ["redPlayer5", ["[PLAYER 5 OPEN SPOT]", "RED PLAYER 5 ID", "[EMPTY SPOT]"]],
         ]);
 
-        const team1Channel = interaction.options.getChannel("team1-voice-channel");
-        const team2Channel = interaction.options.getChannel("team2-voice-channel");
+        const team1Channel = interaction.options.getChannel("team-1-voice-channel");
+        const team2Channel = interaction.options.getChannel("team-2-voice-channel");
         const eventPing = interaction.options.getMentionable("event-ping");
 
         const message = await interaction.reply({
@@ -555,14 +554,9 @@ module.exports = {
                     buttonCollector.stop()
 
                     team1Channel.createInvite()
-                        .then(invite => message.reply({
-                            content: `${eventPing} **${eventTitle}** has started!\n${preTeam1Emoji} **TEAM 1** ${preTeam1Emoji} will join: ${invite}`
-                        })).catch(error => { if (error.code !== 10008) { console.error('Error on replying to message', error); } });
-
-                    team2Channel.createInvite()
-                        .then(invite => message.reply({
-                            content: `${eventPing} **${eventTitle}** has started!\n${preTeam2Emoji} **TEAM 2** ${preTeam2Emoji} will join: ${invite}`
-                        })).catch(error => { if (error.code !== 10008) { console.error('Error on replying to message', error); } });
+                        .then(invite1 => team2Channel.createInvite().then(invite2 => message.reply({
+                            content: `${eventPing} **${eventTitle}** has started!\n${preTeam1Emoji} **TEAM 1** ${preTeam1Emoji} will join: ${invite1}\n${preTeam2Emoji} **TEAM 2** ${preTeam2Emoji} will join: ${invite2}`
+                        }))).catch(error => { if (error.code !== 10008) { console.error('Error on replying to message', error); } });
 
                     message.edit({ content: `${eventPing}` }).catch(error => {
                         collector.stop()

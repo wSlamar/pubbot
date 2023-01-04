@@ -7,7 +7,6 @@ const momentTZ = require("moment-timezone");
 const { clearInterval } = require("timers");
 require('events').EventEmitter.prototype._maxListeners = 100;
 const embeds = require('../../events/client/embeds.js')
-const { hiddenLink } = process.env;
 
 module.exports = {
     data: new SlashCommandBuilder()
