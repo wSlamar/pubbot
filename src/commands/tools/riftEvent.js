@@ -554,24 +554,21 @@ module.exports = {
                     collector.stop()
                     buttonCollector.stop()
 
-                    const eventEnd = message.reply({
-                        content: `${eventPing} **${eventTitle}** has started!`,
-                    }).catch(error => { if (error.code !== 10008) { console.error('Error on replying to message', error); } });
+                    team1Channel.createInvite()
+                        .then(invite => message.reply({
+                            content: `${eventPing} **${eventTitle}** has started!\n${preTeam1Emoji} **TEAM 1** ${preTeam1Emoji} will join: ${invite}`
+                        })).catch(error => { if (error.code !== 10008) { console.error('Error on replying to message', error); } });
+
+                    team2Channel.createInvite()
+                        .then(invite => message.reply({
+                            content: `${eventPing} **${eventTitle}** has started!\n${preTeam2Emoji} **TEAM 2** ${preTeam2Emoji} will join: ${invite}`
+                        })).catch(error => { if (error.code !== 10008) { console.error('Error on replying to message', error); } });
 
                     message.edit({ content: `${eventPing}` }).catch(error => {
                         collector.stop()
                         buttonCollector.stop()
                         clearInterval(interval)
                         if (error.code !== 10008) { console.error('Error on message edit:', error); }
-                    });
-
-                    const channelSent = client.channels.cache.get(message.channelId);
-                    const eventEnd2 = channelSent.send({
-                        content: `${preTeam1Emoji} **TEAM 1** ${preTeam1Emoji} will join: ${hiddenLink} https://discord.com/channels/${team1Channel.guild.id}/${team1Channel.id}`,
-                    });
-
-                    const eventEnd3 = channelSent.send({
-                        content: `${preTeam2Emoji} **TEAM 2** ${preTeam2Emoji} will join: ${hiddenLink} https://discord.com/channels/${team2Channel.guild.id}/${team2Channel.id}`,
                     });
 
                     return;

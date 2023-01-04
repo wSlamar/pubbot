@@ -472,9 +472,10 @@ module.exports = {
                     collector.stop()
                     buttonCollector.stop()
 
-                    const eventEnd = message.reply({
-                        content: `${eventPing} **${eventTitle}** has started! ${hiddenLink} https://discord.com/channels/${eventChannel.guild.id}/${eventChannel.id}`,
-                    }).catch(error => { if (error.code !== 10008) { console.error('Error on replying to message', error); } });
+                    eventChannel.createInvite()
+                        .then(invite => message.reply({
+                            content: `${eventPing} **${eventTitle}** has started!\n${prePlayerEmoji} **PLAYERS** ${prePlayerEmoji} will join: ${invite}`
+                        })).catch(error => { if (error.code !== 10008) { console.error('Error on replying to message', error); } });
 
                     message.edit({ content: `${eventPing}` }).catch(error => {
                         collector.stop()
