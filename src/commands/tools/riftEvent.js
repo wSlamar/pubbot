@@ -171,6 +171,8 @@ module.exports = {
             ["redPlayer5", ["[PLAYER 5 OPEN SPOT]", "RED PLAYER 5 ID", "[EMPTY SPOT]"]],
         ]);
 
+        const team1Channel = interaction.options.getChannel("team1-voice-channel");
+        const team2Channel = interaction.options.getChannel("team2-voice-channel");
         const eventPing = interaction.options.getMentionable("event-ping");
 
         const message = await interaction.reply({
@@ -179,13 +181,14 @@ module.exports = {
             fetchReply: true,
         });
 
+        team1Channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { Connect: true });
+        team2Channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { Connect: true });
+
         const eventDescription = interaction.options.getString("event-description");
         const eventTitle = interaction.options.getString("event-title");
         const eventImage = interaction.options.getString("event-image");
         const preTeam1Emoji = interaction.options.getString("team-1-emoji");
         const preTeam2Emoji = interaction.options.getString("team-2-emoji");
-        const team1Channel = interaction.options.getChannel("team1-voice-channel");
-        const team2Channel = interaction.options.getChannel("team2-voice-channel");
 
         let team1Emoji;
         let team2Emoji
@@ -553,6 +556,13 @@ module.exports = {
 
                     const eventEnd = message.reply({
                         content: `${eventPing} **${eventTitle}** has started!`,
+                    }).catch(error => { if (error.code !== 10008) { console.error('Error on replying to message', error); } });
+
+                    message.edit({ content: `${eventPing}` }).catch(error => {
+                        collector.stop()
+                        buttonCollector.stop()
+                        clearInterval(interval)
+                        if (error.code !== 10008) { console.error('Error on message edit:', error); }
                     });
 
                     const channelSent = client.channels.cache.get(message.channelId);
@@ -562,13 +572,6 @@ module.exports = {
 
                     const eventEnd3 = channelSent.send({
                         content: `${preTeam2Emoji} **TEAM 2** ${preTeam2Emoji} will join: ${hiddenLink} https://discord.com/channels/${team2Channel.guild.id}/${team2Channel.id}`,
-                    });
-
-                    message.edit({ content: `${eventPing}` }).catch(error => {
-                        collector.stop()
-                        buttonCollector.stop()
-                        clearInterval(interval)
-                        if (error.code !== 10008) { console.error('Error on message edit:', error); }
                     });
 
                     return;
@@ -616,11 +619,11 @@ module.exports = {
                     },
                     {
                         name: `${preTeam1Emoji} TEAM 1 VOICE CHANNEL ${preTeam1Emoji}`,
-                        value: `Team 1 will join ${team1Channel}`,
+                        value: `TEAM 1 will join ${team1Channel}`,
                     },
                     {
                         name: `${preTeam2Emoji} TEAM 2 VOICE CHANNEL ${preTeam2Emoji}`,
-                        value: `Team 2 will join ${team2Channel}`,
+                        value: `TEAM 2 will join ${team2Channel}`,
                         inline: true,
                     }
                 );

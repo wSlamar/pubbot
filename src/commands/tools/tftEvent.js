@@ -2,6 +2,7 @@ const { SlashCommandBuilder, PermissionFlagsBits, PermissionsBitField, GatewayIn
 const { EmbedBuilder } = require("discord.js");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { adminChannel } = process.env;
+const { guildId } = process.env;
 const moment = require("moment");
 const momentTZ = require("moment-timezone");
 require('events').EventEmitter.prototype._maxListeners = 100;
@@ -146,7 +147,7 @@ module.exports = {
         ),
 
     async execute(interaction, client) {
-        console.log('\x1b[36m','/pub-tft has been kicked off','\x1b[0m')
+        console.log('\x1b[36m', '/pub-tft has been kicked off', '\x1b[0m')
         const playerMap = new Map([
             ["bluePlayer1", ["[PLAYER 1 OPEN SPOT]", "BLUE PLAYER 1 ID", "[EMPTY SPOT]"]],
             ["bluePlayer2", ["[PLAYER 2 OPEN SPOT]", "BLUE PLAYER 2 ID", "[EMPTY SPOT]"]],
@@ -158,6 +159,7 @@ module.exports = {
             ["bluePlayer8", ["[PLAYER 8 OPEN SPOT]", "BLUE PLAYER 8 ID", "[EMPTY SPOT]"]],
         ]);
 
+        const eventChannel = interaction.options.getChannel("event-voice-channel");
         const eventPing = interaction.options.getMentionable("event-ping");
 
         const message = await interaction.reply({
@@ -166,11 +168,12 @@ module.exports = {
             fetchReply: true,
         });
 
+        eventChannel.permissionOverwrites.edit(message.guild.roles.everyone.id, { Connect: true });
+
         const eventDescription = interaction.options.getString("event-description");
         const eventTitle = interaction.options.getString("event-title");
         const eventImage = interaction.options.getString("event-image");
         const prePlayerEmoji = interaction.options.getString("player-emoji");
-        const eventChannel = interaction.options.getChannel("event-voice-channel");
 
         let playerEmoji;
 
@@ -246,7 +249,7 @@ module.exports = {
 
         collector.on("collect", async (reaction, user) => {
             const estDateLog = new Date()
-            console.log('\x1b[36m','/pub-tft:','\x1b[32m',`Collected [${reaction.emoji.name}] from [${user.tag}] at [${convertTZ(estDateLog, 'EST').toLocaleString()}]`,'\x1b[0m');
+            console.log('\x1b[36m', '/pub-tft:', '\x1b[32m', `Collected [${reaction.emoji.name}] from [${user.tag}] at [${convertTZ(estDateLog, 'EST').toLocaleString()}]`, '\x1b[0m');
             const fullUserName = user.tag.toString();
             const userNameID = user.id.toString();
             usernameNoTag = fullUserName.substring(0, fullUserName.length - 5);
@@ -471,7 +474,7 @@ module.exports = {
 
                     const eventEnd = message.reply({
                         content: `${eventPing} **${eventTitle}** has started! ${hiddenLink} https://discord.com/channels/${eventChannel.guild.id}/${eventChannel.id}`,
-                    });
+                    }).catch(error => { if (error.code !== 10008) { console.error('Error on replying to message', error); } });
 
                     message.edit({ content: `${eventPing}` }).catch(error => {
                         collector.stop()
