@@ -5,13 +5,14 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("pub-roles")
         .setDescription("Return an embed for users to react to in order to get their role")
-        .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async execute(interaction, client) {
         console.log('\x1b[36m','/pub-roles has been kicked off','\x1b[0m')
         const roles = new EmbedBuilder()
             .setColor('#167301')
-            .setTitle('PUB ROLES')
-            .setDescription(`Welcome to The Local Pub! Please react to receive the corresponding role!\n‎`)
+            .setTitle('THE LOCAL PUB ROLES')
+            .setFooter({text: "❗❗❗❗ MAKE SURE TO REACT TO OUR RULES TO GAIN ACCESS TO THE PUB ❗❗❗❗"})
+            .setDescription(`Welcome to The Local Pub! Please react to receive the corresponding role! These roles will give you access to the rest of the server.\n‎`)
             .addFields(
                 {
                     name: "<:ARAM:1059647165628153999>  ARAM  <:ARAM:1059647165628153999>",
@@ -39,7 +40,7 @@ module.exports = {
                 },
                 {
                     name: ":video_game: Other Games :video_game:",
-                    value: `Gives access to other games related channels.`,
+                    value: `Gives access to other games related channels.\n‎`,
                 },
             )
 

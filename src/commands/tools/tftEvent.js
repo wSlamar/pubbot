@@ -124,8 +124,6 @@ module.exports = {
             .setRequired(true)
             .addChoices(
                 { name: 'TFT', value: 'https://i.imgur.com/OiNyojp.png' },
-                { name: 'Custom ARAM', value: 'https://i.imgur.com/LPyzExv.png' },
-                { name: 'Draft Normals', value: 'https://i.imgur.com/2wInBA3.png' },
                 { name: 'St Pats Day Events & Gaming', value: 'https://i.imgur.com/br1woyw.png' },
                 { name: 'Christmas Events & Gaming', value: 'https://i.imgur.com/seYI4bu.png' },
                 { name: 'Halloween Events & Gaming', value: 'https://i.imgur.com/JBfz472.png' },
