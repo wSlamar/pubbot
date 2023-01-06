@@ -2,6 +2,7 @@ const { SlashCommandBuilder, PermissionFlagsBits, PermissionsBitField, GatewayIn
 const { EmbedBuilder } = require("discord.js");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { adminChannel } = process.env;
+const { verifiedRole } = process.env;
 const moment = require("moment");
 const momentTZ = require("moment-timezone");
 const { clearInterval } = require("timers");
@@ -172,7 +173,8 @@ module.exports = {
             fetchReply: true,
         });
 
-        eventChannel.permissionOverwrites.edit(message.guild.roles.everyone.id, { Connect: true });
+        eventChannel.permissionOverwrites.edit(verifiedRole, { Connect: true });
+        // eventChannel.permissionOverwrites.edit(message.guild.roles.everyone.id, { Connect: true });
 
         const eventDescription = interaction.options.getString("event-description");
         const eventTitle = interaction.options.getString("event-title");

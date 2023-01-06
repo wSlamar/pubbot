@@ -3,6 +3,7 @@ const { EmbedBuilder } = require("discord.js");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { adminChannel } = process.env;
 const { guildId } = process.env;
+const { verifiedRole } = process.env;
 const moment = require("moment");
 const momentTZ = require("moment-timezone");
 require('events').EventEmitter.prototype._maxListeners = 100;
@@ -165,7 +166,8 @@ module.exports = {
             fetchReply: true,
         });
 
-        eventChannel.permissionOverwrites.edit(message.guild.roles.everyone.id, { Connect: true });
+        eventChannel.permissionOverwrites.edit(verifiedRole, { Connect: true });
+        // eventChannel.permissionOverwrites.edit(message.guild.roles.everyone.id, { Connect: true });
 
         const eventDescription = interaction.options.getString("event-description");
         const eventTitle = interaction.options.getString("event-title");

@@ -11,7 +11,7 @@ module.exports = {
         const roles = new EmbedBuilder()
             .setColor('#167301')
             .setTitle('THE LOCAL PUB ROLES')
-            .setFooter({text: "❗❗❗❗ MAKE SURE TO REACT TO OUR RULES TO GAIN ACCESS TO THE PUB ❗❗❗❗"})
+            .setFooter({text: "❗❗❗ READ AND REACT TO OUR RULES TO GAIN MORE ACCESS TO THE CHANNELS ❗❗❗"})
             .setDescription(`Welcome to The Local Pub! Please react to receive the corresponding role! These roles will give you access to the rest of the server.\n‎`)
             .addFields(
                 {
