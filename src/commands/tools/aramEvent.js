@@ -177,7 +177,7 @@ module.exports = {
         // eventChannel.permissionOverwrites.edit(message.guild.roles.everyone.id, { Connect: true });
 
         const eventDescription = interaction.options.getString("event-description");
-        const eventTitle = interaction.options.getString("event-title");
+        const eventTitle = interaction.options.getString("event-title").toUpperCase();
         const eventImage = interaction.options.getString("event-image");
         const preTeam1Emoji = interaction.options.getString("team-1-emoji");
         const preTeam2Emoji = interaction.options.getString("team-2-emoji");
