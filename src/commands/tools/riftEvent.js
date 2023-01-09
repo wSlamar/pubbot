@@ -298,31 +298,31 @@ module.exports = {
             }
             checkIDs(userNameID);
 
-            if (reaction.emoji.name === team1Emoji && playerMap.get("bluePlayer1").includes("[PLAYER 1 OPEN SPOT]") && usernameNoTag !== "Pub Bot" && !valuesArray.includes(true)) {
+            if (reaction.emoji.name === team1Emoji && playerMap.get("bluePlayer1").includes("[PLAYER 1 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
                 playerMap.set("bluePlayer1", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === team1Emoji && playerMap.get("bluePlayer2").includes("[PLAYER 2 OPEN SPOT]") && usernameNoTag !== "Pub Bot" && !valuesArray.includes(true)) {
+            } else if (reaction.emoji.name === team1Emoji && playerMap.get("bluePlayer2").includes("[PLAYER 2 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
                 playerMap.set("bluePlayer2", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === team1Emoji && playerMap.get("bluePlayer3").includes("[PLAYER 3 OPEN SPOT]") && usernameNoTag !== "Pub Bot" && !valuesArray.includes(true)) {
+            } else if (reaction.emoji.name === team1Emoji && playerMap.get("bluePlayer3").includes("[PLAYER 3 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
                 playerMap.set("bluePlayer3", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === team1Emoji && playerMap.get("bluePlayer4").includes("[PLAYER 4 OPEN SPOT]") && usernameNoTag !== "Pub Bot" && !valuesArray.includes(true)) {
+            } else if (reaction.emoji.name === team1Emoji && playerMap.get("bluePlayer4").includes("[PLAYER 4 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
                 playerMap.set("bluePlayer4", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === team1Emoji && playerMap.get("bluePlayer5").includes("[PLAYER 5 OPEN SPOT]") && usernameNoTag !== "Pub Bot" && !valuesArray.includes(true)) {
+            } else if (reaction.emoji.name === team1Emoji && playerMap.get("bluePlayer5").includes("[PLAYER 5 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
                 playerMap.set("bluePlayer5", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
             }
 
-            if (reaction.emoji.name === team2Emoji && playerMap.get("redPlayer1").includes("[PLAYER 1 OPEN SPOT]") && usernameNoTag !== "Pub Bot" && !valuesArray.includes(true)) {
+            if (reaction.emoji.name === team2Emoji && playerMap.get("redPlayer1").includes("[PLAYER 1 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
                 playerMap.set("redPlayer1", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === team2Emoji && playerMap.get("redPlayer2").includes("[PLAYER 2 OPEN SPOT]") && usernameNoTag !== "Pub Bot" && !valuesArray.includes(true)) {
+            } else if (reaction.emoji.name === team2Emoji && playerMap.get("redPlayer2").includes("[PLAYER 2 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
                 playerMap.set("redPlayer2", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === team2Emoji && playerMap.get("redPlayer3").includes("[PLAYER 3 OPEN SPOT]") && usernameNoTag !== "Pub Bot" && !valuesArray.includes(true)) {
+            } else if (reaction.emoji.name === team2Emoji && playerMap.get("redPlayer3").includes("[PLAYER 3 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
                 playerMap.set("redPlayer3", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === team2Emoji && playerMap.get("redPlayer4").includes("[PLAYER 4 OPEN SPOT]") && usernameNoTag !== "Pub Bot" && !valuesArray.includes(true)) {
+            } else if (reaction.emoji.name === team2Emoji && playerMap.get("redPlayer4").includes("[PLAYER 4 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
                 playerMap.set("redPlayer4", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === team2Emoji && playerMap.get("redPlayer5").includes("[PLAYER 5 OPEN SPOT]") && usernameNoTag !== "Pub Bot" && !valuesArray.includes(true)) {
+            } else if (reaction.emoji.name === team2Emoji && playerMap.get("redPlayer5").includes("[PLAYER 5 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
                 playerMap.set("redPlayer5", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
             }
 
-            if (reaction.emoji.name === "❌" && usernameNoTag !== "Pub Bot") {
+            if (reaction.emoji.name === "❌" && usernameNoTag !== "Mojito") {
                 setDefault(userNameID);
                 removeUserReactions(userNameID);
             }
@@ -330,7 +330,7 @@ module.exports = {
             refreshEmbed()
 
             const member = message.guild.members.cache.get(userNameID);
-            if (reaction.emoji.name === "🔨" && usernameNoTag !== "Pub Bot") {
+            if (reaction.emoji.name === "🔨" && usernameNoTag !== "Mojito") {
                 message.reactions.cache.get("🔨").remove();
                 if (member.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
                     const blueButtons = new ActionRowBuilder()

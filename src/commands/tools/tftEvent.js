@@ -261,25 +261,25 @@ module.exports = {
             }
             checkIDs(userNameID);
 
-            if (reaction.emoji.name === playerEmoji && playerMap.get("bluePlayer1").includes("[PLAYER 1 OPEN SPOT]") && usernameNoTag !== "Pub Bot" && !valuesArray.includes(true)) {
+            if (reaction.emoji.name === playerEmoji && playerMap.get("bluePlayer1").includes("[PLAYER 1 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
                 playerMap.set("bluePlayer1", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === playerEmoji && playerMap.get("bluePlayer2").includes("[PLAYER 2 OPEN SPOT]") && usernameNoTag !== "Pub Bot" && !valuesArray.includes(true)) {
+            } else if (reaction.emoji.name === playerEmoji && playerMap.get("bluePlayer2").includes("[PLAYER 2 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
                 playerMap.set("bluePlayer2", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === playerEmoji && playerMap.get("bluePlayer3").includes("[PLAYER 3 OPEN SPOT]") && usernameNoTag !== "Pub Bot" && !valuesArray.includes(true)) {
+            } else if (reaction.emoji.name === playerEmoji && playerMap.get("bluePlayer3").includes("[PLAYER 3 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
                 playerMap.set("bluePlayer3", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === playerEmoji && playerMap.get("bluePlayer4").includes("[PLAYER 4 OPEN SPOT]") && usernameNoTag !== "Pub Bot" && !valuesArray.includes(true)) {
+            } else if (reaction.emoji.name === playerEmoji && playerMap.get("bluePlayer4").includes("[PLAYER 4 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
                 playerMap.set("bluePlayer4", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === playerEmoji && playerMap.get("bluePlayer5").includes("[PLAYER 5 OPEN SPOT]") && usernameNoTag !== "Pub Bot" && !valuesArray.includes(true)) {
+            } else if (reaction.emoji.name === playerEmoji && playerMap.get("bluePlayer5").includes("[PLAYER 5 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
                 playerMap.set("bluePlayer5", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === playerEmoji && playerMap.get("bluePlayer6").includes("[PLAYER 6 OPEN SPOT]") && usernameNoTag !== "Pub Bot" && !valuesArray.includes(true)) {
+            } else if (reaction.emoji.name === playerEmoji && playerMap.get("bluePlayer6").includes("[PLAYER 6 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
                 playerMap.set("bluePlayer6", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === playerEmoji && playerMap.get("bluePlayer7").includes("[PLAYER 7 OPEN SPOT]") && usernameNoTag !== "Pub Bot" && !valuesArray.includes(true)) {
+            } else if (reaction.emoji.name === playerEmoji && playerMap.get("bluePlayer7").includes("[PLAYER 7 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
                 playerMap.set("bluePlayer7", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === playerEmoji && playerMap.get("bluePlayer8").includes("[PLAYER 8 OPEN SPOT]") && usernameNoTag !== "Pub Bot" && !valuesArray.includes(true)) {
+            } else if (reaction.emoji.name === playerEmoji && playerMap.get("bluePlayer8").includes("[PLAYER 8 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
                 playerMap.set("bluePlayer8", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
             }
 
-            if (reaction.emoji.name === "❌" && usernameNoTag !== "Pub Bot") {
+            if (reaction.emoji.name === "❌" && usernameNoTag !== "Mojito") {
                 setDefault(userNameID);
                 removeUserReactions(userNameID);
             }
@@ -287,7 +287,7 @@ module.exports = {
             refreshEmbed()
 
             const member = message.guild.members.cache.get(userNameID);
-            if (reaction.emoji.name === "🔨" && usernameNoTag !== "Pub Bot") {
+            if (reaction.emoji.name === "🔨" && usernameNoTag !== "Mojito") {
                 message.reactions.cache.get("🔨").remove();
                 if (member.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
                     const blueButtons1 = new ActionRowBuilder()
