@@ -15,27 +15,27 @@ module.exports = {
             .setDescription(`Welcome to The Local Pub! Please react to receive the corresponding role! These roles will give you access to the rest of the server.\n‎`)
             .addFields(
                 {
-                    name: "<:ARAM:1059647165628153999>  ARAM  <:ARAM:1059647165628153999>",
+                    name: "<:ARAM1:1061407791874572358>  ARAM  <:ARAM1:1061407791874572358>",
                     value: `Gives access to ARAM related channels.\n‎`,
                 },
                 {
-                    name: "<:summonersRift:1059647173526032504>  Summoners Rift  <:summonersRift:1059647173526032504>",
+                    name: "<:summonersRift1:1061407821620576286>  Summoners Rift  <:summonersRift1:1061407821620576286>",
                     value: `Gives access to Summoners Rift related channels.\n‎`,
                 },
                 {
-                    name: "<:TFT:1059647175388319815>  TFT  <:TFT:1059647175388319815>",
+                    name: "<:TFT1:1061407824233644154>  TFT  <:TFT1:1061407824233644154>",
                     value: `Gives access to TFT related channels.\n‎`,
                 },
                 {
-                    name: "<:customARAM:1059650622334435398>  Custom ARAM  <:customARAM:1059650622334435398>",
+                    name: "<:customARAM1:1061407793552306296>  Custom ARAM  <:customARAM1:1061407793552306296>",
                     value: `Gives access to ARAM related channels **AND** will also grant you the ability to be pinged when custom ARAM events are started.\n‎`,
                 },
                 {
-                    name: "<:customRift:1059650624171544607>  Custom Summoners Rift  <:customRift:1059650624171544607>",
+                    name: "<:customRift1:1061407796211490916>  Custom Summoners Rift  <:customRift1:1061407796211490916>",
                     value: `Gives access to Summoners Rift related channels **AND** will also grant you the ability to be pinged when custom Summoners Rift events are started.\n‎`,
                 },
                 {
-                    name: "<:customTFT:1059650626352590898>  Custom TFT  <:customTFT:1059650626352590898>",
+                    name: "<:customTFT1:1061407798577082459>  Custom TFT  <:customTFT1:1061407798577082459>",
                     value: `Gives access to TFT related channels **AND** will also grant you the ability to be pinged when custom TFT events are started.\n‎`,
                 },
                 {
