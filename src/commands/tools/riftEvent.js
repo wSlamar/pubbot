@@ -245,6 +245,8 @@ module.exports = {
 
         const eventDayMomentUnix = momentTZ.tz(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`, `${eventTimezone}`).unix()
 
+        let messageContent = `${eventPing} this event will start <t:${eventDayMomentUnix}:R>`
+
         message.react(preTeam1Emoji).catch(error => {
             if (error.code == 10014) {
                 collector.stop()
@@ -551,20 +553,21 @@ module.exports = {
                     return;
                 } else if (timeSpan <= 0) {
                     clearInterval(interval);
-                    collector.stop()
-                    buttonCollector.stop()
-
                     team1Channel.createInvite()
                         .then(invite1 => team2Channel.createInvite().then(invite2 => message.reply({
                             content: `${eventPing} **${eventTitle}** has started!\n${preTeam1Emoji} **TEAM 1** ${preTeam1Emoji} will join: ${invite1}\n${preTeam2Emoji} **TEAM 2** ${preTeam2Emoji} will join: ${invite2}`
                         }))).catch(error => { if (error.code !== 10008) { console.error('Error on replying to message', error); } });
 
-                    message.edit({ content: `${eventPing}` }).catch(error => {
+                    messageContent = `${eventPing}`
+
+                    message.edit({ content: `${messageContent}` }).catch(error => {
                         collector.stop()
                         buttonCollector.stop()
                         clearInterval(interval)
                         if (error.code !== 10008) { console.error('Error on message edit:', error); }
                     });
+
+                    delayEdit()
 
                     return;
 
@@ -585,6 +588,13 @@ module.exports = {
         }
 
         intervals()
+
+        async function delayEdit() {
+            setTimeout(() => {
+                collector.stop()
+                buttonCollector.stop()
+            }, 20 * 60 * 1000);
+        }
 
         async function refreshEmbed() {
             const customsEmbed = new EmbedBuilder()
@@ -619,7 +629,7 @@ module.exports = {
                         inline: true,
                     }
                 );
-            message.edit({ embeds: [customsEmbed], content: `${eventPing} this event will start <t:${eventDayMomentUnix}:R>`, }).catch(error => {
+            message.edit({ embeds: [customsEmbed], content: `${messageContent}`, }).catch(error => {
                 collector.stop()
                 buttonCollector.stop()
                 clearInterval(interval)
