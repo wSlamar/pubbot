@@ -173,16 +173,22 @@ module.exports = {
         const team2Channel = interaction.options.getChannel("team-2-voice-channel");
         const eventPing = interaction.options.getMentionable("event-ping");
 
-        const message = await interaction.reply({
-            embeds: [embeds.customsEmbed],
+        let channelComannd = client.channels.cache.get(interaction.channelId);
+
+        const replyMessage = await interaction.reply({
+            content: "‎"
+        });
+
+        const message = await channelComannd.send({
             content: `${eventPing}`,
+            embeds: [embeds.customsEmbed],
             fetchReply: true,
         });
 
+        interaction.deleteReply()
+
         team1Channel.permissionOverwrites.edit(verifiedRole, { Connect: true });
         team2Channel.permissionOverwrites.edit(verifiedRole, { Connect: true });
-        // team1Channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { Connect: true });
-        // team2Channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { Connect: true });
 
         const eventDescription = interaction.options.getString("event-description");
         const eventTitle = interaction.options.getString("event-title").toUpperCase();
@@ -632,7 +638,6 @@ module.exports = {
             message.edit({ embeds: [customsEmbed], content: `${messageContent}`, }).catch(error => {
                 collector.stop()
                 buttonCollector.stop()
-                clearInterval(interval)
                 if (error.code !== 10008) { console.error('Error on message edit:', error); }
             });
         }
