@@ -251,7 +251,7 @@ module.exports = {
             return reaction.emoji.name === playerEmoji || reaction.emoji.name === "❌" || reaction.emoji.name === "🔨";
         };
 
-        const collector = message.createReactionCollector({ filter, });
+        const collector = message.createReactionCollector({ filter, dispose: true});
 
         const buttonCollector = client.channels.cache.get(adminChannel).createMessageComponentCollector({ componentType: ComponentType.Button })
 

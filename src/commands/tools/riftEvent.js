@@ -287,7 +287,7 @@ module.exports = {
             return reaction.emoji.name === team1Emoji || reaction.emoji.name === team2Emoji || reaction.emoji.name === "❌" || reaction.emoji.name === "🔨";
         };
 
-        const collector = message.createReactionCollector({ filter, });
+        const collector = message.createReactionCollector({ filter, dispose: true});
 
         const buttonCollector = client.channels.cache.get(adminChannel).createMessageComponentCollector({ componentType: ComponentType.Button })
 
