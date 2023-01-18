@@ -163,7 +163,8 @@ module.exports = {
         let channelComannd = client.channels.cache.get(interaction.channelId);
 
         const replyMessage = await interaction.reply({
-            content: "‎"
+            content: "You can remove a player manually from this event below by reacting with the 🔨 emoji to the event.",
+            ephemeral: true
         });
 
         const message = await channelComannd.send({
@@ -171,8 +172,6 @@ module.exports = {
             embeds: [embeds.customsEmbed],
             fetchReply: true,
         });
-
-        interaction.deleteReply()
 
         eventChannel.permissionOverwrites.edit(verifiedRole, { Connect: true });
 
