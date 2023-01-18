@@ -173,7 +173,7 @@ module.exports = {
             fetchReply: true,
         });
 
-        eventChannel.permissionOverwrites.edit(verifiedRole, { Connect: true });
+        // eventChannel.permissionOverwrites.edit(verifiedRole, { Connect: true });
         // eventChannel.permissionOverwrites.edit(message.guild.roles.everyone.id, { Connect: true });
 
         const eventDescription = interaction.options.getString("event-description");
