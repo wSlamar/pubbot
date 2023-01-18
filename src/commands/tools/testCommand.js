@@ -168,7 +168,6 @@ module.exports = {
         const eventPing = interaction.options.getMentionable("event-ping");
 
         const message = await interaction.reply({
-            embeds: [embeds.customsEmbed],
             content: `${eventPing}`,
             fetchReply: true,
         });
