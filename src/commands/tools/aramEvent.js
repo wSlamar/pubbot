@@ -248,7 +248,6 @@ module.exports = {
         message.react(preTeam1Emoji).catch(error => {
             if (error.code == 10014) {
                 collector.stop()
-                buttonCollector.stop()
                 interaction.followUp({
                     embeds: [embeds.emojiEmbed],
                     ephemeral: true
@@ -262,7 +261,6 @@ module.exports = {
         message.react(preTeam2Emoji).catch(error => {
             if (error.code == 10014) {
                 collector.stop()
-                buttonCollector.stop()
                 interaction.followUp({
                     embeds: [embeds.emojiEmbed],
                     ephemeral: true
@@ -279,9 +277,7 @@ module.exports = {
             return reaction.emoji.name === team1Emoji || reaction.emoji.name === team2Emoji || reaction.emoji.name === "❌" || reaction.emoji.name === "🔨";
         };
 
-        const collector = message.createReactionCollector({ filter, dispose: true});
-
-        const buttonCollector = client.channels.cache.get(adminChannel).createMessageComponentCollector({ componentType: ComponentType.Button })
+        const collector = message.createReactionCollector({ filter, dispose: true });
 
         collector.on("collect", async (reaction, user) => {
             const estDateLog = new Date()
@@ -333,125 +329,101 @@ module.exports = {
             if (reaction.emoji.name === "🔨" && usernameNoTag !== "Mojito") {
                 message.reactions.cache.get("🔨").remove();
                 if (member.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
-                    const blueButtons = new ActionRowBuilder()
-                        .addComponents(
-                            new ButtonBuilder()
-                                .setCustomId('removeBluePlayer1')
-                                .setLabel(`${playerMap.get("bluePlayer1")[2]}`)
-                                .setStyle(ButtonStyle.Primary),
-                            new ButtonBuilder()
-                                .setCustomId('removeBluePlayer2')
-                                .setLabel(`${playerMap.get("bluePlayer2")[2]}`)
-                                .setStyle(ButtonStyle.Primary),
-                            new ButtonBuilder()
-                                .setCustomId('removeBluePlayer3')
-                                .setLabel(`${playerMap.get("bluePlayer3")[2]}`)
-                                .setStyle(ButtonStyle.Primary),
-                            new ButtonBuilder()
-                                .setCustomId('removeBluePlayer4')
-                                .setLabel(`${playerMap.get("bluePlayer4")[2]}`)
-                                .setStyle(ButtonStyle.Primary),
-                            new ButtonBuilder()
-                                .setCustomId('removeBluePlayer5')
-                                .setLabel(`${playerMap.get("bluePlayer5")[2]}`)
-                                .setStyle(ButtonStyle.Primary),
-                        );
-                    const redButtons = new ActionRowBuilder()
-                        .addComponents(
-                            new ButtonBuilder()
-                                .setCustomId('removeRedPlayer1')
-                                .setLabel(`${playerMap.get("redPlayer1")[2]}`)
-                                .setStyle(ButtonStyle.Danger),
-                            new ButtonBuilder()
-                                .setCustomId('removeRedPlayer2')
-                                .setLabel(`${playerMap.get("redPlayer2")[2]}`)
-                                .setStyle(ButtonStyle.Danger),
-                            new ButtonBuilder()
-                                .setCustomId('removeRedPlayer3')
-                                .setLabel(`${playerMap.get("redPlayer3")[2]}`)
-                                .setStyle(ButtonStyle.Danger),
-                            new ButtonBuilder()
-                                .setCustomId('removeRedPlayer4')
-                                .setLabel(`${playerMap.get("redPlayer4")[2]}`)
-                                .setStyle(ButtonStyle.Danger),
-                            new ButtonBuilder()
-                                .setCustomId('removeRedPlayer5')
-                                .setLabel(`${playerMap.get("redPlayer5")[2]}`)
-                                .setStyle(ButtonStyle.Danger),
-                        );
-
                     const channel = client.channels.cache.get(adminChannel);
-                    modMessage = await channel.send({
+
+                    const modMessageEmbed = new EmbedBuilder()
+                    .setColor('#167301')
+                    .setTitle(eventTitle)
+                    .setDescription(`<t:${eventDayMomentUnix}:F>`)
+                    .setThumbnail('https://i.imgur.com/LFGs4Fp.png')
+                    .addFields(
+                        {
+                            name: "PLAYER REMOVAL",
+                            value: `React to this message with the corresponding player emoji to remove them from the event list`,
+                        },
+                        {
+                            name: `TEAM 1`,
+                            value: `1️⃣ ${playerMap.get("bluePlayer1")[0]}\n2️⃣ ${playerMap.get("bluePlayer2")[0]}\n3️⃣ ${playerMap.get("bluePlayer3")[0]}\n4️⃣ ${playerMap.get("bluePlayer4")[0]}\n5️⃣ ${playerMap.get("bluePlayer5")[0]}`,
+                            inline: true,
+                        },
+                        {
+                            name: `TEAM 2`,
+                            value: `6️⃣ ${playerMap.get("redPlayer1")[0]}\n7️⃣ ${playerMap.get("redPlayer2")[0]}\n8️⃣ ${playerMap.get("redPlayer3")[0]}\n9️⃣ ${playerMap.get("redPlayer4")[0]}\n🔟 ${playerMap.get("redPlayer5")[0]}`,
+                            inline: true,
+                        },
+                    );
+
+                    let modMessage = await channel.send({
                         content: `<@${userNameID}> What player would you like to remove?\n`,
-                        components: [blueButtons, redButtons]
-                    });
+                        embeds: [modMessageEmbed]
+                    })
 
-                    await buttonCollector.on('collect', i => {
-                        switch (i.customId) {
-                            case 'removeBluePlayer1':
-                                removeUserReactions(playerMap.get("bluePlayer1")[1]);
-                                setDefault(playerMap.get("bluePlayer1")[1]);
-                                modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removeBluePlayer1 button:', error); } });
-                                break;
+                    const modFilter = (reaction, user) => {
+                        return reaction.emoji.name === "1️⃣" || reaction.emoji.name === "2️⃣" || reaction.emoji.name === "3️⃣" || reaction.emoji.name === "4️⃣" || reaction.emoji.name === "5️⃣" || reaction.emoji.name === "6️⃣" || reaction.emoji.name === "7️⃣" || reaction.emoji.name === "8️⃣" || reaction.emoji.name === "9️⃣" || reaction.emoji.name === "🔟";
+                    };
 
-                            case 'removeBluePlayer2':
-                                removeUserReactions(playerMap.get("bluePlayer2")[1]);
-                                setDefault(playerMap.get("bluePlayer2")[1]);
-                                modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removeBluePlayer2 button:', error); } });
-                                break;
+                    const modMessageCollector = modMessage.createReactionCollector({ modFilter, dispose: true });
 
-                            case 'removeBluePlayer3':
-                                removeUserReactions(playerMap.get("bluePlayer3")[1]);
-                                setDefault(playerMap.get("bluePlayer3")[1]);
-                                modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removeBluePlayer3 button:', error); } });
-                                break;
+                    modMessageCollector.on("collect", async (reaction, user) => {
+                        const fullUserName = user.tag.toString();
+                        const userNameID = user.id.toString();
+                        usernameNoTag = fullUserName.substring(0, fullUserName.length - 5);
 
-                            case 'removeBluePlayer4':
-                                removeUserReactions(playerMap.get("bluePlayer4")[1]);
-                                setDefault(playerMap.get("bluePlayer4")[1]);
-                                modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removeBluePlayer4 button:', error); } });
-                                break;
-
-                            case 'removeBluePlayer5':
-                                removeUserReactions(playerMap.get("bluePlayer5")[1]);
-                                setDefault(playerMap.get("bluePlayer5")[1]);
-                                modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removeBluePlayer5 button:', error); } });
-                                break;
-
-                            case 'removeRedPlayer1':
-                                removeUserReactions(playerMap.get("redPlayer1")[1]);
-                                setDefault(playerMap.get("redPlayer1")[1]);
-                                modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removeRedPlayer1 button:', error); } });
-                                break;
-
-                            case 'removeRedPlayer2':
-                                removeUserReactions(playerMap.get("redPlayer2")[1]);
-                                setDefault(playerMap.get("redPlayer2")[1]);
-                                modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removeRedPlayer2 button:', error); } });
-                                break;
-
-                            case 'removeRedPlayer3':
-                                removeUserReactions(playerMap.get("redPlayer3")[1]);
-                                setDefault(playerMap.get("redPlayer3")[1]);
-                                modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removeRedPlayer3 button:', error); } });
-                                break;
-
-                            case 'removeRedPlayer4':
-                                removeUserReactions(playerMap.get("redPlayer4")[1]);
-                                setDefault(playerMap.get("redPlayer4")[1]);
-                                modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removeRedPlayer4 button:', error); } });
-                                break;
-
-                            case 'removeRedPlayer5':
-                                removeUserReactions(playerMap.get("redPlayer5")[1]);
-                                setDefault(playerMap.get("redPlayer5")[1]);
-                                modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on removeRedPlayer5 button:', error); } });
-                                break;
-
-                            default:
-                                break;
+                        if (reaction.emoji.name === "1️⃣" && usernameNoTag !== "Mojito") {
+                            removeUserReactions(playerMap.get("bluePlayer1")[1]);
+                            setDefault(playerMap.get("bluePlayer1")[1]);
+                            reaction.users.remove(user).then(() => modMessageCollector.stop())
                         }
-                    });
+                        if (reaction.emoji.name === "2️⃣" && usernameNoTag !== "Mojito") {
+                            removeUserReactions(playerMap.get("bluePlayer2")[1]);
+                            setDefault(playerMap.get("bluePlayer2")[1]);
+                            reaction.users.remove(user).then(() => modMessageCollector.stop())
+                        }
+                        if (reaction.emoji.name === "3️⃣" && usernameNoTag !== "Mojito") {
+                            removeUserReactions(playerMap.get("bluePlayer3")[1]);
+                            setDefault(playerMap.get("bluePlayer3")[1]);
+                            reaction.users.remove(user).then(() => modMessageCollector.stop())
+                        }
+                        if (reaction.emoji.name === "4️⃣" && usernameNoTag !== "Mojito") {
+                            removeUserReactions(playerMap.get("bluePlayer4")[1]);
+                            setDefault(playerMap.get("bluePlayer4")[1]);
+                            reaction.users.remove(user).then(() => modMessageCollector.stop())
+                        }
+                        if (reaction.emoji.name === "5️⃣" && usernameNoTag !== "Mojito") {
+                            removeUserReactions(playerMap.get("bluePlayer5")[1]);
+                            setDefault(playerMap.get("bluePlayer5")[1]);
+                            reaction.users.remove(user).then(() => modMessageCollector.stop())
+                        }
+                        if (reaction.emoji.name === "6️⃣" && usernameNoTag !== "Mojito") {
+                            removeUserReactions(playerMap.get("redPlayer1")[1]);
+                            setDefault(playerMap.get("redPlayer1")[1]);
+                            reaction.users.remove(user).then(() => modMessageCollector.stop())
+                        }
+                        if (reaction.emoji.name === "7️⃣" && usernameNoTag !== "Mojito") {
+                            removeUserReactions(playerMap.get("redPlayer2")[1]);
+                            setDefault(playerMap.get("redPlayer2")[1]);
+                            reaction.users.remove(user).then(() => modMessageCollector.stop())
+                        }
+                        if (reaction.emoji.name === "8️⃣" && usernameNoTag !== "Mojito") {
+                            removeUserReactions(playerMap.get("redPlayer3")[1]);
+                            setDefault(playerMap.get("redPlayer3")[1]);
+                            reaction.users.remove(user).then(() => modMessageCollector.stop())
+                        }
+                        if (reaction.emoji.name === "9️⃣" && usernameNoTag !== "Mojito") {
+                            removeUserReactions(playerMap.get("redPlayer4")[1]);
+                            setDefault(playerMap.get("redPlayer4")[1]);
+                            reaction.users.remove(user).then(() => modMessageCollector.stop())
+                        }
+                        if (reaction.emoji.name === "🔟" && usernameNoTag !== "Mojito") {
+                            removeUserReactions(playerMap.get("redPlayer5")[1]);
+                            setDefault(playerMap.get("redPlayer5")[1]);
+                            reaction.users.remove(user).then(() => modMessageCollector.stop())
+                        }
+                    })
+                    modMessageCollector.on("end", (collected) => {
+                        console.log('\x1b[36m', '/pub-aram:', '\x1b[32m', `Collected removal emoji from [${user.tag}] at [${convertTZ(estDateLog, 'EST').toLocaleString()}] to remove a player`, '\x1b[0m');
+                        modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on mod message removal', error); } });
+                    })
                 }
             }
 
@@ -528,9 +500,6 @@ module.exports = {
         collector.on("end", (collected) => {
             console.log('\x1b[36m', '/pub-aram:', '\x1b[31m', `Collected ${collected.size} total emoji reactions`, '\x1b[0m');
         });
-        buttonCollector.on('end', collected => {
-            console.log('\x1b[36m', '/pub-aram:', '\x1b[31m', `Collected ${collected.size} total button reactions`, '\x1b[0m');
-        });
 
         const eventDayMoment = moment(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`);
 
@@ -547,7 +516,6 @@ module.exports = {
                 if (timeSpan <= -today) {
                     clearInterval(interval);
                     collector.stop()
-                    buttonCollector.stop()
                     return;
                 } else if (timeSpan <= 0) {
                     clearInterval(interval);
@@ -560,7 +528,6 @@ module.exports = {
 
                     message.edit({ content: `${messageContent}` }).catch(error => {
                         collector.stop()
-                        buttonCollector.stop()
                         clearInterval(interval)
                         if (error.code !== 10008) { console.error('Error on message edit:', error); }
                     });
@@ -572,7 +539,6 @@ module.exports = {
                 } else {
                     if (eventDayMoment.isValid()) { } else {
                         collector.stop()
-                        buttonCollector.stop()
                         clearInterval(interval)
                         interaction.followUp({
                             embeds: [embeds.formatEmbed],
@@ -590,7 +556,6 @@ module.exports = {
         async function delayEdit() {
             setTimeout(() => {
                 collector.stop()
-                buttonCollector.stop()
             }, 20 * 60 * 1000);
         }
 
@@ -624,7 +589,6 @@ module.exports = {
                 );
             message.edit({ embeds: [customsEmbed], content: `${messageContent}`, }).catch(error => {
                 collector.stop()
-                buttonCollector.stop()
                 if (error.code !== 10008) { console.error('Error on message edit:', error); }
             });
         }
