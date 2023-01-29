@@ -63,19 +63,19 @@ module.exports = {
         const tft = new EmbedBuilder()
             .setColor('#167301')
             .setThumbnail('https://i.imgur.com/3I4v0tV.png')
-            .setTitle("<:TFT1:1061407824233644154>v  THE LOCAL PUB'S TFT EVENTS  <:TFT1:1061407824233644154>v")
+            .setTitle("<:TFT1:1061407824233644154>  THE LOCAL PUB'S TFT EVENTS  <:TFT1:1061407824233644154>")
             .setDescription(`This channels purpose is to kick off TFT events that will be hosted by our <@&926176764080840784> or <@&1038555833321128097>. We welcome everyone to join us for some fun and encourage everyone to participate! \n‎`)
             .addFields(
                 {
-                    name: "<:TFT1:1061407824233644154>v  JOINING THE EVENT  <:TFT1:1061407824233644154>v",
+                    name: "<:TFT1:1061407824233644154>  JOINING THE EVENT  <:TFT1:1061407824233644154>",
                     value: `When an event is kicked off, simply click on the corresponding team emoji for which team you would like to join. These events are first come first serve so make sure to reserve your spot when the event is kicked off! \n‎`,
                 },
                 {
-                    name: "<:TFT1:1061407824233644154>v  REMOVING YOURSELF FROM THE EVENT  <:TFT1:1061407824233644154>v",
+                    name: "<:TFT1:1061407824233644154>  REMOVING YOURSELF FROM THE EVENT  <:TFT1:1061407824233644154>",
                     value: `If you signed up to be on a team for the event and cannot make it, make sure to react to the event with the ❌ emoji to remove yourself. We want everyone to be able to participate in our events and blocking someone from joining is not fun for anyone. \n‎`
                 },
                 {
-                    name: "<:TFT1:1061407824233644154>v  RULES  <:TFT1:1061407824233644154>v",
+                    name: "<:TFT1:1061407824233644154>  RULES  <:TFT1:1061407824233644154>",
                     value: `Before joining the event, make sure to check out our event rules in the <#1059575641760084148> channel. Any rules that are not followed are punishable by moderators discretion.`
                 },
             )
