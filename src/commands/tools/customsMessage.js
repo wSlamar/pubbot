@@ -68,11 +68,11 @@ module.exports = {
             .addFields(
                 {
                     name: "<:TFT1:1061407824233644154>  JOINING THE EVENT  <:TFT1:1061407824233644154>",
-                    value: `When an event is kicked off, simply click on the corresponding team emoji for which team you would like to join. These events are first come first serve so make sure to reserve your spot when the event is kicked off! \n‎`,
+                    value: `When an event is kicked off, simply click on the corresponding player emoji to join the event. These events are first come first serve so make sure to reserve your spot when the event is kicked off! \n‎`,
                 },
                 {
                     name: "<:TFT1:1061407824233644154>  REMOVING YOURSELF FROM THE EVENT  <:TFT1:1061407824233644154>",
-                    value: `If you signed up to be on a team for the event and cannot make it, make sure to react to the event with the ❌ emoji to remove yourself. We want everyone to be able to participate in our events and blocking someone from joining is not fun for anyone. \n‎`
+                    value: `If you signed up to participate in the event and cannot make it, make sure to react to the event with the ❌ emoji to remove yourself. We want everyone to be able to participate in our events and blocking someone from joining is not fun for anyone. \n‎`
                 },
                 {
                     name: "<:TFT1:1061407824233644154>  RULES  <:TFT1:1061407824233644154>",
