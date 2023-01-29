@@ -155,7 +155,13 @@ module.exports = {
         ),
 
     async execute(interaction, client) {
-        console.log('\x1b[36m', '/pub-rift has been kicked off', '\x1b[0m')
+        const estDateLog = new Date()
+        function convertTZ(date, tzString) {
+            return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", { timeZone: tzString }));
+        }
+
+        console.log('\x1b[36m', `/pub-rift has been kicked off by [${interaction.user.username}#${interaction.user.discriminator}] at [${convertTZ(estDateLog, 'EST').toLocaleString()}]`, '\x1b[0m')
+
         const playerMap = new Map([
             ["bluePlayer1", ["[PLAYER 1 OPEN SPOT]", "BLUE PLAYER 1 ID", "[EMPTY SPOT]"]],
             ["bluePlayer2", ["[PLAYER 2 OPEN SPOT]", "BLUE PLAYER 2 ID", "[EMPTY SPOT]"]],
@@ -244,10 +250,6 @@ module.exports = {
 
         const timeMilitary = `${convertTime12to24(timeStandard)}:00`
 
-        function convertTZ(date, tzString) {
-            return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", { timeZone: tzString }));
-        }
-
         const eventDayMomentUnix = momentTZ.tz(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`, `${eventTimezone}`).unix()
 
         let messageContent = `${eventPing} this event will start <t:${eventDayMomentUnix}:R>`
@@ -287,7 +289,6 @@ module.exports = {
         const collector = message.createReactionCollector({ filter, dispose: true });
 
         collector.on("collect", async (reaction, user) => {
-            const estDateLog = new Date()
             console.log('\x1b[36m', '/pub-rift:', '\x1b[32m', `Collected [${reaction.emoji.name}] from [${user.tag}] at [${convertTZ(estDateLog, 'EST').toLocaleString()}]`, '\x1b[0m');
             const fullUserName = user.tag.toString();
             const userNameID = user.id.toString();
@@ -428,7 +429,7 @@ module.exports = {
                         }
                     })
                     modMessageCollector.on("end", (collected) => {
-                        console.log('\x1b[36m', '/pub-rift:', '\x1b[32m', `Collected removal emoji from [${user.tag}] at [${convertTZ(estDateLog, 'EST').toLocaleString()}] to remove a player`, '\x1b[0m');
+                        console.log('\x1b[36m', '/pub-rift:', '\x1b[32m', `Collected [number emoji] from [${user.tag}] at [${convertTZ(estDateLog, 'EST').toLocaleString()}] to remove a player`, '\x1b[0m');
                         modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on mod message removal', error); } });
                     })
                 }

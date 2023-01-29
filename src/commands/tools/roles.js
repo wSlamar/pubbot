@@ -11,7 +11,7 @@ module.exports = {
         const roles = new EmbedBuilder()
             .setColor('#167301')
             .setTitle('THE LOCAL PUB ROLES')
-            .setFooter({text: "❗❗❗ READ AND REACT TO OUR RULES TO GAIN MORE ACCESS TO THE CHANNELS ❗❗❗"})
+            .setFooter({text: "❗❗❗ READ AND ACCEPT OUR RULES TO GAIN MORE ACCESS TO THE CHANNELS ❗❗❗"})
             .setDescription(`Welcome to The Local Pub! Please react to receive the corresponding role! These roles will give you access to the rest of the server.\n‎`)
             .addFields(
                 {
@@ -34,18 +34,25 @@ module.exports = {
                     name: "<:customRift1:1061407796211490916>  Custom Summoners Rift  <:customRift1:1061407796211490916>",
                     value: `Gives access to Summoners Rift related channels **AND** will also grant you the ability to be pinged when custom Summoners Rift events are started.\n‎`,
                 },
-                {
-                    name: "<:customTFT1:1061407798577082459>  Custom TFT  <:customTFT1:1061407798577082459>",
-                    value: `Gives access to TFT related channels **AND** will also grant you the ability to be pinged when custom TFT events are started.\n‎`,
-                },
+                // {
+                //     name: "<:customTFT1:1061407798577082459>  Custom TFT  <:customTFT1:1061407798577082459>",
+                //     value: `Gives access to TFT related channels **AND** will also grant you the ability to be pinged when custom TFT events are started.\n‎`,
+                // },
                 {
                     name: ":video_game: Other Games :video_game:",
                     value: `Gives access to other games related channels.\n‎`,
                 },
             )
 
-        const message = await interaction.reply({
+        let channelComannd = client.channels.cache.get(interaction.channelId);
+
+        const replyMessage = await interaction.reply({
+            content: "/pub-roles has been kicked",
+            ephemeral: true
+        });
+
+        const message = await channelComannd.send({
             embeds: [roles],
-        })
+        });
     }
 };
