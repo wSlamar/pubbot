@@ -24,7 +24,7 @@ module.exports = {
             .setColor('#167301')
             .setThumbnail('https://i.imgur.com/6ZfWcjq.png')
             .setTitle("<:customARAM1:1061407793552306296>  THE LOCAL PUB'S CUSTOM ARAM EVENTS  <:customARAM1:1061407793552306296>")
-            .setDescription(`This channels purpose is to kick off Custom ARAM events that will be hosted by our <@&1059638173262676078> or <@&1059638175649235075>. We welcome everyone to join us for some fun and encourage everyone to participate! \n‎`)
+            .setDescription(`This channels purpose is to kick off Custom ARAM events that will be hosted by our <@&926176764080840784> or <@&1038555833321128097>. We welcome everyone to join us for some fun and encourage everyone to participate! \n‎`)
             .addFields(
                 {
                     name: "<:customARAM1:1061407793552306296>  JOINING THE EVENT  <:customARAM1:1061407793552306296>",
@@ -36,7 +36,7 @@ module.exports = {
                 },
                 {
                     name: "<:customARAM1:1061407793552306296>  RULES  <:customARAM1:1061407793552306296>",
-                    value: `Before joining the event, make sure to check out our event rules in the <#1059638278116098118> channel. Any rules that are not followed are punishable by moderators discretion.`
+                    value: `Before joining the event, make sure to check out our event rules in the <#1059560163306115092> channel. Any rules that are not followed are punishable by moderators discretion.`
                 },
             )
 
@@ -44,7 +44,7 @@ module.exports = {
             .setColor('#167301')
             .setThumbnail('https://i.imgur.com/E1FruW1.png')
             .setTitle("<:customRift1:1061407796211490916>  THE LOCAL PUB'S CUSTOM RIFT EVENTS  <:customRift1:1061407796211490916>")
-            .setDescription(`This channels purpose is to kick off Custom Summoners Rift events that will be hosted by our <@&1059638173262676078> or <@&1059638175649235075>. We welcome everyone to join us for some fun and encourage everyone to participate! \n‎`)
+            .setDescription(`This channels purpose is to kick off Custom Summoners Rift events that will be hosted by our <@&926176764080840784> or <@&1038555833321128097>. We welcome everyone to join us for some fun and encourage everyone to participate! \n‎`)
             .addFields(
                 {
                     name: "<:customRift1:1061407796211490916>  JOINING THE EVENT  <:customRift1:1061407796211490916>",
@@ -56,7 +56,7 @@ module.exports = {
                 },
                 {
                     name: "<:customRift1:1061407796211490916>  RULES  <:customRift1:1061407796211490916>",
-                    value: `Before joining the event, make sure to check out our event rules in the <#1059638278116098118> channel. Any rules that are not followed are punishable by moderators discretion.`
+                    value: `Before joining the event, make sure to check out our event rules in the <#1059561636739940572> channel. Any rules that are not followed are punishable by moderators discretion.`
                 },
             )
 
@@ -64,7 +64,7 @@ module.exports = {
             .setColor('#167301')
             .setThumbnail('https://i.imgur.com/3I4v0tV.png')
             .setTitle("<:TFT1:1061407824233644154>v  THE LOCAL PUB'S TFT EVENTS  <:TFT1:1061407824233644154>v")
-            .setDescription(`This channels purpose is to kick off TFT events that will be hosted by our <@&1059638173262676078> or <@&1059638175649235075>. We welcome everyone to join us for some fun and encourage everyone to participate! \n‎`)
+            .setDescription(`This channels purpose is to kick off TFT events that will be hosted by our <@&926176764080840784> or <@&1038555833321128097>. We welcome everyone to join us for some fun and encourage everyone to participate! \n‎`)
             .addFields(
                 {
                     name: "<:TFT1:1061407824233644154>v  JOINING THE EVENT  <:TFT1:1061407824233644154>v",
@@ -76,7 +76,7 @@ module.exports = {
                 },
                 {
                     name: "<:TFT1:1061407824233644154>v  RULES  <:TFT1:1061407824233644154>v",
-                    value: `Before joining the event, make sure to check out our event rules in the <#1059638278116098118> channel. Any rules that are not followed are punishable by moderators discretion.`
+                    value: `Before joining the event, make sure to check out our event rules in the <#1059575641760084148> channel. Any rules that are not followed are punishable by moderators discretion.`
                 },
             )
 
