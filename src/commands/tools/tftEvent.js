@@ -145,7 +145,7 @@ module.exports = {
         ),
 
     async execute(interaction, client) {
-        const estDateLog = new Date()
+        let estDateLog = new Date()
         function convertTZ(date, tzString) {
             return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", { timeZone: tzString }));
         }
@@ -254,6 +254,7 @@ module.exports = {
         const collector = message.createReactionCollector({ filter, dispose: true});
 
         collector.on("collect", async (reaction, user) => {
+            estDateLog = new Date()
             console.log('\x1b[36m', '/pub-tft:', '\x1b[32m', `Collected [${reaction.emoji.name}] from [${user.tag}] at [${convertTZ(estDateLog, 'EST').toLocaleString()}]`, '\x1b[0m');
             const fullUserName = user.tag.toString();
             const userNameID = user.id.toString();
