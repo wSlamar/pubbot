@@ -124,7 +124,8 @@ module.exports = {
             .setDescription("image that will be associated with the event")
             .setRequired(true)
             .addChoices(
-                { name: 'TFT', value: 'https://i.imgur.com/OiNyojp.png' },
+                { name: 'TFT (still image)', value: 'https://i.imgur.com/OiNyojp.png' },
+                { name: 'TFT (animated gif)', value: 'https://media1.tenor.com/images/e8d5dbc18f030249f1465bf097649fdf/tenor.gif?itemid=27606910' },
                 { name: 'St Pats Day Events & Gaming', value: 'https://i.imgur.com/br1woyw.png' },
                 { name: 'Christmas Events & Gaming', value: 'https://i.imgur.com/seYI4bu.png' },
                 { name: 'Halloween Events & Gaming', value: 'https://i.imgur.com/JBfz472.png' },
@@ -504,7 +505,7 @@ module.exports = {
                 .setColor('#167301')
                 .setTitle(eventTitle)
                 .setDescription(`<t:${eventDayMomentUnix}:F>`)
-                .setThumbnail('https://i.imgur.com/3I4v0tV.png')
+                .setThumbnail('https://i.imgur.com/iZD4ihw.png')
                 .setImage(eventImage)
                 .setFooter({ text: `To be removed from this event list, react with ❌ to this event.` })
                 .addFields(

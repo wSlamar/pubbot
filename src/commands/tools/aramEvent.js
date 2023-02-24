@@ -124,7 +124,8 @@ module.exports = {
             .setDescription("image that will be associated with the event")
             .setRequired(true)
             .addChoices(
-                { name: 'Custom ARAM', value: 'https://i.imgur.com/LPyzExv.png' },
+                { name: 'Custom ARAM (still image)', value: 'https://i.imgur.com/LPyzExv.png' },
+                { name: 'Custom ARAM (animated gif)', value: 'https://media1.tenor.com/images/eb0d426a21704bc561d8c5822f4eacfd/tenor.gif?itemid=27606843' },
                 { name: 'St Pats Day Events & Gaming', value: 'https://i.imgur.com/br1woyw.png' },
                 { name: 'Christmas Events & Gaming', value: 'https://i.imgur.com/seYI4bu.png' },
                 { name: 'Halloween Events & Gaming', value: 'https://i.imgur.com/JBfz472.png' },
@@ -566,7 +567,7 @@ module.exports = {
                 .setColor('#167301')
                 .setTitle(eventTitle)
                 .setDescription(`<t:${eventDayMomentUnix}:F>`)
-                .setThumbnail('https://i.imgur.com/6ZfWcjq.png')
+                .setThumbnail('https://i.imgur.com/aDVseTe.png')
                 .setImage(eventImage)
                 .setFooter({ text: `To be removed from a team or change teams, react with ❌ to this event.` })
                 .addFields(

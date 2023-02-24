@@ -36,7 +36,7 @@ module.exports = {
 
         const aramRules = new EmbedBuilder()
             .setColor('#167301')
-            .setThumbnail('https://i.imgur.com/6ZfWcjq.png')
+            .setThumbnail('https://i.imgur.com/aDVseTe.png')
             .setTitle(`${aramEmoji}  CUSTOM ARAM RULES AND GUIDELINES  ${aramEmoji}`)
             .setDescription(`Please keep in mind our mods may punish at their own discretion depending on the situation. Warnings may not be necessary if the circumstances are too unruly. \n‎`)
             .addFields(
@@ -68,7 +68,7 @@ module.exports = {
 
         const summonersRiftRules = new EmbedBuilder()
             .setColor('#167301')
-            .setThumbnail('https://i.imgur.com/E1FruW1.png')
+            .setThumbnail('https://i.imgur.com/2MaIHMp.png')
             .setTitle(`${riftEmoji}  CUSTOM RIFT RULES AND GUIDELINES  ${riftEmoji}`)
             .setDescription(`Please keep in mind our mods may punish at their own discretion depending on the situation. Warnings may not be necessary if the circumstances are too unruly. \n‎`)
             .addFields(
@@ -100,7 +100,7 @@ module.exports = {
 
         const tftRules = new EmbedBuilder()
             .setColor('#167301')
-            .setThumbnail('https://i.imgur.com/3I4v0tV.png')
+            .setThumbnail('https://i.imgur.com/iZD4ihw.png')
             .setTitle(`${tftEmoji}  TFT RULES AND GUIDELINES  ${tftEmoji}`)
             .setDescription(`Please keep in mind our mods may punish at their own discretion depending on the situation. Warnings may not be necessary if the circumstances are too unruly. \n‎`)
             .addFields(

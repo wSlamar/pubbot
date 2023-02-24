@@ -32,7 +32,7 @@ module.exports = {
 
         const aram = new EmbedBuilder()
             .setColor('#167301')
-            .setThumbnail('https://i.imgur.com/6ZfWcjq.png')
+            .setThumbnail('https://i.imgur.com/aDVseTe.png')
             .setTitle(`${aramEmoji}  THE LOCAL PUB'S CUSTOM ARAM EVENTS  ${aramEmoji}`)
             .setDescription(`This channels purpose is to kick off Custom ARAM events that will be hosted by our <@&${barKeepsRole}> or <@&${barOwnerRole}>. We welcome everyone to join us for some fun and encourage everyone to participate! \n‎`)
             .addFields(
@@ -52,7 +52,7 @@ module.exports = {
 
         const summonersRift = new EmbedBuilder()
             .setColor('#167301')
-            .setThumbnail('https://i.imgur.com/E1FruW1.png')
+            .setThumbnail('https://i.imgur.com/2MaIHMp.png')
             .setTitle(`${riftEmoji}  THE LOCAL PUB'S CUSTOM RIFT EVENTS  ${riftEmoji}`)
             .setDescription(`This channels purpose is to kick off Custom Summoners Rift events that will be hosted by our <@&${barKeepsRole}> or <@&${barOwnerRole}>. We welcome everyone to join us for some fun and encourage everyone to participate! \n‎`)
             .addFields(
@@ -72,7 +72,7 @@ module.exports = {
 
         const tft = new EmbedBuilder()
             .setColor('#167301')
-            .setThumbnail('https://i.imgur.com/3I4v0tV.png')
+            .setThumbnail('https://i.imgur.com/iZD4ihw.png')
             .setTitle(`${tftEmoji}  THE LOCAL PUB'S TFT EVENTS  ${tftEmoji}`)
             .setDescription(`This channels purpose is to kick off TFT events that will be hosted by our <@&${barKeepsRole}> or <@&${barOwnerRole}>. We welcome everyone to join us for some fun and encourage everyone to participate! \n‎`)
             .addFields(
