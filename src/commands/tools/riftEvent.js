@@ -124,14 +124,14 @@ module.exports = {
             .setDescription("image that will be associated with the event")
             .setRequired(true)
             .addChoices(
-                { name: 'Summoners Rift (still image)', value: 'https://i.imgur.com/2wInBA3.png' },
+                { name: 'Summoners Rift (still image)', value: 'https://i.imgur.com/dlDby0d.png' },
                 { name: 'Summoners Rift (animated gif)', value: 'https://media1.tenor.com/images/bae10039079d3d710341da89689ae52d/tenor.gif?itemid=27606976' },
-                { name: 'St Pats Day Events & Gaming', value: 'https://i.imgur.com/br1woyw.png' },
-                { name: 'Christmas Events & Gaming', value: 'https://i.imgur.com/seYI4bu.png' },
-                { name: 'Halloween Events & Gaming', value: 'https://i.imgur.com/JBfz472.png' },
-                { name: '420 Events & Gaming', value: 'https://i.imgur.com/SkXsZ4h.png' },
-                { name: 'Valentines Day Events & Gaming', value: 'https://i.imgur.com/OIA69Um.png' },
-                { name: '4th of July Events & Gaming', value: 'https://i.imgur.com/tEo7KGx.png' },
+                { name: 'Saint Patricks Day', value: 'https://i.imgur.com/YYtOFvP.png' },
+                { name: 'Christmas', value: 'https://i.imgur.com/J7EtAdM.png' },
+                { name: 'Halloween', value: 'https://i.imgur.com/gpmSHOc.png' },
+                { name: '420', value: 'https://i.imgur.com/VmSOrtY.png' },
+                { name: 'Valentines Day', value: 'https://i.imgur.com/4PPf7Wf.png' },
+                { name: '4th of July', value: 'https://i.imgur.com/UimNKTW.png' },
             )
         )
         .addStringOption((option) => option

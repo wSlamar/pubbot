@@ -30,12 +30,20 @@ module.exports = {
                     value: "This commands main function is to track a list of players who want to participate in an 8 Player TFT event. Once this command has been kicked off, users are able to react to the embed and the users @ tag will be populated in the list displaying within the embed under the PLAYERS header. Once this command has ended at its set time, users will be unable to react to the embed and a follow up message will be sent with a link to the voice channel that the event will take place in.\n‎",
                 },
                 {
-                    name: "🟢  /pub-bug",
-                    value: "This command's main function is to track any bugs or issues associated with the bot.\n‎",
+                    name: "🟢  /pub-roles",
+                    value: "This commands main function is to provide a list of roles that users can react to. **This command can only be used by admins.**\n‎",
                 },
                 {
-                    name: "🟢  /pub-roles",
-                    value: "This commands main function is provide a list of roles that users can react to, to gain access to certain parts of the server. **This command can only be used by admins.**\n‎",
+                    name: "🟢  /pub-customs",
+                    value: "This commands main function is to provide an embed explaining the customs events. **This command can only be used by admins.**\n‎",
+                },
+                {
+                    name: "🟢  /pub-rules",
+                    value: "This commands main function is to provide an embed explaining the server rules and customs rules. **This command can only be used by admins.**\n‎",
+                },
+                {
+                    name: "🟢  /pub-speak",
+                    value: "This commands main function is to create a custom message as if it came from Mojito. **This command can only be used by admins.**\n‎",
                 },
             )
 
