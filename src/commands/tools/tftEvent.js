@@ -2,7 +2,10 @@ const { SlashCommandBuilder, PermissionFlagsBits, PermissionsBitField, GatewayIn
 const { EmbedBuilder } = require("discord.js");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { adminChannel } = process.env;
-const { guildId } = process.env;
+const { leagueChatChannel } = process.env;
+const { mojitoTftChannel } = process.env;
+const { aramEmoji } = process.env;
+const { tftEmoji } = process.env;
 const { verifiedRole } = process.env;
 const moment = require("moment");
 const momentTZ = require("moment-timezone");
@@ -169,8 +172,21 @@ module.exports = {
 
         let channelComannd = client.channels.cache.get(interaction.channelId);
 
+        const modInfoEmbed = new EmbedBuilder()
+        .setColor('#167301')
+        .addFields(
+            {
+                name: `🔨  REMOVING A PLAYER  🔨`,
+                value: `React with the hammer emoji to remove a player manually\n‎`,
+            },
+            {
+                name: `📌  REMINDER MESSAGE  📌`,
+                value: `React with the pushpin emoji to send a reminder message in league-chat`,
+            },
+        )
+
         const replyMessage = await interaction.reply({
-            content: "You can remove a player manually from this event below by reacting with the 🔨 emoji to the event.",
+            embeds: [modInfoEmbed],
             ephemeral: true
         });
 
@@ -249,7 +265,7 @@ module.exports = {
         message.react("❌").catch(error => { if (error.code !== 10008) { console.error('Error on X reaction:', error); } });
 
         const filter = (reaction, user) => {
-            return reaction.emoji.name === playerEmoji || reaction.emoji.name === "❌" || reaction.emoji.name === "🔨";
+            return reaction.emoji.name === playerEmoji || reaction.emoji.name === "❌" || reaction.emoji.name === "🔨" || reaction.emoji.name === "📌";
         };
 
         const collector = message.createReactionCollector({ filter, dispose: true});
@@ -295,6 +311,30 @@ module.exports = {
             refreshEmbed()
 
             const member = message.guild.members.cache.get(userNameID);
+            if (reaction.emoji.name === "📌" && usernameNoTag !== "Mojito") {
+                message.reactions.cache.get("📌").remove();
+                if (member.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
+                    let countOfEmpty = 0;
+                    for (let value of playerMap.values()){
+                        if([value[2]].includes('[EMPTY SPOT]')) {
+                            countOfEmpty++;
+                        }
+                    }
+                    if (countOfEmpty > 0) {
+                        const channel = client.channels.cache.get(leagueChatChannel);
+                        if (countOfEmpty == 1) {
+                            let reminder = await channel.send({
+                                content: `${eventPing} There is **${countOfEmpty}** spot left in the TFT lobby! Go to <#${mojitoTftChannel}> to sign up! ${tftEmoji}`,
+                            })
+                        } else {
+                            let reminder = await channel.send({
+                                content: `${eventPing} There are **${countOfEmpty}** spots left in the TFT lobby! Go to <#${mojitoTftChannel}> to sign up! ${tftEmoji}`,
+                            })
+                        }
+                    }
+                }
+            }
+
             if (reaction.emoji.name === "🔨" && usernameNoTag !== "Mojito") {
                 message.reactions.cache.get("🔨").remove();
                 if (member.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
