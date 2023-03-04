@@ -62,7 +62,11 @@ module.exports = {
                 },
                 {
                     name: `📝  IGN / NICKNAME  📝`,
-                    value: `If you are participating in Customs, please change your Discord nickname to your in game name to help reduce confusion.`
+                    value: `If you are participating in Customs, please change your Discord nickname to your in game name to help reduce confusion. \n‎`
+                },
+                {
+                    name: `👀  SPECTATORS  👀`,
+                    value: `We welcome spectators to join our custom lobbies but we ask that they stay respectful to the players that are currently playing. For example, do not give away positions or plays and do not be a distraction to the players.`
                 }
             )
 
@@ -94,7 +98,11 @@ module.exports = {
                 },
                 {
                     name: `📝  IGN / NICKNAME  📝`,
-                    value: `If you are participating in Customs, please change your Discord nickname to your in game name to help reduce confusion.`
+                    value: `If you are participating in Customs, please change your Discord nickname to your in game name to help reduce confusion. \n‎`
+                },
+                {
+                    name: `👀  SPECTATORS  👀`,
+                    value: `We welcome spectators to join our custom lobbies but we ask that they stay respectful to the players that are currently playing. For example, do not give away positions or plays and do not be a distraction to the players.`
                 }
             )
 
@@ -114,7 +122,11 @@ module.exports = {
                 },
                 {
                     name: `📝  IGN / NICKNAME  📝`,
-                    value: `If you are participating in Customs, please change your Discord nickname to your in game name to help reduce confusion.`
+                    value: `If you are participating in Customs, please change your Discord nickname to your in game name to help reduce confusion. \n‎`
+                },
+                {
+                    name: `👀  SPECTATORS  👀`,
+                    value: `We welcome spectators to join our custom lobbies but we ask that they stay respectful to the players that are currently playing. For example, do not give away positions or plays and do not be a distraction to the players.`
                 }
             )
 
