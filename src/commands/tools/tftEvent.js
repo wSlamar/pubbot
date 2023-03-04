@@ -16,7 +16,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("pub-tft")
         .setDescription("Replies with an embed for a TFT event")
-        .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog)
+        .setDefaultMemberPermissions(PermissionFlagsBits.MuteMembers)
         .addStringOption((option) => option
             .setName("event-title")
             .setDescription("title of the event")
@@ -176,12 +176,12 @@ module.exports = {
         .setColor('#167301')
         .addFields(
             {
-                name: `🔨  REMOVING A PLAYER  🔨`,
-                value: `React with the hammer emoji to remove a player manually\n‎`,
+                name: `🔨  REMOVING A PLAYER MANUALLY  🔨`,
+                value: `You can react with the hammer emoji to remove a player manually if needed. Only moderators have permissions to perform this action.\n‎`,
             },
             {
-                name: `📌  REMINDER MESSAGE  📌`,
-                value: `React with the pushpin emoji to send a reminder message in league-chat`,
+                name: `📌  REMINDER PING AND INFO MESSAGE  📌`,
+                value: `You can react with the pushpin emoji to send a reminder message in league-chat. Moderators and Bar Nuts have permissions to perform this action.`,
             },
         )
 
@@ -313,7 +313,7 @@ module.exports = {
             const member = message.guild.members.cache.get(userNameID);
             if (reaction.emoji.name === "📌" && usernameNoTag !== "Mojito") {
                 message.reactions.cache.get("📌").remove();
-                if (member.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
+                if (member.permissions.has(PermissionFlagsBits.MuteMembers)) {
                     let countOfEmpty = 0;
                     for (let value of playerMap.values()){
                         if([value[2]].includes('[EMPTY SPOT]')) {
@@ -324,11 +324,11 @@ module.exports = {
                         const channel = client.channels.cache.get(leagueChatChannel);
                         if (countOfEmpty == 1) {
                             let reminder = await channel.send({
-                                content: `${eventPing} There is **${countOfEmpty}** spot left in the TFT lobby! Go to <#${mojitoTftChannel}> to sign up! ${tftEmoji}`,
+                                content: `${eventPing} There is **${countOfEmpty}** spot open in the TFT lobby! Go to <#${mojitoTftChannel}> to sign up! ${tftEmoji}`,
                             })
                         } else {
                             let reminder = await channel.send({
-                                content: `${eventPing} There are **${countOfEmpty}** spots left in the TFT lobby! Go to <#${mojitoTftChannel}> to sign up! ${tftEmoji}`,
+                                content: `${eventPing} There are **${countOfEmpty}** spots open in the TFT lobby! Go to <#${mojitoTftChannel}> to sign up! ${tftEmoji}`,
                             })
                         }
                     }
