@@ -116,10 +116,10 @@ module.exports = {
             .setDescription("timezone that you are currently in")
             .setRequired(true)
             .addChoices(
-                { name: 'Eastern Standard Time (EST)', value: 'EST' },
-                { name: 'Pacific Standard Time (PST)', value: 'PST8PDT' },
-                { name: 'Mountain Standard Time (MST)', value: 'MST' },
-                { name: 'Central Standard Time (CST)', value: 'CST6CDT' },
+                { name: 'Eastern Standard Time (EST)', value: 'America/New_York' },
+                { name: 'Pacific Standard Time (PST)', value: 'America/Los_Angeles' },
+                { name: 'Mountain Standard Time (MST)', value: 'America/Denver' },
+                { name: 'Central Standard Time (CST)', value: 'America/North_Dakota/New_Salem' },
             )
         )
         .addStringOption((option) => option
@@ -159,7 +159,7 @@ module.exports = {
             return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", { timeZone: tzString }));
         }
 
-        console.log('\x1b[36m', `/pub-aram has been kicked off by [${interaction.user.username}#${interaction.user.discriminator}] at [${convertTZ(estDateLog, 'EST').toLocaleString()}]`, '\x1b[0m')
+        console.log('\x1b[36m', `/pub-aram has been kicked off by [${interaction.user.username}#${interaction.user.discriminator}] at [${convertTZ(estDateLog, 'America/New_York').toLocaleString()}]`, '\x1b[0m')
         
         const playerMap = new Map([
             ["bluePlayer1", ["[PLAYER 1 OPEN SPOT]", "BLUE PLAYER 1 ID", "[EMPTY SPOT]"]],
@@ -300,7 +300,7 @@ module.exports = {
 
         collector.on("collect", async (reaction, user) => {
             estDateLog = new Date()
-            console.log('\x1b[36m', '/pub-aram:', '\x1b[32m', `Collected [${reaction.emoji.name}] from [${user.tag}] at [${convertTZ(estDateLog, 'EST').toLocaleString()}]`, '\x1b[0m');
+            console.log('\x1b[36m', '/pub-aram:', '\x1b[32m', `Collected [${reaction.emoji.name}] from [${user.tag}] at [${convertTZ(estDateLog, 'America/New_York').toLocaleString()}]`, '\x1b[0m');
             const fullUserName = user.tag.toString();
             const userNameID = user.id.toString();
             usernameNoTag = fullUserName.substring(0, fullUserName.length - 5);
@@ -464,7 +464,7 @@ module.exports = {
                         }
                     })
                     modMessageCollector.on("end", (collected) => {
-                        console.log('\x1b[36m', '/pub-aram:', '\x1b[32m', `Collected [number emoji] from [${user.tag}] at [${convertTZ(estDateLog, 'EST').toLocaleString()}] to remove a player`, '\x1b[0m');
+                        console.log('\x1b[36m', '/pub-aram:', '\x1b[32m', `Collected [number emoji] from [${user.tag}] at [${convertTZ(estDateLog, 'America/New_York').toLocaleString()}] to remove a player`, '\x1b[0m');
                         modMessage.delete().catch(error => { if (error.code !== 10008) { console.error('Error on mod message removal', error); } });
                     })
                 }
