@@ -24,6 +24,14 @@ const { junglePositionEmoji } = process.env;
 const { midPositionEmoji } = process.env;
 const { supportPositionEmoji } = process.env;
 const { topPositionEmoji } = process.env;
+const { barOwnerEmoji } = process.env;
+const { barKeepsEmoji } = process.env;
+const { beerNutsEmoji } = process.env;
+const { bouncersEmoji } = process.env;
+const { artistEmoji } = process.env;
+const { pubBoosterEmoji } = process.env;
+const { localcsEmoji } = process.env;
+const { showcaseChannel } = process.env;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -37,6 +45,7 @@ module.exports = {
             .addChoices(
                 { name: 'Main Roles', value: 'Main Roles' },
                 { name: 'Sub Roles', value: 'Sub Roles' },
+                { name: 'Roles Explanation', value: 'Roles Explanation' },
             )
         ),
     async execute(interaction, client) {
@@ -256,6 +265,45 @@ module.exports = {
                     inline: true,
                 },
             )
+        const rolesExplanation = new EmbedBuilder()
+            .setColor('#167301')
+            .setThumbnail('https://i.imgur.com/DKt79Ey.png')
+            .setTitle(`${localPubEmoji}  WHO WE ARE  ${localPubEmoji}`)
+            .setDescription(`Below you will find an explanation of each role in the server and what their purpose is. If you have any interest in becoming a higher level role in our server, please reach out to one of our Bar Owners or Barkeeps!\n‎`)
+            .addFields(
+                {
+                    name: `${barOwnerEmoji}  BAR OWNERS  ${barOwnerEmoji}`,
+                    value: `The Bar Owners are the server admins of The Local Pub.\n‎`,
+                },
+                {
+                    name: `${barKeepsEmoji}  BARKEEPS  ${barKeepsEmoji}`,
+                    value: `The Barkeeps are the server moderators of The Local Pub. You will frequently see them hosting our custom lobbies / games and moderating the server.\n‎`,
+                },
+                {
+                    name: `${beerNutsEmoji}  BEER NUTS  ${beerNutsEmoji}`,
+                    value: `The Beer Nuts are our custom lobby hosts and you will frequently see them hosting our custom lobbies / games.\n‎`,
+                },
+                {
+                    name: `${bouncersEmoji}  BOUNCERS  ${bouncersEmoji}`,
+                    value: `The Bouncers are the bots of The Local Pub and help us manage the server.\n‎`,
+                },
+                {
+                    name: `${artistEmoji}  PUB PATREON  ${artistEmoji}`,
+                    value: `The Pub Patreons are the sponsored patreons of The Local Pub and collaborate with us to do giveaways to our members. Check out some of their work in the <#${showcaseChannel}> channel!\n‎`,
+                },
+                {
+                    name: `${pubBoosterEmoji}  PUB BOOSTER  ${pubBoosterEmoji}`,
+                    value: `The Pub Boosters are members who server boost The Local Pub.\n‎`
+                },
+                {
+                    name: `🧠  BIG BRAIN  🧠`,
+                    value: `The Big Brain title is awarded to the most current winner of our Pub Trivia Nights that we host. This role gets passed on each time there is a new first place winner.\n‎`,
+                },
+                {
+                    name: `${localcsEmoji}  LOCALS  ${localcsEmoji}`,
+                    value: `The Locals are the server members of The Local Pub.`
+                },
+            )
 
         let channelComannd = client.channels.cache.get(interaction.channelId);
 
@@ -288,6 +336,10 @@ module.exports = {
                 embeds: [subRolesTimezone],
             })
         }
-
+        if (rolesOption == 'Roles Explanation') {
+            const message = await channelComannd.send({
+                embeds: [rolesExplanation],
+            });
+        }
     }
 };
