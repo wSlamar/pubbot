@@ -74,10 +74,6 @@ module.exports = {
                     name: `${tftEmoji}  TFT  ${tftEmoji}`,
                     value: `This role will grant you the ability to be pinged when TFT events or in-house lobbies are started.\n‎`,
                 },
-                {
-                    name: ":video_game: OTHER GAMES :video_game:",
-                    value: `This role will grant you access to other games related channels.\n‎`,
-                },
             )
         const subRolesRanks = new EmbedBuilder()
             .setColor('#167301')
