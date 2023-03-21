@@ -12,6 +12,7 @@ const { barKeepsRole } = process.env;
 const { barOwnerRole } = process.env;
 const { localPubEmoji } = process.env;
 const { rolesChannel } = process.env;
+const { patreonRole } = process.env;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -138,7 +139,7 @@ module.exports = {
             .addFields(
                 {
                     name: `🚫  NO NSFW  🚫`,
-                    value: `If this rule is not followed, this can be punishable by one strike or three if spammed.\n‎`
+                    value: `No NSFW content within the server. Please keep in mind this does include artwork. If this rule is not followed, this can be punishable by one strike or three if spammed.\n‎`
                 },
                 {
                     name: `🤬  NO SEVERE TOXICITY  🤬`,
@@ -154,11 +155,11 @@ module.exports = {
                 },
                 {
                     name: `📚  NO GORE / TOS VIOLATION MATERIAL  📚`,
-                    value: `If this rule is not followed, you will be banned.\n‎`
+                    value: `If this rule is not followed, you will be banned. Please keep in mind this includes Discord's TOS as well as Riot's TOS (e.g. account selling, cheating, hacking, etc..)\n‎`
                 },
                 {
-                    name: `📸  NO ADVERTISING OTHER SERVERS  📸`,
-                    value: `Social media advertising is allowed. If this rule is not followed, this can be punishable by one strike.\n‎`
+                    name: `📸  NO ADVERTISING SERVERS / BUSINESSES 📸`,
+                    value: `No advertising your business and no advertising other servers. This also includes things such as "DM me for commissions" or "DM me to join my server". The power to advertise your business within the server comes from collaborating with the Pub and becoming a <@&${patreonRole}>. If you have an interest in becoming a patreon, please reach out to <@&${barKeepsRole}> or <@&${barOwnerRole}>. If this rule is not followed, this can be punishable by one strike.\n‎`
                 },
                 {
                     name: `❤️  RESPECT EACH OTHER  ❤️`,
@@ -186,7 +187,7 @@ module.exports = {
                 },
                 {
                     name: `📝  CONTACTING STAFF  📝`,
-                    value: `If you have a situation that requires outside intervention, please take a video clip of it and show a <@&${barKeepsRole}> or <@&${barOwnerRole}>. We will gladly take a look into it for you!\n‎`
+                    value: `If you have a situation that requires outside intervention, please take a video clip of it and show <@&${barKeepsRole}> or <@&${barOwnerRole}>. We will gladly take a look into it for you!\n‎`
                 },
                 {
                     name: `${aramEmoji}  CUSTOM ARAM RULES  ${aramEmoji}`,
