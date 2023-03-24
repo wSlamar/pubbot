@@ -209,8 +209,8 @@ module.exports = {
             fetchReply: true,
         });
 
-        team1Channel.permissionOverwrites.edit(verifiedRole, { Connect: true });
-        team2Channel.permissionOverwrites.edit(verifiedRole, { Connect: true });
+        team1Channel.setUserLimit(6).then(() =>  team2Channel.setUserLimit(6));
+        team1Channel.permissionOverwrites.edit(verifiedRole, { ViewChannel: true }).then(() =>  team2Channel.permissionOverwrites.edit(verifiedRole, { ViewChannel: true }));
 
         const eventDescription = interaction.options.getString("event-description");
         const eventTitle = interaction.options.getString("event-title").toUpperCase();

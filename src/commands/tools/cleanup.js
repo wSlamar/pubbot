@@ -10,6 +10,7 @@ module.exports = {
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
     async execute(interaction, client) {
+        console.log('\x1b[36m', '/pub-cleanup has been kicked off', '\x1b[0m')
         const textChannelArray = mojitoChannelsArray.split(",");
         async function cleanupTextChannels() {
             for (var i = 0; i < textChannelArray.length; i++) {
@@ -20,17 +21,22 @@ module.exports = {
             }
         }
         const voiceChannelArray = customVoiceChannelsArray.split(",");
-        async function cleanupVoiceChannels() {
+        async function changeVoiceChannelPerms() {
             for (var i = 0; i < voiceChannelArray.length; i++) {
                 const channel = client.channels.cache.get(voiceChannelArray[i]);
-                channel.permissionOverwrites.edit(verifiedRole, { Connect: false });
+                channel.permissionOverwrites.edit(verifiedRole, { ViewChannel: false });
             }
         }
-        cleanupTextChannels();
-        cleanupVoiceChannels()
+        async function changeVoiceChannelLimit() {
+            for (var i = 0; i < voiceChannelArray.length; i++) {
+                const channel = client.channels.cache.get(voiceChannelArray[i]);
+                channel.setUserLimit(0)
+            }
+        }
+        cleanupTextChannels().then(() =>  changeVoiceChannelPerms()).then(() =>  changeVoiceChannelLimit());
 
         const message = await interaction.reply({
-            content: `Successfully deleted messages and locked channels!`,
+            content: `Successfully deleted messages, locked channels and changed user limits!`,
             ephemeral: true
         })
 

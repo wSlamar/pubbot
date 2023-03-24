@@ -203,7 +203,8 @@ module.exports = {
             fetchReply: true,
         });
 
-        eventChannel.permissionOverwrites.edit(verifiedRole, { Connect: true });
+        eventChannel.setUserLimit(12)
+        eventChannel.permissionOverwrites.edit(verifiedRole, { ViewChannel: true });
 
         const eventDescription = interaction.options.getString("event-description");
         const eventTitle = interaction.options.getString("event-title").toUpperCase();
