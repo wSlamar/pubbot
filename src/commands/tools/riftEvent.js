@@ -6,6 +6,7 @@ const { leagueChatChannel } = process.env;
 const { mojitoSrChannel } = process.env;
 const { riftEmoji } = process.env;
 const { verifiedRole } = process.env;
+const { leagueRole } = process.env;
 const moment = require("moment");
 const momentTZ = require("moment-timezone");
 const { clearInterval } = require("timers");
@@ -210,7 +211,7 @@ module.exports = {
         });
 
         team1Channel.setUserLimit(6).then(() =>  team2Channel.setUserLimit(6));
-        team1Channel.permissionOverwrites.edit(verifiedRole, { ViewChannel: true }).then(() =>  team2Channel.permissionOverwrites.edit(verifiedRole, { ViewChannel: true }));
+        team1Channel.permissionOverwrites.edit(leagueRole, { ViewChannel: true }).then(() =>  team2Channel.permissionOverwrites.edit(leagueRole, { ViewChannel: true }));
 
         const eventDescription = interaction.options.getString("event-description");
         const eventTitle = interaction.options.getString("event-title").toUpperCase();

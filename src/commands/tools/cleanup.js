@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const { mojitoChannelsArray } = process.env;
 const { customVoiceChannelsArray } = process.env;
-const { verifiedRole } = process.env;
+const { leagueRole } = process.env;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -24,7 +24,7 @@ module.exports = {
         async function changeVoiceChannelPerms() {
             for (var i = 0; i < voiceChannelArray.length; i++) {
                 const channel = client.channels.cache.get(voiceChannelArray[i]);
-                channel.permissionOverwrites.edit(verifiedRole, { ViewChannel: false });
+                channel.permissionOverwrites.edit(leagueRole, { ViewChannel: false });
             }
         }
         async function changeVoiceChannelLimit() {
@@ -33,7 +33,8 @@ module.exports = {
                 channel.setUserLimit(0)
             }
         }
-        cleanupTextChannels().then(() =>  changeVoiceChannelPerms()).then(() =>  changeVoiceChannelLimit());
+        cleanupTextChannels().then(() =>  changeVoiceChannelPerms())
+        changeVoiceChannelLimit();
 
         const message = await interaction.reply({
             content: `Successfully deleted messages, locked channels and changed user limits!`,

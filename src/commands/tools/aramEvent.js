@@ -6,6 +6,7 @@ const { verifiedRole } = process.env;
 const { leagueChatChannel } = process.env;
 const { mojitoAramChannel } = process.env;
 const { aramEmoji } = process.env;
+const { leagueRole } = process.env;
 const moment = require("moment");
 const momentTZ = require("moment-timezone");
 const { clearInterval } = require("timers");
@@ -204,7 +205,7 @@ module.exports = {
         });
 
         eventChannel.setUserLimit(12)
-        eventChannel.permissionOverwrites.edit(verifiedRole, { ViewChannel: true });
+        eventChannel.permissionOverwrites.edit(leagueRole, { ViewChannel: true });
 
         const eventDescription = interaction.options.getString("event-description");
         const eventTitle = interaction.options.getString("event-title").toUpperCase();

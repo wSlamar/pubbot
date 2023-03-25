@@ -7,6 +7,7 @@ const { mojitoTftChannel } = process.env;
 const { aramEmoji } = process.env;
 const { tftEmoji } = process.env;
 const { verifiedRole } = process.env;
+const { leagueRole } = process.env;
 const moment = require("moment");
 const momentTZ = require("moment-timezone");
 require('events').EventEmitter.prototype._maxListeners = 100;
@@ -197,7 +198,7 @@ module.exports = {
         });
 
         eventChannel.setUserLimit(11)
-        eventChannel.permissionOverwrites.edit(verifiedRole, { ViewChannel: true });
+        eventChannel.permissionOverwrites.edit(leagueRole, { ViewChannel: true });
 
         const eventDescription = interaction.options.getString("event-description");
         const eventTitle = interaction.options.getString("event-title").toUpperCase();
