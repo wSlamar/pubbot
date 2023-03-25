@@ -197,8 +197,7 @@ module.exports = {
             fetchReply: true,
         });
 
-        eventChannel.setUserLimit(11)
-        eventChannel.permissionOverwrites.edit(leagueRole, { ViewChannel: true });
+        eventChannel.permissionOverwrites.edit(leagueRole, { ViewChannel: true }).then(() => eventChannel.setUserLimit(11));
 
         const eventDescription = interaction.options.getString("event-description");
         const eventTitle = interaction.options.getString("event-title").toUpperCase();
