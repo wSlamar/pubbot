@@ -264,7 +264,7 @@ module.exports = {
 
         const eventDayMomentUnix = momentTZ.tz(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`, `${eventTimezone}`).unix()
 
-        let messageContent = `${eventPing} this event will start <t:${eventDayMomentUnix}:R>`
+        let messageContent = `${eventPing} this custom lobby will start <t:${eventDayMomentUnix}:R>`
 
         message.react(preTeam1Emoji).catch(error => {
             if (error.code == 10014) {
@@ -611,25 +611,25 @@ module.exports = {
                 .setDescription(`<t:${eventDayMomentUnix}:F>`)
                 .setThumbnail('https://i.imgur.com/aDVseTe.png')
                 .setImage(eventImage)
-                .setFooter({ text: `To be removed from a team or change teams, react with ❌ to this event.` })
+                .setFooter({ text: `To be removed from a team or change teams, react with ❌ to this message.` })
                 .addFields(
                     {
                         name: "CLICK A TEAM EMOJI BELOW TO JOIN A TEAM",
                         value: `${eventDescription}`,
                     },
                     {
-                        name: `${preTeam1Emoji} TEAM 1 ${preTeam1Emoji}`,
-                        value: `${playerMap.get("bluePlayer1")[0]}\n${playerMap.get("bluePlayer2")[0]}\n${playerMap.get("bluePlayer3")[0]}\n${playerMap.get("bluePlayer4")[0]}\n${playerMap.get("bluePlayer5")[0]}`,
+                        name: `${preTeam1Emoji} ---- TEAM 1 ---- ${preTeam1Emoji}`,
+                        value: `${playerMap.get("bluePlayer1")[0]}\n${playerMap.get("bluePlayer2")[0]}\n${playerMap.get("bluePlayer3")[0]}\n${playerMap.get("bluePlayer4")[0]}\n${playerMap.get("bluePlayer5")[0]}\n${preTeam1Emoji} ---- **TEAM 1** ---- ${preTeam1Emoji}`,
                         inline: true,
                     },
                     {
-                        name: `${preTeam2Emoji} TEAM 2 ${preTeam2Emoji}`,
-                        value: `${playerMap.get("redPlayer1")[0]}\n${playerMap.get("redPlayer2")[0]}\n${playerMap.get("redPlayer3")[0]}\n${playerMap.get("redPlayer4")[0]}\n${playerMap.get("redPlayer5")[0]}`,
+                        name: `${preTeam2Emoji} ---- TEAM 2 ---- ${preTeam2Emoji}`,
+                        value: `${playerMap.get("redPlayer1")[0]}\n${playerMap.get("redPlayer2")[0]}\n${playerMap.get("redPlayer3")[0]}\n${playerMap.get("redPlayer4")[0]}\n${playerMap.get("redPlayer5")[0]}\n${preTeam2Emoji} ---- **TEAM 2** ---- ${preTeam2Emoji}`,
                         inline: true,
                     },
                     {
                         name: 'VOICE CHANNEL',
-                        value: `This event will be held in ${eventChannel}`
+                        value: `This lobby will be held in ${eventChannel}`
                     }
                 );
             message.edit({ embeds: [customsEmbed], content: `${messageContent}`, }).catch(error => {

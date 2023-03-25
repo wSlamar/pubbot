@@ -249,7 +249,7 @@ module.exports = {
 
         const eventDayMomentUnix = momentTZ.tz(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`, `${eventTimezone}`).unix()
 
-        let messageContent = `${eventPing} this event will start <t:${eventDayMomentUnix}:R>`
+        let messageContent = `${eventPing} this custom lobby will start <t:${eventDayMomentUnix}:R>`
 
         message.react(prePlayerEmoji).catch(error => {
             if (error.code == 10014) {
@@ -549,7 +549,7 @@ module.exports = {
                 .setDescription(`<t:${eventDayMomentUnix}:F>`)
                 .setThumbnail('https://i.imgur.com/iZD4ihw.png')
                 .setImage(eventImage)
-                .setFooter({ text: `To be removed from this event list, react with ❌ to this event.` })
+                .setFooter({ text: `To be removed from this lobby list, react with ❌ to this message.` })
                 .addFields(
                     {
                         name: `CLICK THE PLAYER EMOJI BELOW TO JOIN US`,
@@ -567,7 +567,7 @@ module.exports = {
                     },
                     {
                         name: 'VOICE CHANNEL',
-                        value: `This event will be held in ${eventChannel}`
+                        value: `This lobby will be held in ${eventChannel}`
                     }
                 );
 

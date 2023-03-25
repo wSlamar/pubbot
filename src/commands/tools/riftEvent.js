@@ -7,6 +7,12 @@ const { mojitoSrChannel } = process.env;
 const { riftEmoji } = process.env;
 const { verifiedRole } = process.env;
 const { leagueRole } = process.env;
+const { botPositionEmoji } = process.env;
+const { fillPositionEmoji } = process.env;
+const { junglePositionEmoji } = process.env;
+const { midPositionEmoji } = process.env;
+const { supportPositionEmoji } = process.env;
+const { topPositionEmoji } = process.env;
 const moment = require("moment");
 const momentTZ = require("moment-timezone");
 const { clearInterval } = require("timers");
@@ -168,16 +174,16 @@ module.exports = {
         console.log('\x1b[36m', `/pub-rift has been kicked off by [${interaction.user.username}#${interaction.user.discriminator}] at [${convertTZ(estDateLog, 'America/New_York').toLocaleString()}]`, '\x1b[0m')
 
         const playerMap = new Map([
-            ["bluePlayer1", ["[PLAYER 1 OPEN SPOT]", "BLUE PLAYER 1 ID", "[EMPTY SPOT]"]],
-            ["bluePlayer2", ["[PLAYER 2 OPEN SPOT]", "BLUE PLAYER 2 ID", "[EMPTY SPOT]"]],
-            ["bluePlayer3", ["[PLAYER 3 OPEN SPOT]", "BLUE PLAYER 3 ID", "[EMPTY SPOT]"]],
-            ["bluePlayer4", ["[PLAYER 4 OPEN SPOT]", "BLUE PLAYER 4 ID", "[EMPTY SPOT]"]],
-            ["bluePlayer5", ["[PLAYER 5 OPEN SPOT]", "BLUE PLAYER 5 ID", "[EMPTY SPOT]"]],
-            ["redPlayer1", ["[PLAYER 1 OPEN SPOT]", "RED PLAYER 1 ID", "[EMPTY SPOT]"]],
-            ["redPlayer2", ["[PLAYER 2 OPEN SPOT]", "RED PLAYER 2 ID", "[EMPTY SPOT]"]],
-            ["redPlayer3", ["[PLAYER 3 OPEN SPOT]", "RED PLAYER 3 ID", "[EMPTY SPOT]"]],
-            ["redPlayer4", ["[PLAYER 4 OPEN SPOT]", "RED PLAYER 4 ID", "[EMPTY SPOT]"]],
-            ["redPlayer5", ["[PLAYER 5 OPEN SPOT]", "RED PLAYER 5 ID", "[EMPTY SPOT]"]],
+            ["bluePlayer1", ["[PLAYER 1 OPEN]", "BLUE PLAYER 1 ID", "[EMPTY SPOT]", "❓"]],
+            ["bluePlayer2", ["[PLAYER 2 OPEN]", "BLUE PLAYER 2 ID", "[EMPTY SPOT]", "❓"]],
+            ["bluePlayer3", ["[PLAYER 3 OPEN]", "BLUE PLAYER 3 ID", "[EMPTY SPOT]", "❓"]],
+            ["bluePlayer4", ["[PLAYER 4 OPEN]", "BLUE PLAYER 4 ID", "[EMPTY SPOT]", "❓"]],
+            ["bluePlayer5", ["[PLAYER 5 OPEN]", "BLUE PLAYER 5 ID", "[EMPTY SPOT]", "❓"]],
+            ["redPlayer1", ["[PLAYER 1 OPEN]", "RED PLAYER 1 ID", "[EMPTY SPOT]", "❓"]],
+            ["redPlayer2", ["[PLAYER 2 OPEN]", "RED PLAYER 2 ID", "[EMPTY SPOT]", "❓"]],
+            ["redPlayer3", ["[PLAYER 3 OPEN]", "RED PLAYER 3 ID", "[EMPTY SPOT]", "❓"]],
+            ["redPlayer4", ["[PLAYER 4 OPEN]", "RED PLAYER 4 ID", "[EMPTY SPOT]", "❓"]],
+            ["redPlayer5", ["[PLAYER 5 OPEN]", "RED PLAYER 5 ID", "[EMPTY SPOT]", "❓"]],
         ]);
 
         const team1Channel = interaction.options.getChannel("team-1-voice-channel");
@@ -187,17 +193,17 @@ module.exports = {
         let channelComannd = client.channels.cache.get(interaction.channelId);
 
         const modInfoEmbed = new EmbedBuilder()
-        .setColor('#167301')
-        .addFields(
-            {
-                name: `🔨  REMOVING A PLAYER MANUALLY  🔨`,
-                value: `You can react with the hammer emoji to remove a player manually if needed. Only moderators have permissions to perform this action.\n‎`,
-            },
-            {
-                name: `📌  REMINDER PING AND INFO MESSAGE  📌`,
-                value: `You can react with the pushpin emoji to send a reminder message in league-chat. Moderators and Bar Nuts have permissions to perform this action.`,
-            },
-        )
+            .setColor('#167301')
+            .addFields(
+                {
+                    name: `🔨  REMOVING A PLAYER MANUALLY  🔨`,
+                    value: `You can react with the hammer emoji to remove a player manually if needed. Only moderators have permissions to perform this action.\n‎`,
+                },
+                {
+                    name: `📌  REMINDER PING AND INFO MESSAGE  📌`,
+                    value: `You can react with the pushpin emoji to send a reminder message in league-chat. Moderators and Bar Nuts have permissions to perform this action.`,
+                },
+            )
 
         const replyMessage = await interaction.reply({
             embeds: [modInfoEmbed],
@@ -210,8 +216,18 @@ module.exports = {
             fetchReply: true,
         });
 
-        team1Channel.setUserLimit(6).then(() =>  team2Channel.setUserLimit(6));
-        team1Channel.permissionOverwrites.edit(leagueRole, { ViewChannel: true }).then(() =>  team2Channel.permissionOverwrites.edit(leagueRole, { ViewChannel: true }));
+        const rolesReplyEmbed = new EmbedBuilder()
+            .setColor('#167301')
+            .setTitle(`CLICK YOUR POSITION FOR THE CUSTOM LOBBY`)
+            .setThumbnail('https://i.imgur.com/n4kRYPN.png')
+            .setDescription(`${fillPositionEmoji} You must be on a TEAM first before you can choose.\n${fillPositionEmoji} No more than one of the same positions on the same team.\n${fillPositionEmoji} You can change your position by reacting again if needed.`)
+
+        const rolesReply = await message.reply({
+            embeds: [rolesReplyEmbed]
+        });
+
+        team1Channel.setUserLimit(6).then(() => team2Channel.setUserLimit(6));
+        team1Channel.permissionOverwrites.edit(leagueRole, { ViewChannel: true }).then(() => team2Channel.permissionOverwrites.edit(leagueRole, { ViewChannel: true }));
 
         const eventDescription = interaction.options.getString("event-description");
         const eventTitle = interaction.options.getString("event-title").toUpperCase();
@@ -270,11 +286,12 @@ module.exports = {
 
         const eventDayMomentUnix = momentTZ.tz(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`, `${eventTimezone}`).unix()
 
-        let messageContent = `${eventPing} this event will start <t:${eventDayMomentUnix}:R>`
+        let messageContent = `${eventPing} this custom lobby will start <t:${eventDayMomentUnix}:R>`
 
         message.react(preTeam1Emoji).catch(error => {
             if (error.code == 10014) {
                 collector.stop()
+                positionCollector.stop()
                 interaction.followUp({
                     embeds: [embeds.emojiEmbed],
                     ephemeral: true
@@ -288,6 +305,7 @@ module.exports = {
         message.react(preTeam2Emoji).catch(error => {
             if (error.code == 10014) {
                 collector.stop()
+                positionCollector.stop()
                 interaction.followUp({
                     embeds: [embeds.emojiEmbed],
                     ephemeral: true
@@ -299,12 +317,22 @@ module.exports = {
             }
         });
         message.react("❌").catch(error => { if (error.code !== 10008) { console.error('Error on X reaction:', error); } });
+        rolesReply.react(botPositionEmoji).catch(error => { if (error.code !== 10008) { console.error('Error on position reaction:', error); } });
+        rolesReply.react(fillPositionEmoji).catch(error => { if (error.code !== 10008) { console.error('Error on position reaction:', error); } });
+        rolesReply.react(junglePositionEmoji).catch(error => { if (error.code !== 10008) { console.error('Error on position reaction:', error); } });
+        rolesReply.react(midPositionEmoji).catch(error => { if (error.code !== 10008) { console.error('Error on position reaction:', error); } });
+        rolesReply.react(topPositionEmoji).catch(error => { if (error.code !== 10008) { console.error('Error on position reaction:', error); } });
+        rolesReply.react(supportPositionEmoji).catch(error => { if (error.code !== 10008) { console.error('Error on position reaction:', error); } });
 
         const filter = (reaction, user) => {
             return reaction.emoji.name === team1Emoji || reaction.emoji.name === team2Emoji || reaction.emoji.name === "❌" || reaction.emoji.name === "🔨" || reaction.emoji.name === "📌";
         };
+        const positionFilter = (reaction, user) => {
+            return reaction.emoji.name === botPositionEmoji || reaction.emoji.name === fillPositionEmoji || reaction.emoji.name === junglePositionEmoji || reaction.emoji.name === midPositionEmoji || reaction.emoji.name === topPositionEmoji || reaction.emoji.name === supportPositionEmoji
+        };
 
         const collector = message.createReactionCollector({ filter, dispose: true });
+        const positionCollector = rolesReply.createReactionCollector({ positionFilter, dispose: true });
 
         collector.on("collect", async (reaction, user) => {
             estDateLog = new Date()
@@ -321,28 +349,28 @@ module.exports = {
             }
             checkIDs(userNameID);
 
-            if (reaction.emoji.name === team1Emoji && playerMap.get("bluePlayer1").includes("[PLAYER 1 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
-                playerMap.set("bluePlayer1", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === team1Emoji && playerMap.get("bluePlayer2").includes("[PLAYER 2 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
-                playerMap.set("bluePlayer2", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === team1Emoji && playerMap.get("bluePlayer3").includes("[PLAYER 3 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
-                playerMap.set("bluePlayer3", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === team1Emoji && playerMap.get("bluePlayer4").includes("[PLAYER 4 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
-                playerMap.set("bluePlayer4", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === team1Emoji && playerMap.get("bluePlayer5").includes("[PLAYER 5 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
-                playerMap.set("bluePlayer5", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
+            if (reaction.emoji.name === team1Emoji && playerMap.get("bluePlayer1").includes("[PLAYER 1 OPEN]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
+                playerMap.set("bluePlayer1", [`<@${userNameID}>`, userNameID, fullUserName, "❓"]); checkIDs(userNameID);
+            } else if (reaction.emoji.name === team1Emoji && playerMap.get("bluePlayer2").includes("[PLAYER 2 OPEN]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
+                playerMap.set("bluePlayer2", [`<@${userNameID}>`, userNameID, fullUserName, "❓"]); checkIDs(userNameID);
+            } else if (reaction.emoji.name === team1Emoji && playerMap.get("bluePlayer3").includes("[PLAYER 3 OPEN]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
+                playerMap.set("bluePlayer3", [`<@${userNameID}>`, userNameID, fullUserName, "❓"]); checkIDs(userNameID);
+            } else if (reaction.emoji.name === team1Emoji && playerMap.get("bluePlayer4").includes("[PLAYER 4 OPEN]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
+                playerMap.set("bluePlayer4", [`<@${userNameID}>`, userNameID, fullUserName, "❓"]); checkIDs(userNameID);
+            } else if (reaction.emoji.name === team1Emoji && playerMap.get("bluePlayer5").includes("[PLAYER 5 OPEN]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
+                playerMap.set("bluePlayer5", [`<@${userNameID}>`, userNameID, fullUserName, "❓"]); checkIDs(userNameID);
             }
 
-            if (reaction.emoji.name === team2Emoji && playerMap.get("redPlayer1").includes("[PLAYER 1 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
-                playerMap.set("redPlayer1", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === team2Emoji && playerMap.get("redPlayer2").includes("[PLAYER 2 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
-                playerMap.set("redPlayer2", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === team2Emoji && playerMap.get("redPlayer3").includes("[PLAYER 3 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
-                playerMap.set("redPlayer3", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === team2Emoji && playerMap.get("redPlayer4").includes("[PLAYER 4 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
-                playerMap.set("redPlayer4", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
-            } else if (reaction.emoji.name === team2Emoji && playerMap.get("redPlayer5").includes("[PLAYER 5 OPEN SPOT]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
-                playerMap.set("redPlayer5", [`<@${userNameID}>`, userNameID, fullUserName]); checkIDs(userNameID);
+            if (reaction.emoji.name === team2Emoji && playerMap.get("redPlayer1").includes("[PLAYER 1 OPEN]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
+                playerMap.set("redPlayer1", [`<@${userNameID}>`, userNameID, fullUserName, "❓"]); checkIDs(userNameID);
+            } else if (reaction.emoji.name === team2Emoji && playerMap.get("redPlayer2").includes("[PLAYER 2 OPEN]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
+                playerMap.set("redPlayer2", [`<@${userNameID}>`, userNameID, fullUserName, "❓"]); checkIDs(userNameID);
+            } else if (reaction.emoji.name === team2Emoji && playerMap.get("redPlayer3").includes("[PLAYER 3 OPEN]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
+                playerMap.set("redPlayer3", [`<@${userNameID}>`, userNameID, fullUserName, "❓"]); checkIDs(userNameID);
+            } else if (reaction.emoji.name === team2Emoji && playerMap.get("redPlayer4").includes("[PLAYER 4 OPEN]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
+                playerMap.set("redPlayer4", [`<@${userNameID}>`, userNameID, fullUserName, "❓"]); checkIDs(userNameID);
+            } else if (reaction.emoji.name === team2Emoji && playerMap.get("redPlayer5").includes("[PLAYER 5 OPEN]") && usernameNoTag !== "Mojito" && !valuesArray.includes(true)) {
+                playerMap.set("redPlayer5", [`<@${userNameID}>`, userNameID, fullUserName, "❓"]); checkIDs(userNameID);
             }
 
             if (reaction.emoji.name === "❌" && usernameNoTag !== "Mojito") {
@@ -357,8 +385,8 @@ module.exports = {
                 message.reactions.cache.get("📌").remove();
                 if (member.permissions.has(PermissionFlagsBits.MuteMembers)) {
                     let countOfEmpty = 0;
-                    for (let value of playerMap.values()){
-                        if([value[2]].includes('[EMPTY SPOT]')) {
+                    for (let value of playerMap.values()) {
+                        if ([value[2]].includes('[EMPTY SPOT]')) {
                             countOfEmpty++;
                         }
                     }
@@ -494,35 +522,35 @@ module.exports = {
                     if (value.includes(user)) {
                         switch (key) {
                             case "bluePlayer1":
-                                playerMap.set("bluePlayer1", ["[PLAYER 1 OPEN SPOT]", "BLUE PLAYER 1 ID", "[EMPTY SPOT]",]);
+                                playerMap.set("bluePlayer1", ["[PLAYER 1 OPEN]", "BLUE PLAYER 1 ID", "[EMPTY SPOT],", "❓"]);
                                 break;
                             case "bluePlayer2":
-                                playerMap.set("bluePlayer2", ["[PLAYER 2 OPEN SPOT]", "BLUE PLAYER 2 ID", "[EMPTY SPOT]",]);
+                                playerMap.set("bluePlayer2", ["[PLAYER 2 OPEN]", "BLUE PLAYER 2 ID", "[EMPTY SPOT]", "❓"]);
                                 break;
                             case "bluePlayer3":
-                                playerMap.set("bluePlayer3", ["[PLAYER 3 OPEN SPOT]", "BLUE PLAYER 3 ID", "[EMPTY SPOT]",]);
+                                playerMap.set("bluePlayer3", ["[PLAYER 3 OPEN]", "BLUE PLAYER 3 ID", "[EMPTY SPOT]", "❓"]);
                                 break;
                             case "bluePlayer4":
-                                playerMap.set("bluePlayer4", ["[PLAYER 4 OPEN SPOT]", "BLUE PLAYER 4 ID", "[EMPTY SPOT]",]);
+                                playerMap.set("bluePlayer4", ["[PLAYER 4 OPEN]", "BLUE PLAYER 4 ID", "[EMPTY SPOT]", "❓"]);
                                 break;
                             case "bluePlayer5":
-                                playerMap.set("bluePlayer5", ["[PLAYER 5 OPEN SPOT]", "BLUE PLAYER 5 ID", "[EMPTY SPOT]",]);
+                                playerMap.set("bluePlayer5", ["[PLAYER 5 OPEN]", "BLUE PLAYER 5 ID", "[EMPTY SPOT]", "❓"]);
                                 break;
 
                             case "redPlayer1":
-                                playerMap.set("redPlayer1", ["[PLAYER 1 OPEN SPOT]", "RED PLAYER 1 ID", "[EMPTY SPOT]",]);
+                                playerMap.set("redPlayer1", ["[PLAYER 1 OPEN]", "RED PLAYER 1 ID", "[EMPTY SPOT]", "❓"]);
                                 break;
                             case "redPlayer2":
-                                playerMap.set("redPlayer2", ["[PLAYER 2 OPEN SPOT]", "RED PLAYER 2 ID", "[EMPTY SPOT]",]);
+                                playerMap.set("redPlayer2", ["[PLAYER 2 OPEN]", "RED PLAYER 2 ID", "[EMPTY SPOT]", "❓"]);
                                 break;
                             case "redPlayer3":
-                                playerMap.set("redPlayer3", ["[PLAYER 3 OPEN SPOT]", "RED PLAYER 3 ID", "[EMPTY SPOT]",]);
+                                playerMap.set("redPlayer3", ["[PLAYER 3 OPEN]", "RED PLAYER 3 ID", "[EMPTY SPOT]", "❓"]);
                                 break;
                             case "redPlayer4":
-                                playerMap.set("redPlayer4", ["[PLAYER 4 OPEN SPOT]", "RED PLAYER 4 ID", "[EMPTY SPOT]",]);
+                                playerMap.set("redPlayer4", ["[PLAYER 4 OPEN]", "RED PLAYER 4 ID", "[EMPTY SPOT]", "❓"]);
                                 break;
                             case "redPlayer5":
-                                playerMap.set("redPlayer5", ["[PLAYER 5 OPEN SPOT]", "RED PLAYER 5 ID", "[EMPTY SPOT]",]);
+                                playerMap.set("redPlayer5", ["[PLAYER 5 OPEN]", "RED PLAYER 5 ID", "[EMPTY SPOT]", "❓"]);
                                 break;
 
                             default:
@@ -548,7 +576,156 @@ module.exports = {
             }
         });
 
+        positionCollector.on("collect", async (reaction, user) => {
+            estDateLog = new Date()
+            console.log('\x1b[36m', '/pub-rift:', '\x1b[32m', `Collected [${reaction.emoji.name}] from [${user.tag}] at [${convertTZ(estDateLog, 'America/New_York').toLocaleString()}]`, '\x1b[0m');
+            const fullUserName = user.tag.toString();
+            const userNameID = user.id.toString();
+            usernameNoTag = fullUserName.substring(0, fullUserName.length - 5);
+
+            let formattedBotEmoji = botPositionEmoji.split(':')[1]
+            let formattedFillEmoji = fillPositionEmoji.split(':')[1]
+            let formattedJungleEmoji = junglePositionEmoji.split(':')[1]
+            let formattedMidEmoji = midPositionEmoji.split(':')[1]
+            let formattedSupportEmoji = supportPositionEmoji.split(':')[1]
+            let formattedTopEmoji = topPositionEmoji.split(':')[1]
+
+            async function removePosition() {
+                const userReactions = rolesReply.reactions.cache.filter(reaction => reaction.users.cache.has(user.id));
+                try {
+                    for (const reaction of userReactions.values()) {
+                        await reaction.users.remove(user.id);
+                    }
+                } catch (error) {
+                    console.error('Error on removing reacitons.');
+                }
+            }
+
+            async function findInMap(user, emoji) {
+                for (const [key, value] of playerMap) {
+                    if (value.includes(user)) {
+                        switch (key) {
+                            case "bluePlayer1":
+                                if (emoji == playerMap.get("bluePlayer2")[3] || emoji == playerMap.get("bluePlayer3")[3] || emoji == playerMap.get("bluePlayer4")[3] || emoji == playerMap.get("bluePlayer5")[3]) {
+                                    removePosition()
+                                    break;
+                                } else {
+                                    playerMap.set("bluePlayer1", [`<@${userNameID}>`, userNameID, fullUserName, emoji]);
+                                    removePosition()
+                                    break;
+                                }
+
+                            case "bluePlayer2":
+                                if (emoji == playerMap.get("bluePlayer1")[3] || emoji == playerMap.get("bluePlayer3")[3] || emoji == playerMap.get("bluePlayer4")[3] || emoji == playerMap.get("bluePlayer5")[3]) {
+                                    removePosition()
+                                    break;
+                                } else {
+                                    playerMap.set("bluePlayer2", [`<@${userNameID}>`, userNameID, fullUserName, emoji]);
+                                    removePosition()
+                                    break;
+                                }
+                            case "bluePlayer3":
+                                if (emoji == playerMap.get("bluePlayer1")[3] || emoji == playerMap.get("bluePlayer2")[3] || emoji == playerMap.get("bluePlayer4")[3] || emoji == playerMap.get("bluePlayer5")[3]) {
+                                    removePosition()
+                                    break;
+                                } else {
+                                    playerMap.set("bluePlayer3", [`<@${userNameID}>`, userNameID, fullUserName, emoji]);
+                                    removePosition()
+                                    break;
+                                }
+                            case "bluePlayer4":
+                                if (emoji == playerMap.get("bluePlayer1")[3] || emoji == playerMap.get("bluePlayer2")[3] || emoji == playerMap.get("bluePlayer3")[3] || emoji == playerMap.get("bluePlayer5")[3]) {
+                                    removePosition()
+                                    break;
+                                } else {
+                                    playerMap.set("bluePlayer4", [`<@${userNameID}>`, userNameID, fullUserName, emoji]);
+                                    removePosition()
+                                    break;
+                                }
+                            case "bluePlayer5":
+                                if (emoji == playerMap.get("bluePlayer1")[3] || emoji == playerMap.get("bluePlayer2")[3] || emoji == playerMap.get("bluePlayer3")[3] || emoji == playerMap.get("bluePlayer4")[3]) {
+                                    removePosition()
+                                    break;
+                                } else {
+                                    playerMap.set("bluePlayer5", [`<@${userNameID}>`, userNameID, fullUserName, emoji]);
+                                    removePosition()
+                                    break;
+                                }
+
+                            case "redPlayer1":
+                                if (emoji == playerMap.get("redPlayer2")[3] || emoji == playerMap.get("redPlayer3")[3] || emoji == playerMap.get("redPlayer4")[3] || emoji == playerMap.get("redPlayer5")[3]) {
+                                    removePosition()
+                                    break;
+                                } else {
+                                    playerMap.set("redPlayer1", [`<@${userNameID}>`, userNameID, fullUserName, emoji]);
+                                    removePosition()
+                                    break;
+                                }
+                            case "redPlayer2":
+                                if (emoji == playerMap.get("redPlayer1")[3] || emoji == playerMap.get("redPlayer3")[3] || emoji == playerMap.get("redPlayer4")[3] || emoji == playerMap.get("redPlayer5")[3]) {
+                                    removePosition()
+                                    break;
+                                } else {
+                                    playerMap.set("redPlayer2", [`<@${userNameID}>`, userNameID, fullUserName, emoji]);
+                                    removePosition()
+                                    break;
+                                }
+                            case "redPlayer3":
+                                if (emoji == playerMap.get("redPlayer1")[3] || emoji == playerMap.get("redPlayer2")[3] || emoji == playerMap.get("redPlayer4")[3] || emoji == playerMap.get("redPlayer5")[3]) {
+                                    removePosition()
+                                    break;
+                                } else {
+                                    playerMap.set("redPlayer3", [`<@${userNameID}>`, userNameID, fullUserName, emoji]);
+                                    removePosition()
+                                    break;
+                                }
+                            case "redPlayer4":
+                                if (emoji == playerMap.get("redPlayer1")[3] || emoji == playerMap.get("redPlayer2")[3] || emoji == playerMap.get("redPlayer3")[3] || emoji == playerMap.get("redPlayer5")[3]) {
+                                    removePosition()
+                                    break;
+                                } else {
+                                    playerMap.set("redPlayer4", [`<@${userNameID}>`, userNameID, fullUserName, emoji]);
+                                    removePosition()
+                                    break;
+                                }
+                            case "redPlayer5":
+                                if (emoji == playerMap.get("redPlayer1")[3] || emoji == playerMap.get("redPlayer2")[3] || emoji == playerMap.get("redPlayer3")[3] || emoji == playerMap.get("redPlayer4")[3]) {
+                                    removePosition()
+                                    break;
+                                } else {
+                                    playerMap.set("redPlayer5", [`<@${userNameID}>`, userNameID, fullUserName, emoji]);
+                                    removePosition()
+                                    break;
+                                }
+                            default:
+                                break;
+                        }
+                        // } if (!value.includes(user) && usernameNoTag !== "Mojito" ) {
+                        //     removePosition(user.id)
+                        // }
+                    }
+
+                }
+            }
+
+            if (reaction.emoji.name === formattedBotEmoji || reaction.emoji.name === formattedFillEmoji || reaction.emoji.name === formattedJungleEmoji || reaction.emoji.name === formattedMidEmoji || reaction.emoji.name === formattedTopEmoji || reaction.emoji.name === formattedSupportEmoji) {
+                if(usernameNoTag !== "Mojito") {
+                    if(playerMap.get("bluePlayer1").includes(user.id) || playerMap.get("bluePlayer2").includes(user.id) || playerMap.get("bluePlayer3").includes(user.id) || playerMap.get("bluePlayer4").includes(user.id) || playerMap.get("bluePlayer5").includes(user.id) || playerMap.get("redPlayer1").includes(user.id) || playerMap.get("redPlayer2").includes(user.id) || playerMap.get("redPlayer3").includes(user.id) || playerMap.get("redPlayer4").includes(user.id) || playerMap.get("redPlayer5").includes(user.id)) {
+                        let emoji = `<:${reaction.emoji.name}:${reaction.emoji.id}>`
+                        findInMap(userNameID, emoji)
+                        refreshEmbed();
+                    } else {
+                        removePosition();
+                    }
+                } else {}
+                
+            }
+        });
+
         collector.on("end", (collected) => {
+            console.log('\x1b[36m', '/pub-rift:', '\x1b[31m', `Collected ${collected.size} total emoji reactions`, '\x1b[0m');
+        });
+        positionCollector.on("end", (collected) => {
             console.log('\x1b[36m', '/pub-rift:', '\x1b[31m', `Collected ${collected.size} total emoji reactions`, '\x1b[0m');
         });
 
@@ -567,6 +744,7 @@ module.exports = {
                 if (timeSpan <= -today) {
                     clearInterval(interval);
                     collector.stop()
+                    positionCollector.stop()
                     return;
                 } else if (timeSpan <= 0) {
                     clearInterval(interval);
@@ -579,6 +757,7 @@ module.exports = {
 
                     message.edit({ content: `${messageContent}` }).catch(error => {
                         collector.stop()
+                        positionCollector.stop()
                         clearInterval(interval)
                         if (error.code !== 10008) { console.error('Error on message edit:', error); }
                     });
@@ -590,6 +769,7 @@ module.exports = {
                 } else {
                     if (eventDayMoment.isValid()) { } else {
                         collector.stop()
+                        positionCollector.stop()
                         clearInterval(interval)
                         interaction.followUp({
                             embeds: [embeds.formatEmbed],
@@ -607,6 +787,7 @@ module.exports = {
         async function delayEdit() {
             setTimeout(() => {
                 collector.stop()
+                positionCollector.stop()
             }, 20 * 60 * 1000);
         }
 
@@ -617,20 +798,20 @@ module.exports = {
                 .setDescription(`<t:${eventDayMomentUnix}:F>`)
                 .setThumbnail('https://i.imgur.com/2MaIHMp.png')
                 .setImage(eventImage)
-                .setFooter({ text: `To be removed from a team or change teams, react with ❌ to this event.` })
+                .setFooter({ text: `To be removed from a team or change teams, react with ❌ to this message.` })
                 .addFields(
                     {
                         name: "CLICK A TEAM EMOJI BELOW TO JOIN A TEAM",
                         value: `${eventDescription}`,
                     },
                     {
-                        name: `${preTeam1Emoji} TEAM 1 ${preTeam1Emoji}`,
-                        value: `${playerMap.get("bluePlayer1")[0]}\n${playerMap.get("bluePlayer2")[0]}\n${playerMap.get("bluePlayer3")[0]}\n${playerMap.get("bluePlayer4")[0]}\n${playerMap.get("bluePlayer5")[0]}`,
+                        name: `${preTeam1Emoji} ---- TEAM 1 ---- ${preTeam1Emoji}`,
+                        value: `${playerMap.get("bluePlayer1")[3]} ${playerMap.get("bluePlayer1")[0]}\n${playerMap.get("bluePlayer2")[3]} ${playerMap.get("bluePlayer2")[0]}\n${playerMap.get("bluePlayer3")[3]} ${playerMap.get("bluePlayer3")[0]}\n${playerMap.get("bluePlayer4")[3]} ${playerMap.get("bluePlayer4")[0]}\n${playerMap.get("bluePlayer5")[3]} ${playerMap.get("bluePlayer5")[0]}`,
                         inline: true,
                     },
                     {
-                        name: `${preTeam2Emoji} TEAM 2 ${preTeam2Emoji}`,
-                        value: `${playerMap.get("redPlayer1")[0]}\n${playerMap.get("redPlayer2")[0]}\n${playerMap.get("redPlayer3")[0]}\n${playerMap.get("redPlayer4")[0]}\n${playerMap.get("redPlayer5")[0]}`,
+                        name: `${preTeam2Emoji} ---- TEAM 2 ---- ${preTeam2Emoji}`,
+                        value: `${playerMap.get("redPlayer1")[3]} ${playerMap.get("redPlayer1")[0]}\n${playerMap.get("redPlayer2")[3]} ${playerMap.get("redPlayer2")[0]}\n${playerMap.get("redPlayer3")[3]} ${playerMap.get("redPlayer3")[0]}\n${playerMap.get("redPlayer4")[3]} ${playerMap.get("redPlayer4")[0]}\n${playerMap.get("redPlayer5")[3]} ${playerMap.get("redPlayer5")[0]}`,
                         inline: true,
                     },
                     {
@@ -645,6 +826,7 @@ module.exports = {
                 );
             message.edit({ embeds: [customsEmbed], content: `${messageContent}`, }).catch(error => {
                 collector.stop()
+                positionCollector.stop()
                 if (error.code !== 10008) { console.error('Error on message edit:', error); }
             });
         }
