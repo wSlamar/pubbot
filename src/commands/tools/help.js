@@ -6,7 +6,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("pub-help")
         .setDescription("Replies with an embed for displaying helpful tips on the commands")
-        .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog),
+        .setDefaultMemberPermissions(PermissionFlagsBits.MuteMembers),
 
     async execute(interaction, client) {
         console.log('\x1b[36m','/pub-help has been kicked off','\x1b[0m')
@@ -44,6 +44,10 @@ module.exports = {
                 {
                     name: "🟢  /pub-speak",
                     value: "This commands main function is to create a custom message as if it came from Mojito. **This command can only be used by admins.**\n‎",
+                },
+                {
+                    name: "🟢  /pub-list",
+                    value: "This commands main function is to create a randomly generated list of text embed. **This command can only be used by moderators or admins.**\n‎",
                 },
             )
 

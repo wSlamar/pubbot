@@ -11,6 +11,7 @@ module.exports = {
 
     async execute(interaction, client) {
         console.log('\x1b[36m', '/pub-cleanup has been kicked off', '\x1b[0m')
+        await interaction.deferReply({ ephemeral: true });
         const textChannelArray = mojitoChannelsArray.split(",");
         async function cleanupTextChannels() {
             for (var i = 0; i < textChannelArray.length; i++) {
@@ -36,7 +37,7 @@ module.exports = {
         cleanupTextChannels().then(() =>  changeVoiceChannelPerms())
         changeVoiceChannelLimit();
 
-        const message = await interaction.reply({
+        const message = await interaction.editReply({
             content: `Successfully deleted messages, locked channels and changed user limits!`,
             ephemeral: true
         })
