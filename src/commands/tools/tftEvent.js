@@ -555,17 +555,17 @@ module.exports = {
                         value: `${eventDescription}`,
                     },
                     {
-                        name: `${prePlayerEmoji} PLAYERS ${prePlayerEmoji}`,
+                        name: `${prePlayerEmoji} --- PLAYERS --- ${prePlayerEmoji}`,
                         value: `${playerMap.get("bluePlayer1")[0]}\n${playerMap.get("bluePlayer2")[0]}\n${playerMap.get("bluePlayer3")[0]}\n${playerMap.get("bluePlayer4")[0]}`,
                         inline: true,
                     },
                     {
-                        name: `‎`,
+                        name: `${prePlayerEmoji} --- PLAYERS --- ${prePlayerEmoji}`,
                         value: `${playerMap.get("bluePlayer5")[0]}\n${playerMap.get("bluePlayer6")[0]}\n${playerMap.get("bluePlayer7")[0]}\n${playerMap.get("bluePlayer8")[0]}`,
                         inline: true,
                     },
                     {
-                        name: 'VOICE CHANNEL',
+                        name: '🔊 VOICE CHANNEL 🔊',
                         value: `This lobby will be held in ${eventChannel}`
                     }
                 );

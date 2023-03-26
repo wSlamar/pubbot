@@ -618,16 +618,16 @@ module.exports = {
                     },
                     {
                         name: `${preTeam1Emoji} ---- TEAM 1 ---- ${preTeam1Emoji}`,
-                        value: `${playerMap.get("bluePlayer1")[0]}\n${playerMap.get("bluePlayer2")[0]}\n${playerMap.get("bluePlayer3")[0]}\n${playerMap.get("bluePlayer4")[0]}\n${playerMap.get("bluePlayer5")[0]}\n${preTeam1Emoji} ---- **TEAM 1** ---- ${preTeam1Emoji}`,
+                        value: `${playerMap.get("bluePlayer1")[0]}\n${playerMap.get("bluePlayer2")[0]}\n${playerMap.get("bluePlayer3")[0]}\n${playerMap.get("bluePlayer4")[0]}\n${playerMap.get("bluePlayer5")[0]}`,
                         inline: true,
                     },
                     {
                         name: `${preTeam2Emoji} ---- TEAM 2 ---- ${preTeam2Emoji}`,
-                        value: `${playerMap.get("redPlayer1")[0]}\n${playerMap.get("redPlayer2")[0]}\n${playerMap.get("redPlayer3")[0]}\n${playerMap.get("redPlayer4")[0]}\n${playerMap.get("redPlayer5")[0]}\n${preTeam2Emoji} ---- **TEAM 2** ---- ${preTeam2Emoji}`,
+                        value: `${playerMap.get("redPlayer1")[0]}\n${playerMap.get("redPlayer2")[0]}\n${playerMap.get("redPlayer3")[0]}\n${playerMap.get("redPlayer4")[0]}\n${playerMap.get("redPlayer5")[0]}`,
                         inline: true,
                     },
                     {
-                        name: 'VOICE CHANNEL',
+                        name: '🔊 VOICE CHANNEL 🔊',
                         value: `This lobby will be held in ${eventChannel}`
                     }
                 );
