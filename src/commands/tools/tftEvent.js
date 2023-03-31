@@ -248,7 +248,7 @@ module.exports = {
 
         const eventDayMomentUnix = momentTZ.tz(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`, `${eventTimezone}`).unix()
 
-        let messageContent = `${eventPing} this custom lobby will start <t:${eventDayMomentUnix}:R>`
+        let messageContent = `${eventPing} this TFT lobby will start <t:${eventDayMomentUnix}:R>`
 
         message.react(prePlayerEmoji).catch(error => {
             if (error.code == 10014) {
