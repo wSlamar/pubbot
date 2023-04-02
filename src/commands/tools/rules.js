@@ -191,15 +191,15 @@ module.exports = {
                 },
                 {
                     name: `${aramEmoji}  CUSTOM ARAM RULES  ${aramEmoji}`,
-                    value: `Please see the <#${aramRulesChannel}> thread. \n‎`
+                    value: `Please see the <#${aramRulesChannel}> channel. \n‎`
                 },
                 {
                     name: `${riftEmoji}  CUSTOM SUMMONERS RIFT RULES  ${riftEmoji}`,
-                    value: `Please see the <#${riftRulesChannel}> thread. \n‎`
+                    value: `Please see the <#${riftRulesChannel}> channel. \n‎`
                 },
                 {
                     name: `${tftEmoji}  TFT RULES  ${tftEmoji}`,
-                    value: `Please see the <#${tftRulesChannel}> thread.`
+                    value: `Please see the <#${tftRulesChannel}> channel.`
                 },
             )
 
