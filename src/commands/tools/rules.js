@@ -300,13 +300,13 @@ module.exports = {
                 embeds: [serverRules],
             });
 
-            const rolesEmbed = new EmbedBuilder()
-            .setColor('#167301')
-            .setDescription(`Once you have read and accepted our rules, head over to <#${rolesChannel}> channel to gain access to the rest of the server!`)
+            // const rolesEmbed = new EmbedBuilder()
+            // .setColor('#167301')
+            // .setDescription(`Once you have read and accepted our rules, head over to <#${rolesChannel}> channel to gain access to the rest of the server!`)
 
-            message.reply({
-                embeds: [rolesEmbed]
-            })
+            // message.reply({
+            //     embeds: [rolesEmbed]
+            // })
         }
     }
 };

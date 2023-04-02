@@ -25,7 +25,8 @@ module.exports = {
 
         const channel = client.channels.cache.get(welcomeChannel);
         let welcomeMessage = await channel.send({
-            content: `${randomMessage(welcomeArray)}\nMake sure that you agree to our <#${rulesChannel}> and then get your server roles in the <#${rolesChannel}> channel!`,
+            content: `${randomMessage(welcomeArray)}`,
+            // content: `${randomMessage(welcomeArray)}\nMake sure that you agree to our <#${rulesChannel}> and then get your server roles in the <#${rolesChannel}> channel!`,
         })
         welcomeMessage.react('🍻').catch(error => {
             if (error.code !== 10008) {
