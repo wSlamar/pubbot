@@ -13,6 +13,7 @@ const { junglePositionEmoji } = process.env;
 const { midPositionEmoji } = process.env;
 const { supportPositionEmoji } = process.env;
 const { topPositionEmoji } = process.env;
+const { customSRrole } = process.env;
 const moment = require("moment");
 const momentTZ = require("moment-timezone");
 const { clearInterval } = require("timers");
@@ -34,11 +35,11 @@ module.exports = {
             .setDescription("description of the event")
             .setRequired(true)
         )
-        .addMentionableOption((option) => option
-            .setName("event-ping")
-            .setDescription("what role you would like to ping for the event")
-            .setRequired(true)
-        )
+        // .addMentionableOption((option) => option
+        //     .setName("event-ping")
+        //     .setDescription("what role you would like to ping for the event")
+        //     .setRequired(true)
+        // )
         .addIntegerOption((option) => option
             .setName("event-month")
             .setDescription("month of the event")
@@ -63,14 +64,14 @@ module.exports = {
             .setDescription("day of the event")
             .setRequired(true)
         )
-        .addIntegerOption((option) => option
-            .setName("event-year")
-            .setDescription("year of the event")
-            .setRequired(true)
-            .addChoices(
-                { name: '2023', value: 2023 },
-            )
-        )
+        // .addIntegerOption((option) => option
+        //     .setName("event-year")
+        //     .setDescription("year of the event")
+        //     .setRequired(true)
+        //     .addChoices(
+        //         { name: '2023', value: 2023 },
+        //     )
+        // )
         .addStringOption((option) => option
             .setName("event-hour")
             .setDescription("hour of the event")
@@ -188,7 +189,7 @@ module.exports = {
 
         const team1Channel = interaction.options.getChannel("team-1-voice-channel");
         const team2Channel = interaction.options.getChannel("team-2-voice-channel");
-        const eventPing = interaction.options.getMentionable("event-ping");
+        const eventPing = `<@&${customSRrole}>`
 
         let channelComannd = client.channels.cache.get(interaction.channelId);
 
@@ -226,8 +227,8 @@ module.exports = {
             embeds: [rolesReplyEmbed]
         });
 
-        team1Channel.setUserLimit(6).then(() => team2Channel.setUserLimit(6));
-        team1Channel.permissionOverwrites.edit(leagueRole, { ViewChannel: true }).then(() => team2Channel.permissionOverwrites.edit(leagueRole, { ViewChannel: true }));
+        team1Channel.setUserLimit(6).then(() => team1Channel.permissionOverwrites.edit(leagueRole, { ViewChannel: true }));
+        team2Channel.setUserLimit(6).then(() => team2Channel.permissionOverwrites.edit(leagueRole, { ViewChannel: true }));
 
         const eventDescription = interaction.options.getString("event-description");
         const eventTitle = interaction.options.getString("event-title").toUpperCase();
@@ -252,7 +253,7 @@ module.exports = {
 
         let eventMonth = interaction.options.getInteger("event-month").toString();
         let eventDay = interaction.options.getInteger("event-day").toString();
-        let eventYear = interaction.options.getInteger("event-year").toString();
+        let eventYear = "2023"
         let eventAmPm = interaction.options.getString("event-am-pm").toString();
         let eventMinute = interaction.options.getString("event-minute").toString();
         let eventHour = interaction.options.getString("event-hour");

@@ -7,6 +7,7 @@ const { leagueChatChannel } = process.env;
 const { mojitoAramChannel } = process.env;
 const { aramEmoji } = process.env;
 const { leagueRole } = process.env;
+const { customARAMrole } = process.env;
 const moment = require("moment");
 const momentTZ = require("moment-timezone");
 const { clearInterval } = require("timers");
@@ -28,11 +29,11 @@ module.exports = {
             .setDescription("description of the event")
             .setRequired(true)
         )
-        .addMentionableOption((option) => option
-            .setName("event-ping")
-            .setDescription("what role you would like to ping for the event")
-            .setRequired(true)
-        )
+        // .addMentionableOption((option) => option
+        //     .setName("event-ping")
+        //     .setDescription("what role you would like to ping for the event")
+        //     .setRequired(true)
+        // )
         .addIntegerOption((option) => option
             .setName("event-month")
             .setDescription("month of the event")
@@ -57,14 +58,14 @@ module.exports = {
             .setDescription("day of the event")
             .setRequired(true)
         )
-        .addIntegerOption((option) => option
-            .setName("event-year")
-            .setDescription("year of the event")
-            .setRequired(true)
-            .addChoices(
-                { name: '2023', value: 2023 },
-            )
-        )
+        // .addIntegerOption((option) => option
+        //     .setName("event-year")
+        //     .setDescription("year of the event")
+        //     .setRequired(true)
+        //     .addChoices(
+        //         { name: '2023', value: 2023 },
+        //     )
+        // )
         .addStringOption((option) => option
             .setName("event-hour")
             .setDescription("hour of the event")
@@ -176,7 +177,7 @@ module.exports = {
         ]);
 
         const eventChannel = interaction.options.getChannel("event-voice-channel");
-        const eventPing = interaction.options.getMentionable("event-ping");
+        const eventPing = `<@&${customARAMrole}>`
 
         let channelComannd = client.channels.cache.get(interaction.channelId);
 
@@ -229,7 +230,7 @@ module.exports = {
 
         let eventMonth = interaction.options.getInteger("event-month").toString();
         let eventDay = interaction.options.getInteger("event-day").toString();
-        let eventYear = interaction.options.getInteger("event-year").toString();
+        let eventYear = "2023"
         let eventAmPm = interaction.options.getString("event-am-pm").toString();
         let eventMinute = interaction.options.getString("event-minute").toString();
         let eventHour = interaction.options.getString("event-hour");
