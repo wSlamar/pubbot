@@ -47,7 +47,7 @@ module.exports = {
                 },
                 {
                     name: `${aramEmoji}  RULES  ${aramEmoji}`,
-                    value: `Before joining the event, make sure to check out our event rules in the <#${aramRulesChannel}> thread. Any rules that are not followed are punishable by moderators discretion. \n‎`
+                    value: `Before joining the event, make sure to check out our event rules in the <#${aramRulesChannel}> channel. Any rules that are not followed are punishable by moderators discretion. \n‎`
                 },
                 {
                     name: `${aramEmoji}  PRIORITIZATION  ${aramEmoji}`,
@@ -71,7 +71,7 @@ module.exports = {
                 },
                 {
                     name: `${riftEmoji}  RULES  ${riftEmoji}`,
-                    value: `Before joining the event, make sure to check out our event rules in the <#${riftRulesChannel}> thread. Any rules that are not followed are punishable by moderators discretion. \n‎`
+                    value: `Before joining the event, make sure to check out our event rules in the <#${riftRulesChannel}> channel. Any rules that are not followed are punishable by moderators discretion. \n‎`
                 },
                 {
                     name: `${riftEmoji}  PRIORITIZATION  ${riftEmoji}`,
@@ -95,7 +95,7 @@ module.exports = {
                 },
                 {
                     name: `${tftEmoji}  RULES  ${tftEmoji}`,
-                    value: `Before joining the event, make sure to check out our event rules in the <#${tftRulesChannel}> thread. Any rules that are not followed are punishable by moderators discretion. \n‎`
+                    value: `Before joining the event, make sure to check out our event rules in the <#${tftRulesChannel}> channel. Any rules that are not followed are punishable by moderators discretion. \n‎`
                 },
                 {
                     name: `${tftEmoji}  PRIORITIZATION  ${tftEmoji}`,
