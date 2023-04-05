@@ -24,11 +24,11 @@ module.exports = {
             .setDescription("title of the event")
             .setRequired(true)
         )
-        .addStringOption((option) => option
-            .setName("event-description")
-            .setDescription("description of the event")
-            .setRequired(true)
-        )
+        // .addStringOption((option) => option
+        //     .setName("event-description")
+        //     .setDescription("description of the event")
+        //     .setRequired(true)
+        // )
         // .addMentionableOption((option) => option
         //     .setName("event-ping")
         //     .setDescription("what role you would like to ping for the event")
@@ -207,7 +207,7 @@ module.exports = {
 
         eventChannel.permissionOverwrites.edit(leagueRole, { ViewChannel: true }).then(() => eventChannel.setUserLimit(12));
 
-        const eventDescription = interaction.options.getString("event-description");
+        // const eventDescription = interaction.options.getString("event-description");
         const eventTitle = interaction.options.getString("event-title").toUpperCase();
         const eventImage = interaction.options.getString("event-image");
         const preTeam1Emoji = interaction.options.getString("team-1-emoji");
@@ -264,7 +264,7 @@ module.exports = {
 
         const eventDayMomentUnix = momentTZ.tz(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`, `${eventTimezone}`).unix()
 
-        let messageContent = `${eventPing} this custom lobby will start <t:${eventDayMomentUnix}:R>`
+        let messageContent = `${eventPing} this custom ARAM lobby will start <t:${eventDayMomentUnix}:R>`
 
         message.react(preTeam1Emoji).catch(error => {
             if (error.code == 10014) {
@@ -607,29 +607,29 @@ module.exports = {
         async function refreshEmbed() {
             const customsEmbed = new EmbedBuilder()
                 .setColor('#167301')
-                .setTitle(eventTitle)
-                .setDescription(`<t:${eventDayMomentUnix}:F>`)
-                .setThumbnail('https://i.imgur.com/aDVseTe.png')
+                .setTitle(`${eventTitle}\n──────────────────────────────────────────`)
+                .setDescription(`${aramEmoji}  **JOIN US FOR SOME CUSTOM ARAM**  ${aramEmoji}`)
+                // .setThumbnail('https://i.imgur.com/aDVseTe.png')
                 .setImage(eventImage)
                 .setFooter({ text: `To be removed from a team or change teams, react with ❌ to this message.` })
                 .addFields(
                     {
-                        name: "CLICK A TEAM EMOJI BELOW TO JOIN A TEAM",
-                        value: `${eventDescription}`,
+                        name: `⏰  **START TIME:** <t:${eventDayMomentUnix}:F>  ⏰`,
+                        value: ` `,
                     },
                     {
-                        name: `${preTeam1Emoji} ---- TEAM 1 ---- ${preTeam1Emoji}`,
-                        value: `${playerMap.get("bluePlayer1")[0]}\n${playerMap.get("bluePlayer2")[0]}\n${playerMap.get("bluePlayer3")[0]}\n${playerMap.get("bluePlayer4")[0]}\n${playerMap.get("bluePlayer5")[0]}`,
+                        name: `${preTeam1Emoji} ───── TEAM 1 ───── ${preTeam1Emoji}`,
+                        value: `🔸 ${playerMap.get("bluePlayer1")[0]}\n🔸 ${playerMap.get("bluePlayer2")[0]}\n🔸 ${playerMap.get("bluePlayer3")[0]}\n🔸 ${playerMap.get("bluePlayer4")[0]}\n🔸 ${playerMap.get("bluePlayer5")[0]}`,
                         inline: true,
                     },
                     {
-                        name: `${preTeam2Emoji} ---- TEAM 2 ---- ${preTeam2Emoji}`,
-                        value: `${playerMap.get("redPlayer1")[0]}\n${playerMap.get("redPlayer2")[0]}\n${playerMap.get("redPlayer3")[0]}\n${playerMap.get("redPlayer4")[0]}\n${playerMap.get("redPlayer5")[0]}`,
+                        name: `${preTeam2Emoji} ───── TEAM 2 ───── ${preTeam2Emoji}`,
+                        value: `🔸 ${playerMap.get("redPlayer1")[0]}\n🔸 ${playerMap.get("redPlayer2")[0]}\n🔸 ${playerMap.get("redPlayer3")[0]}\n🔸 ${playerMap.get("redPlayer4")[0]}\n🔸 ${playerMap.get("redPlayer5")[0]}`,
                         inline: true,
                     },
                     {
-                        name: '🔊 VOICE CHANNEL 🔊',
-                        value: `This lobby will be held in ${eventChannel}`
+                        name: '🔊 ────────────── VOICE CHANNEL ────────────── 🔊',
+                        value: `The Voice Channel for this ARAM lobby will be ${eventChannel}`
                     }
                 );
             message.edit({ embeds: [customsEmbed], content: `${messageContent}`, }).catch(error => {

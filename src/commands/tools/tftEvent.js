@@ -24,11 +24,11 @@ module.exports = {
             .setDescription("title of the event")
             .setRequired(true)
         )
-        .addStringOption((option) => option
-            .setName("event-description")
-            .setDescription("description of the event")
-            .setRequired(true)
-        )
+        // .addStringOption((option) => option
+        //     .setName("event-description")
+        //     .setDescription("description of the event")
+        //     .setRequired(true)
+        // )
         // .addMentionableOption((option) => option
         //     .setName("event-ping")
         //     .setDescription("what role you would like to ping for the event")
@@ -200,7 +200,7 @@ module.exports = {
 
         eventChannel.permissionOverwrites.edit(leagueRole, { ViewChannel: true }).then(() => eventChannel.setUserLimit(11));
 
-        const eventDescription = interaction.options.getString("event-description");
+        // const eventDescription = interaction.options.getString("event-description");
         const eventTitle = interaction.options.getString("event-title").toUpperCase();
         const eventImage = interaction.options.getString("event-image");
         const prePlayerEmoji = interaction.options.getString("player-emoji");
@@ -545,29 +545,29 @@ module.exports = {
         function refreshEmbed() {
             const customsEmbed = new EmbedBuilder()
                 .setColor('#167301')
-                .setTitle(eventTitle)
-                .setDescription(`<t:${eventDayMomentUnix}:F>`)
-                .setThumbnail('https://i.imgur.com/iZD4ihw.png')
+                .setTitle(`${eventTitle}\n──────────────────────────────────────────`)
+                .setDescription(`${tftEmoji}  **JOIN US FOR SOME TFT**  ${tftEmoji}`)
+                // .setThumbnail('https://i.imgur.com/iZD4ihw.png')
                 .setImage(eventImage)
                 .setFooter({ text: `To be removed from this lobby list, react with ❌ to this message.` })
                 .addFields(
                     {
-                        name: `CLICK THE PLAYER EMOJI BELOW TO JOIN US`,
-                        value: `${eventDescription}`,
+                        name: `⏰  **START TIME:** <t:${eventDayMomentUnix}:F>  ⏰`,
+                        value: ` `,
                     },
                     {
-                        name: `${prePlayerEmoji} --- PLAYERS --- ${prePlayerEmoji}`,
-                        value: `${playerMap.get("bluePlayer1")[0]}\n${playerMap.get("bluePlayer2")[0]}\n${playerMap.get("bluePlayer3")[0]}\n${playerMap.get("bluePlayer4")[0]}`,
+                        name: `${prePlayerEmoji} ──── PLAYERS ──── ${prePlayerEmoji}`,
+                        value: `🔸 ${playerMap.get("bluePlayer1")[0]}\n🔸 ${playerMap.get("bluePlayer2")[0]}\n🔸 ${playerMap.get("bluePlayer3")[0]}\n🔸 ${playerMap.get("bluePlayer4")[0]}`,
                         inline: true,
                     },
                     {
-                        name: `${prePlayerEmoji} --- PLAYERS --- ${prePlayerEmoji}`,
-                        value: `${playerMap.get("bluePlayer5")[0]}\n${playerMap.get("bluePlayer6")[0]}\n${playerMap.get("bluePlayer7")[0]}\n${playerMap.get("bluePlayer8")[0]}`,
+                        name: `${prePlayerEmoji} ──── PLAYERS ──── ${prePlayerEmoji}`,
+                        value: `🔸 ${playerMap.get("bluePlayer5")[0]}\n🔸 ${playerMap.get("bluePlayer6")[0]}\n🔸 ${playerMap.get("bluePlayer7")[0]}\n🔸 ${playerMap.get("bluePlayer8")[0]}`,
                         inline: true,
                     },
                     {
-                        name: '🔊 VOICE CHANNEL 🔊',
-                        value: `This lobby will be held in ${eventChannel}`
+                        name: '🔊 ────────────── VOICE CHANNEL ────────────── 🔊',
+                        value: `The Voice Channel for this lobby will be ${eventChannel}`
                     }
                 );
 
