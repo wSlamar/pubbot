@@ -545,7 +545,7 @@ module.exports = {
         function refreshEmbed() {
             const customsEmbed = new EmbedBuilder()
                 .setColor('#167301')
-                .setTitle(`${eventTitle}\n──────────────────────────────────────────`)
+                .setTitle(`★  ${eventTitle}  ★\n──────────────────────────────────────────`)
                 .setDescription(`${tftEmoji}  **JOIN US FOR SOME TFT**  ${tftEmoji}`)
                 // .setThumbnail('https://i.imgur.com/iZD4ihw.png')
                 .setImage(eventImage)

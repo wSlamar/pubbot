@@ -607,7 +607,7 @@ module.exports = {
         async function refreshEmbed() {
             const customsEmbed = new EmbedBuilder()
                 .setColor('#167301')
-                .setTitle(`${eventTitle}\n──────────────────────────────────────────`)
+                .setTitle(`★  ${eventTitle}  ★\n──────────────────────────────────────────`)
                 .setDescription(`${aramEmoji}  **JOIN US FOR SOME CUSTOM ARAM**  ${aramEmoji}`)
                 // .setThumbnail('https://i.imgur.com/aDVseTe.png')
                 .setImage(eventImage)

@@ -795,7 +795,7 @@ module.exports = {
         async function refreshEmbed() {
             const customsEmbed = new EmbedBuilder()
                 .setColor('#167301')
-                .setTitle(`${eventTitle}\n──────────────────────────────────────────`)
+                .setTitle(`★  ${eventTitle}  ★\n──────────────────────────────────────────`)
                 .setDescription(`${riftEmoji}  **JOIN US FOR SOME CUSTOM SUMMONERS RIFT**  ${riftEmoji}`)
                 // .setThumbnail('https://i.imgur.com/2MaIHMp.png')
                 .setImage(eventImage)
