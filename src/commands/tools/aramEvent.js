@@ -629,7 +629,7 @@ module.exports = {
                     },
                     {
                         name: '🔊 ────────────── VOICE CHANNEL ────────────── 🔊',
-                        value: `The Voice Channel for this ARAM lobby will be ${eventChannel}`
+                        value: `This Custom ARAM lobby will be held in ${eventChannel}`
                     }
                 );
             message.edit({ embeds: [customsEmbed], content: `${messageContent}`, }).catch(error => {

@@ -567,7 +567,7 @@ module.exports = {
                     },
                     {
                         name: '🔊 ────────────── VOICE CHANNEL ────────────── 🔊',
-                        value: `The Voice Channel for this lobby will be ${eventChannel}`
+                        value: `This TFT lobby will be held in ${eventChannel}`
                     }
                 );
 
