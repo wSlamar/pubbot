@@ -24,16 +24,6 @@ module.exports = {
             .setDescription("title of the event")
             .setRequired(true)
         )
-        // .addStringOption((option) => option
-        //     .setName("event-description")
-        //     .setDescription("description of the event")
-        //     .setRequired(true)
-        // )
-        // .addMentionableOption((option) => option
-        //     .setName("event-ping")
-        //     .setDescription("what role you would like to ping for the event")
-        //     .setRequired(true)
-        // )
         .addIntegerOption((option) => option
             .setName("event-month")
             .setDescription("month of the event")
@@ -58,14 +48,6 @@ module.exports = {
             .setDescription("day of the event")
             .setRequired(true)
         )
-        // .addIntegerOption((option) => option
-        //     .setName("event-year")
-        //     .setDescription("year of the event")
-        //     .setRequired(true)
-        //     .addChoices(
-        //         { name: '2023', value: 2023 },
-        //     )
-        // )
         .addStringOption((option) => option
             .setName("event-hour")
             .setDescription("hour of the event")
@@ -171,6 +153,11 @@ module.exports = {
 
         const eventChannel = interaction.options.getChannel("event-voice-channel");
         const eventPing = `<@&${tftRole}>`
+        let lobbyRunner = interaction.user.username
+
+        if(interaction.member.nickname !== null) {
+            lobbyRunner = interaction.member.nickname
+        }
 
         let channelComannd = client.channels.cache.get(interaction.channelId);
 
@@ -200,7 +187,6 @@ module.exports = {
 
         eventChannel.permissionOverwrites.edit(leagueRole, { ViewChannel: true }).then(() => eventChannel.setUserLimit(11));
 
-        // const eventDescription = interaction.options.getString("event-description");
         const eventTitle = interaction.options.getString("event-title").toUpperCase();
         const eventImage = interaction.options.getString("event-image");
         const prePlayerEmoji = interaction.options.getString("player-emoji");
@@ -546,14 +532,22 @@ module.exports = {
             const customsEmbed = new EmbedBuilder()
                 .setColor('#167301')
                 .setTitle(`★  ${eventTitle}  ★\n──────────────────────────────────────────`)
-                .setDescription(`${tftEmoji}  **JOIN US FOR SOME TFT**  ${tftEmoji}`)
-                // .setThumbnail('https://i.imgur.com/iZD4ihw.png')
+                .setDescription(`${tftEmoji}  **LEAGUE OF LEGENDS TFT LOBBY**  ${tftEmoji}`)
                 .setImage(eventImage)
-                .setFooter({ text: `To be removed from this lobby list, react with ❌ to this message.` })
+                .setFooter({ text: `This TFT Lobby has been created by ${lobbyRunner}`, iconURL: `https://cdn.discordapp.com/avatars/${interaction.user.id}/${interaction.user.avatar}` })
                 .addFields(
                     {
                         name: `⏰  **START TIME:** <t:${eventDayMomentUnix}:F>  ⏰`,
                         value: ` `,
+                    },
+                    {
+                        name: `🔊  **VOICE CHANNEL:** ${eventChannel}  🔊`,
+                        value: ` `
+                    },
+                    {
+                        name: ' ',
+                        value: ` `,
+                        inline: false,
                     },
                     {
                         name: `${prePlayerEmoji} ──── PLAYERS ──── ${prePlayerEmoji}`,
@@ -565,10 +559,6 @@ module.exports = {
                         value: `🔸 ${playerMap.get("bluePlayer5")[0]}\n🔸 ${playerMap.get("bluePlayer6")[0]}\n🔸 ${playerMap.get("bluePlayer7")[0]}\n🔸 ${playerMap.get("bluePlayer8")[0]}`,
                         inline: true,
                     },
-                    {
-                        name: '🔊 ────────────── VOICE CHANNEL ────────────── 🔊',
-                        value: `This TFT lobby will be held in ${eventChannel}`
-                    }
                 );
 
             message.edit({ embeds: [customsEmbed], content: `${messageContent}`, }).catch(error => {

@@ -30,16 +30,6 @@ module.exports = {
             .setDescription("title of the event")
             .setRequired(true)
         )
-        // .addStringOption((option) => option
-        //     .setName("event-description")
-        //     .setDescription("description of the event")
-        //     .setRequired(true)
-        // )
-        // .addMentionableOption((option) => option
-        //     .setName("event-ping")
-        //     .setDescription("what role you would like to ping for the event")
-        //     .setRequired(true)
-        // )
         .addIntegerOption((option) => option
             .setName("event-month")
             .setDescription("month of the event")
@@ -64,14 +54,6 @@ module.exports = {
             .setDescription("day of the event")
             .setRequired(true)
         )
-        // .addIntegerOption((option) => option
-        //     .setName("event-year")
-        //     .setDescription("year of the event")
-        //     .setRequired(true)
-        //     .addChoices(
-        //         { name: '2023', value: 2023 },
-        //     )
-        // )
         .addStringOption((option) => option
             .setName("event-hour")
             .setDescription("hour of the event")
@@ -164,6 +146,11 @@ module.exports = {
             .setName("team-2-voice-channel")
             .setDescription("voice channel that team 2 will be held")
             .setRequired(true)
+        )
+        .addChannelOption((option) => option
+            .setName("waiting-lobby-voice-channel")
+            .setDescription("waiting lobby that team 1 and 2 will use")
+            .setRequired(true)
         ),
 
     async execute(interaction, client) {
@@ -189,7 +176,13 @@ module.exports = {
 
         const team1Channel = interaction.options.getChannel("team-1-voice-channel");
         const team2Channel = interaction.options.getChannel("team-2-voice-channel");
+        const waitingLobbyChannel = interaction.options.getChannel("waiting-lobby-voice-channel");
         const eventPing = `<@&${customSRrole}>`
+        let lobbyRunner = interaction.user.username
+
+        if(interaction.member.nickname !== null) {
+            lobbyRunner = interaction.member.nickname
+        }
 
         let channelComannd = client.channels.cache.get(interaction.channelId);
 
@@ -229,8 +222,8 @@ module.exports = {
 
         team1Channel.setUserLimit(6).then(() => team1Channel.permissionOverwrites.edit(leagueRole, { ViewChannel: true }));
         team2Channel.setUserLimit(6).then(() => team2Channel.permissionOverwrites.edit(leagueRole, { ViewChannel: true }));
+        waitingLobbyChannel.setUserLimit(12).then(() => waitingLobbyChannel.permissionOverwrites.edit(leagueRole, { ViewChannel: true }));
 
-        // const eventDescription = interaction.options.getString("event-description");
         const eventTitle = interaction.options.getString("event-title").toUpperCase();
         const eventImage = interaction.options.getString("event-image");
         const preTeam1Emoji = interaction.options.getString("team-1-emoji");
@@ -710,16 +703,16 @@ module.exports = {
             }
 
             if (reaction.emoji.name === formattedBotEmoji || reaction.emoji.name === formattedFillEmoji || reaction.emoji.name === formattedJungleEmoji || reaction.emoji.name === formattedMidEmoji || reaction.emoji.name === formattedTopEmoji || reaction.emoji.name === formattedSupportEmoji) {
-                if(usernameNoTag !== "Mojito") {
-                    if(playerMap.get("bluePlayer1").includes(user.id) || playerMap.get("bluePlayer2").includes(user.id) || playerMap.get("bluePlayer3").includes(user.id) || playerMap.get("bluePlayer4").includes(user.id) || playerMap.get("bluePlayer5").includes(user.id) || playerMap.get("redPlayer1").includes(user.id) || playerMap.get("redPlayer2").includes(user.id) || playerMap.get("redPlayer3").includes(user.id) || playerMap.get("redPlayer4").includes(user.id) || playerMap.get("redPlayer5").includes(user.id)) {
+                if (usernameNoTag !== "Mojito") {
+                    if (playerMap.get("bluePlayer1").includes(user.id) || playerMap.get("bluePlayer2").includes(user.id) || playerMap.get("bluePlayer3").includes(user.id) || playerMap.get("bluePlayer4").includes(user.id) || playerMap.get("bluePlayer5").includes(user.id) || playerMap.get("redPlayer1").includes(user.id) || playerMap.get("redPlayer2").includes(user.id) || playerMap.get("redPlayer3").includes(user.id) || playerMap.get("redPlayer4").includes(user.id) || playerMap.get("redPlayer5").includes(user.id)) {
                         let emoji = `<:${reaction.emoji.name}:${reaction.emoji.id}>`
                         findInMap(userNameID, emoji)
                         refreshEmbed();
                     } else {
                         removePosition();
                     }
-                } else {}
-                
+                } else { }
+
             }
         });
 
@@ -796,14 +789,22 @@ module.exports = {
             const customsEmbed = new EmbedBuilder()
                 .setColor('#167301')
                 .setTitle(`★  ${eventTitle}  ★\n──────────────────────────────────────────`)
-                .setDescription(`${riftEmoji}  **JOIN US FOR SOME CUSTOM SUMMONERS RIFT**  ${riftEmoji}`)
-                // .setThumbnail('https://i.imgur.com/2MaIHMp.png')
+                .setDescription(`${riftEmoji}  **LEAGUE OF LEGENDS CUSTOM SUMMONERS RIFT**  ${riftEmoji}`)
                 .setImage(eventImage)
-                .setFooter({ text: `To be removed from a team or change teams, react with ❌ to this message.` })
+                .setFooter({ text: `This Custom Rift Lobby has been created by ${lobbyRunner}`, iconURL: `https://cdn.discordapp.com/avatars/${interaction.user.id}/${interaction.user.avatar}` })
                 .addFields(
                     {
                         name: `⏰  **START TIME:** <t:${eventDayMomentUnix}:F>  ⏰`,
                         value: ` `,
+                    },
+                    {
+                        name: `🔊  **WAITING LOBBY:** ${waitingLobbyChannel}  🔊`,
+                        value: ` `
+                    },
+                    {
+                        name: ' ',
+                        value: ` `,
+                        inline: false,
                     },
                     {
                         name: `${preTeam1Emoji} ───── TEAM 1 ───── ${preTeam1Emoji}`,
