@@ -12,7 +12,7 @@ const { tftRole } = process.env;
 const moment = require("moment");
 const momentTZ = require("moment-timezone");
 require('events').EventEmitter.prototype._maxListeners = 100;
-const embeds = require('../../events/client/embeds.js')
+const embeds = require('../events/client/embeds.js')
 
 module.exports = {
     data: new SlashCommandBuilder()

@@ -13,6 +13,7 @@ const { barOwnerRole } = process.env;
 const { localPubEmoji } = process.env;
 const { rolesChannel } = process.env;
 const { patreonRole } = process.env;
+const { minecraftEmoji } = process.env;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -27,7 +28,8 @@ module.exports = {
                 { name: 'Admin Rules', value: 'Admin Rules' },
                 { name: 'Custom ARAM Rules', value: 'Custom ARAM Rules' },
                 { name: 'Custom Summoners Rift Rules', value: 'Custom Summoners Rift Rules' },
-                { name: 'TFT Rules', value: 'TFT Rules' },
+                { name: 'Minecraft Rules', value: 'Minecraft Rules' },
+                // { name: 'TFT Rules', value: 'TFT Rules' },
             )
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
@@ -42,8 +44,12 @@ module.exports = {
             .setDescription(`Please keep in mind our mods may punish at their own discretion depending on the situation. Warnings may not be necessary if the circumstances are too unruly. \n‎`)
             .addFields(
                 {
-                    name: `🔱  ONE CHAMPION PER NIGHT / CUSTOMS  🔱`,
-                    value: `You man only play a champion one time a night and / or customs session. If this rule is not followed, this can be punishable by one strike.\n‎`,
+                    name: `🏆  TOURNAMENT MODE  🏆`,
+                    value: `Custom ARAM lobbies will use the Tournament draft mode. \n‎`
+                },
+                {
+                    name: `🔱  ONE CHAMPION PER SESSION  🔱`,
+                    value: `You cannot play the same champion more than once per Customs session. If this rule is not followed, this can be punishable by one strike.\n‎`,
                 },
                 {
                     name: `💤  SITTING AFK  💤`,
@@ -64,6 +70,10 @@ module.exports = {
                 {
                     name: `📝  IGN / NICKNAME  📝`,
                     value: `If you are participating in Customs, please change your Discord nickname to your in game name to help reduce confusion. \n‎`
+                },
+                {
+                    name: `⏰  BE ON TIME  ⏰`,
+                    value: `We will allow a 5 minute window for players who sign up for the Custom lobby. If you are late or do not show up, this will be punishable by a warning for your first time, a strike for your second time, and a one week restriction on Customs your third time. \n‎`
                 },
                 {
                     name: `👀  SPECTATORS  👀`,
@@ -78,8 +88,12 @@ module.exports = {
             .setDescription(`Please keep in mind our mods may punish at their own discretion depending on the situation. Warnings may not be necessary if the circumstances are too unruly. \n‎`)
             .addFields(
                 {
-                    name: `🔱  ONE CHAMPION PER NIGHT / CUSTOMS  🔱`,
-                    value: `You man only play a champion one time a night and / or customs session. If this rule is not followed, this can be punishable by one strike.\n‎`,
+                    name: `🏆  TOURNAMENT MODE  🏆`,
+                    value: `Custom Rift lobbies will use the Tournament draft mode. \n‎`
+                },
+                {
+                    name: `🔱  ONE CHAMPION PER SESSION  🔱`,
+                    value: `You cannot play the same champion more than once per Customs session. If this rule is not followed, this can be punishable by one strike.\n‎`,
                 },
                 {
                     name: `💤  SITTING AFK  💤`,
@@ -102,36 +116,76 @@ module.exports = {
                     value: `If you are participating in Customs, please change your Discord nickname to your in game name to help reduce confusion. \n‎`
                 },
                 {
+                    name: `⏰  BE ON TIME  ⏰`,
+                    value: `We will allow a 5 minute window for players who sign up for the Custom lobby. If you are late or do not show up, this will be punishable by a warning for your first time, a strike for your second time, and a one week restriction on Customs your third time. \n‎`
+                },
+                {
                     name: `👀  SPECTATORS  👀`,
                     value: `We welcome spectators to join our custom lobbies but we ask that they stay respectful to the players that are currently playing. For example, do not give away positions or plays and do not be a distraction to the players.`
                 }
             )
 
-        const tftRules = new EmbedBuilder()
+        const minecraftRules = new EmbedBuilder()
             .setColor('#167301')
-            .setThumbnail('https://i.imgur.com/iZD4ihw.png')
-            .setTitle(`${tftEmoji}  TFT RULES AND GUIDELINES  ${tftEmoji}`)
+            .setThumbnail('https://i.imgur.com/oIQleee.png')
+            .setTitle(`${minecraftEmoji}  MINECRAFT RULES AND GUIDELINES  ${minecraftEmoji}`)
             .setDescription(`Please keep in mind our mods may punish at their own discretion depending on the situation. Warnings may not be necessary if the circumstances are too unruly. \n‎`)
             .addFields(
+                {
+                    name: `➡️  SERVER ID  ⬅️`,
+                    value: `The Local Pubs Minecraft server ID is **Thepub.serverminer.com**\n‎`
+                },
+                {
+                    name: `⛏️  MODS  ⛏️`,
+                    value: `The Minecraft server uses CurseForge, it can be downloaded at https://download.curseforge.com/\n‎`
+                },
                 {
                     name: `❤️  RESPECT EACH OTHER  ❤️`,
                     value: `Please stay respectful in voice chat and in-game chat. If this rule is not followed, moderators will warn or punish at their own discretion.\n‎`
                 },
                 {
-                    name: `🧠  SKILL LEVEL  🧠`,
-                    value: `We invite any skill level to participate in our Customs lobbies. We play the game to have fun at a competitive level. \n‎`
+                    name: `⛔  NO STEALING  ⛔`,
+                    value: `No stealing anything from any other player.\n‎`
                 },
                 {
-                    name: `📝  IGN / NICKNAME  📝`,
-                    value: `If you are participating in Customs, please change your Discord nickname to your in game name to help reduce confusion. \n‎`
+                    name: `⚔️  NO PVP  ⚔️`,
+                    value: `No PVP without prior permission. Don't go around killing people especially if you don't know them. If you do end up killing someone accidentally or with permission, help them get back to their grave to retrieve their inventory.\n‎`
                 },
                 {
-                    name: `👀  SPECTATORS  👀`,
-                    value: `We welcome spectators to join our custom lobbies but we ask that they stay respectful to the players that are currently playing. For example, do not give away positions or plays and do not be a distraction to the players.`
-                }
+                    name: `💥  NO GRIEFING  💥`,
+                    value: `Don't destroy other players builds or items without prior permission. If you, or a nearby creeper, destroys something that isn’t yours then you have to fix it to the best of your ability. If you are unable to fix it then you are to either leave a sign or book in game or post in the discord what happened. You can also ask another player for help if any are online at the time, most would be more then willing to help.\n‎`
+                },
+                {
+                    name: `🏠  NO SQUATTING  🏠`,
+                    value: `No Squatting. You are not allowed to move into someone else’s base or builds without their permission.\n`
+                },
             )
 
-            const serverRules = new EmbedBuilder()
+        // const tftRules = new EmbedBuilder()
+        //     .setColor('#167301')
+        //     .setThumbnail('https://i.imgur.com/iZD4ihw.png')
+        //     .setTitle(`${tftEmoji}  TFT RULES AND GUIDELINES  ${tftEmoji}`)
+        //     .setDescription(`Please keep in mind our mods may punish at their own discretion depending on the situation. Warnings may not be necessary if the circumstances are too unruly. \n‎`)
+        //     .addFields(
+        //         {
+        //             name: `❤️  RESPECT EACH OTHER  ❤️`,
+        //             value: `Please stay respectful in voice chat and in-game chat. If this rule is not followed, moderators will warn or punish at their own discretion.\n‎`
+        //         },
+        //         {
+        //             name: `🧠  SKILL LEVEL  🧠`,
+        //             value: `We invite any skill level to participate in our Customs lobbies. We play the game to have fun at a competitive level. \n‎`
+        //         },
+        //         {
+        //             name: `📝  IGN / NICKNAME  📝`,
+        //             value: `If you are participating in Customs, please change your Discord nickname to your in game name to help reduce confusion. \n‎`
+        //         },
+        //         {
+        //             name: `👀  SPECTATORS  👀`,
+        //             value: `We welcome spectators to join our custom lobbies but we ask that they stay respectful to the players that are currently playing. For example, do not give away positions or plays and do not be a distraction to the players.`
+        //         }
+        //     )
+
+        const serverRules = new EmbedBuilder()
             .setColor('#167301')
             .setThumbnail('https://i.imgur.com/DKt79Ey.png')
             .setTitle(`${localPubEmoji}  THE LOCAL PUB RULES AND GUIDELINES  ${localPubEmoji}`)
@@ -159,7 +213,7 @@ module.exports = {
                 },
                 {
                     name: `📸  NO ADVERTISING SERVERS / BUSINESSES 📸`,
-                    value: `No advertising your business and no advertising other servers. This also includes things such as "DM me for commissions" or "DM me to join my server". The power to advertise your business within the server comes from collaborating with the Pub and becoming a <@&${patreonRole}>. If you have an interest in becoming a patreon, please reach out to <@&${barKeepsRole}> or <@&${barOwnerRole}>. If this rule is not followed, this can be punishable by one strike.\n‎`
+                    value: `No advertising your business, stream or other servers. This also includes things such as "DM me for commissions" or "DM me to join my server". The power to advertise your business or stream within the server comes from collaborating with the Pub and becoming a <@&${patreonRole}>. If you have an interest in becoming a patreon, please reach out to <@&${barKeepsRole}> or <@&${barOwnerRole}>. If this rule is not followed, this can be punishable by one strike.\n‎`
                 },
                 {
                     name: `❤️  RESPECT EACH OTHER  ❤️`,
@@ -203,7 +257,7 @@ module.exports = {
                 },
             )
 
-            const adminRules = new EmbedBuilder()
+        const adminRules = new EmbedBuilder()
             .setColor('#167301')
             .setThumbnail('https://i.imgur.com/DKt79Ey.png')
             .setTitle(`${localPubEmoji}  MODERATOR RULES AND GUIDELINES  ${localPubEmoji}`)
@@ -280,16 +334,23 @@ module.exports = {
                 embeds: [aramRules],
             });
         }
+
+        if (ruleSet == 'Minecraft Rules') {
+            const message = await channelComannd.send({
+                embeds: [minecraftRules],
+            });
+        }
+
         if (ruleSet == 'Custom Summoners Rift Rules') {
             const message = await channelComannd.send({
                 embeds: [summonersRiftRules],
             });
         }
-        if (ruleSet == 'TFT Rules') {
-            const message = await channelComannd.send({
-                embeds: [tftRules],
-            });
-        }
+        // if (ruleSet == 'TFT Rules') {
+        //     const message = await channelComannd.send({
+        //         embeds: [tftRules],
+        //     });
+        // }
         if (ruleSet == 'Admin Rules') {
             const message = await channelComannd.send({
                 embeds: [adminRules],
