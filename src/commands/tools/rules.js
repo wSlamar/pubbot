@@ -14,6 +14,7 @@ const { localPubEmoji } = process.env;
 const { rolesChannel } = process.env;
 const { patreonRole } = process.env;
 const { minecraftEmoji } = process.env;
+const { minecraftRulesChannel } = process.env;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -252,8 +253,8 @@ module.exports = {
                     value: `Please see the <#${riftRulesChannel}> channel. \n‎`
                 },
                 {
-                    name: `${tftEmoji}  TFT RULES  ${tftEmoji}`,
-                    value: `Please see the <#${tftRulesChannel}> channel.`
+                    name: `${minecraftEmoji}  MINECRAFT RULES  ${minecraftEmoji}`,
+                    value: `Please see the <#${minecraftRulesChannel}> channel.`
                 },
             )
 
