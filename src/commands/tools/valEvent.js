@@ -18,7 +18,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("pub-val")
         .setDescription("Replies with an embed for a custom Unrated event")
-        .setDefaultMemberPermissions(PermissionFlagsBits.MuteMembers)
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .addStringOption((option) => option
             .setName("event-title")
             .setDescription("title of the event")
