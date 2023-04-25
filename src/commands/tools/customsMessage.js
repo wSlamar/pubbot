@@ -66,8 +66,8 @@ module.exports = {
             .setDescription(`This channels purpose is to kick off Custom Summoners Rift lobbies that will be hosted by our <@&${barKeepsRole}>, <@&${barOwnerRole}>, or <@&${beerNutRole}>. We welcome everyone to join us for some fun and encourage everyone to participate! \n‎`)
             .addFields(
                 {
-                    name: `${riftEmoji}  JOINING THE EVENT  ${riftEmoji}`,
-                    value: `When an lobby is kicked off, simply click on the corresponding team emoji for which team you would like to join. \n‎`,
+                    name: `${riftEmoji}  JOINING THE LOBBY  ${riftEmoji}`,
+                    value: `When an lobby is kicked off, simply click on the corresponding team emoji for which team you would like to join. You can also select your position for the lobby by clicking on the corresponding position emoji underneath of the sign up post. \n‎`,
                 },
                 {
                     name: `${riftEmoji}  REMOVING YOURSELF  ${riftEmoji}`,

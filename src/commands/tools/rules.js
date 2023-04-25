@@ -138,7 +138,7 @@ module.exports = {
                 },
                 {
                     name: `⛏️  MODS  ⛏️`,
-                    value: `The Minecraft server uses CurseForge, it can be downloaded at https://download.curseforge.com/\n‎`
+                    value: `The Minecraft server uses CurseForge which can be downloaded at https://download.curseforge.com/. The Mod Pack used in the server is Roguelike Adventures and Dungeons (RAD). \n‎`
                 },
                 {
                     name: `❤️  RESPECT EACH OTHER  ❤️`,
