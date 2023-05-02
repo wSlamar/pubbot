@@ -256,7 +256,7 @@ module.exports = {
                 },
                 {
                     name: `${minecraftEmoji}  MINECRAFT RULES  ${minecraftEmoji}`,
-                    value: `Please see the <#${minecraftRulesChannel}> channel.`
+                    value: `Please see the <#${minecraftRulesChannel}> channel. \n‎`
                 },
                 {
                     name: `🎦  MOVIE NIGHT RULES  🎦`,
