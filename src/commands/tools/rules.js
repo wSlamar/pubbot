@@ -15,6 +15,7 @@ const { rolesChannel } = process.env;
 const { patreonRole } = process.env;
 const { minecraftEmoji } = process.env;
 const { minecraftRulesChannel } = process.env;
+const { movienightRulesChannel } = process.env;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -256,6 +257,10 @@ module.exports = {
                 {
                     name: `${minecraftEmoji}  MINECRAFT RULES  ${minecraftEmoji}`,
                     value: `Please see the <#${minecraftRulesChannel}> channel.`
+                },
+                {
+                    name: `🎦  MOVIE NIGHT RULES  🎦`,
+                    value: `Please see the <#${movienightRulesChannel}> channel.`
                 },
             )
 
