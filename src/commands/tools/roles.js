@@ -32,6 +32,8 @@ const { artistEmoji } = process.env;
 const { pubBoosterEmoji } = process.env;
 const { localcsEmoji } = process.env;
 const { showcaseChannel } = process.env;
+const { bigBrainEmoji } = process.env;
+const { cinematographerEmoji } = process.env;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -292,8 +294,12 @@ module.exports = {
                     value: `The Pub Boosters are members who server boost The Local Pub.\n‎`
                 },
                 {
-                    name: `🧠  BIG BRAIN  🧠`,
+                    name: `${bigBrainEmoji}  BIG BRAIN  ${bigBrainEmoji}`,
                     value: `The Big Brain title is awarded to the most current winner of our Pub Trivia Nights that we host. This role gets passed on each time there is a new first place winner.\n‎`,
+                },
+                {
+                    name: `${cinematographerEmoji}  CINEMATOGRAPHER  ${cinematographerEmoji}`,
+                    value: `The Cinematographers are members of The Local Pub who host our movie nights.\n‎`
                 },
                 {
                     name: `${localcsEmoji}  LOCALS  ${localcsEmoji}`,

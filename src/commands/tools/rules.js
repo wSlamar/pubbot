@@ -30,6 +30,7 @@ module.exports = {
                 { name: 'Custom ARAM Rules', value: 'Custom ARAM Rules' },
                 { name: 'Custom Summoners Rift Rules', value: 'Custom Summoners Rift Rules' },
                 { name: 'Minecraft Rules', value: 'Minecraft Rules' },
+                { name: 'Movie Night Rules', value: 'Movie Night Rules' },
                 // { name: 'TFT Rules', value: 'TFT Rules' },
             )
         )
@@ -320,8 +321,24 @@ module.exports = {
                     name: `🔱  LOBBY LIMITATIONS  🔱`,
                     value: `No more than two mods in a custom made game at a time. Unless requesting a third for support, backup or disciplinary actions are needed. Players are a priority with these lobbies so they come before mods when it comes time to fill spots. Unless you are hosting the lobby, please sit out or start a new lobby if possible.`
                 },
-
             )
+
+        const movieNightRules = new EmbedBuilder()
+            .setColor('#167301')
+            .setThumbnail('https://i.imgur.com/AvSlSd6.png')
+            .setTitle(`🎦  MOVIE NIGHT RULES AND GUIDELINES  🎦`)
+            .setDescription(`Please keep in mind our mods may punish at their own discretion depending on the situation. Warnings may not be necessary if the circumstances are too unruly. \n‎`)
+            .addFields(
+                {
+                    name: `🗣️  CONVERSATIONS  🗣️`,
+                    value: `While we do encourage conversations to take place while the movie is running, please do not constantly be talking over the movie itself. We want everyone to enjoy the movie that is being streamed and having loud and constant conversations during the movie can be a nuisance to those who are trying to enjoy it.\n‎`
+                },
+                {
+                    name: `❤️  RESPECT EACH OTHER  ❤️`,
+                    value: `Please stay respectful in voice chat. If this rule is not followed, moderators will warn or punish at their own discretion.`
+                },
+            )
+
 
         let channelComannd = client.channels.cache.get(interaction.channelId);
 
@@ -345,6 +362,11 @@ module.exports = {
         if (ruleSet == 'Custom Summoners Rift Rules') {
             const message = await channelComannd.send({
                 embeds: [summonersRiftRules],
+            });
+        }
+        if (ruleSet == 'Movie Night Rules') {
+            const message = await channelComannd.send({
+                embeds: [movieNightRules],
             });
         }
         // if (ruleSet == 'TFT Rules') {
