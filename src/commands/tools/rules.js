@@ -47,10 +47,6 @@ module.exports = {
             .setDescription(`Please keep in mind our mods may punish at their own discretion depending on the situation. Warnings may not be necessary if the circumstances are too unruly. \n‎`)
             .addFields(
                 {
-                    name: `🏆  TOURNAMENT MODE  🏆`,
-                    value: `Custom ARAM lobbies will use the Tournament draft mode. \n‎`
-                },
-                {
                     name: `🔱  ONE CHAMPION PER SESSION  🔱`,
                     value: `You cannot play the same champion more than once per Customs session. If this rule is not followed, this can be punishable by one strike.\n‎`,
                 },
@@ -80,8 +76,12 @@ module.exports = {
                 },
                 {
                     name: `👀  SPECTATORS  👀`,
-                    value: `We welcome spectators to join our custom lobbies but we ask that they stay respectful to the players that are currently playing. For example, do not give away positions or plays and do not be a distraction to the players.`
-                }
+                    value: `We welcome spectators to join our custom lobbies but we ask that they stay respectful to the players that are currently playing. For example, do not give away positions or plays and do not be a distraction to the players. \n‎`
+                },
+                {
+                    name: `🎧  DEAFENED  🎧`,
+                    value: `If you are participating in Customs, we ask that you do not deafen yourself on Discord. Communication is key to winning games!`
+                },
             )
 
         const summonersRiftRules = new EmbedBuilder()
@@ -124,8 +124,12 @@ module.exports = {
                 },
                 {
                     name: `👀  SPECTATORS  👀`,
-                    value: `We welcome spectators to join our custom lobbies but we ask that they stay respectful to the players that are currently playing. For example, do not give away positions or plays and do not be a distraction to the players.`
-                }
+                    value: `We welcome spectators to join our custom lobbies but we ask that they stay respectful to the players that are currently playing. For example, do not give away positions or plays and do not be a distraction to the players.\n‎`
+                },
+                {
+                    name: `🎧  DEAFENED  🎧`,
+                    value: `If you are participating in Customs, we ask that you do not deafen yourself on Discord. Communication is key to winning games!`
+                },
             )
 
         const minecraftRules = new EmbedBuilder()
