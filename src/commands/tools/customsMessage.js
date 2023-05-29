@@ -11,6 +11,7 @@ const { tftRulesChannel } = process.env;
 const { barKeepsRole } = process.env;
 const { barOwnerRole } = process.env;
 const { beerNutRole } = process.env;
+const { bartenderRole } = process.env;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -35,11 +36,11 @@ module.exports = {
             .setColor('#167301')
             .setThumbnail('https://i.imgur.com/aDVseTe.png')
             .setTitle(`${aramEmoji}  THE LOCAL PUB'S CUSTOM ARAM LOBBIES  ${aramEmoji}`)
-            .setDescription(`This channels purpose is to kick off Custom ARAM lobbies that will be hosted by our <@&${barKeepsRole}>, <@&${barOwnerRole}>, or <@&${beerNutRole}>. We welcome everyone to join us for some fun and encourage everyone to participate! \n‎`)
+            .setDescription(`This channels purpose is to kick off Custom ARAM lobbies that will be hosted by our <@&${barKeepsRole}>, <@&${barOwnerRole}>, <@&${bartenderRole}>, or <@&${beerNutRole}>. We welcome everyone to join us for some fun and encourage everyone to participate! \n‎`)
             .addFields(
                 {
                     name: `${aramEmoji}  JOINING THE LOBBY  ${aramEmoji}`,
-                    value: `When an lobby is kicked off, simply click on the corresponding team emoji for which team you would like to join. \n‎`,
+                    value: `When a lobby is kicked off, simply click on the corresponding team emoji for which team you would like to join. \n‎`,
                 },
                 {
                     name: `${aramEmoji}  REMOVING YOURSELF  ${aramEmoji}`,
@@ -63,11 +64,11 @@ module.exports = {
             .setColor('#167301')
             .setThumbnail('https://i.imgur.com/2MaIHMp.png')
             .setTitle(`${riftEmoji}  THE LOCAL PUB'S CUSTOM RIFT LOBBIES  ${riftEmoji}`)
-            .setDescription(`This channels purpose is to kick off Custom Summoners Rift lobbies that will be hosted by our <@&${barKeepsRole}>, <@&${barOwnerRole}>, or <@&${beerNutRole}>. We welcome everyone to join us for some fun and encourage everyone to participate! \n‎`)
+            .setDescription(`This channels purpose is to kick off Custom Summoners Rift lobbies that will be hosted by our <@&${barKeepsRole}>, <@&${barOwnerRole}>, <@&${bartenderRole}>, or <@&${beerNutRole}>. We welcome everyone to join us for some fun and encourage everyone to participate! \n‎`)
             .addFields(
                 {
                     name: `${riftEmoji}  JOINING THE LOBBY  ${riftEmoji}`,
-                    value: `When an lobby is kicked off, simply click on the corresponding team emoji for which team you would like to join. You can also select your position for the lobby by clicking on the corresponding position emoji underneath of the sign up post. \n‎`,
+                    value: `When a lobby is kicked off, simply click on the corresponding team emoji for which team you would like to join. You can also select your position for the lobby by clicking on the corresponding position emoji underneath of the sign up post. \n‎`,
                 },
                 {
                     name: `${riftEmoji}  REMOVING YOURSELF  ${riftEmoji}`,

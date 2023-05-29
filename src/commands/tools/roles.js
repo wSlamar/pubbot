@@ -34,6 +34,8 @@ const { localcsEmoji } = process.env;
 const { showcaseChannel } = process.env;
 const { bigBrainEmoji } = process.env;
 const { cinematographerEmoji } = process.env;
+const { bartenderEmoji } = process.env;
+const { barflyEmoji } = process.env;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -58,7 +60,7 @@ module.exports = {
             .setThumbnail('https://i.imgur.com/DKt79Ey.png')
             .setTitle(`${localPubEmoji}  THE LOCAL PUBS MAIN ROLES  ${localPubEmoji}`)
             .setFooter({ text: "❗❗❗ READ AND ACCEPT OUR RULES TO GAIN MORE ACCESS TO THE CHANNELS ❗❗❗" })
-            .setDescription(`Welcome to The Local Pub! Please react to receive the corresponding role! These roles will give you access to the rest of the server.\n‎`)
+            .setDescription(`Welcome to The Local Pub! Please react to receive the corresponding role! These roles will give you access to the rest of the community.\n‎`)
             .addFields(
                 {
                     name: `${leagueEmoji}  LEAGUE OF LEGENDS  ${leagueEmoji}`,
@@ -267,23 +269,31 @@ module.exports = {
             .setColor('#167301')
             .setThumbnail('https://i.imgur.com/DKt79Ey.png')
             .setTitle(`${localPubEmoji}  WHO WE ARE  ${localPubEmoji}`)
-            .setDescription(`Below you will find an explanation of each role in the server and what their purpose is. If you have any interest in becoming a higher level role in our server, please reach out to one of our Bar Owners or Barkeeps!\n‎`)
+            .setDescription(`Below you will find an explanation of each role in the community and what their purpose is. If you have any interest in becoming a higher level role in our community, please reach out to one of our Bar Owners, Barkeeps or Bartenders!\n‎`)
             .addFields(
                 {
                     name: `${barOwnerEmoji}  BAR OWNERS  ${barOwnerEmoji}`,
-                    value: `The Bar Owners are the server admins of The Local Pub.\n‎`,
+                    value: `The Bar Owners are the community admins of The Local Pub.\n‎`,
+                },
+                {
+                    name: `${bartenderEmoji}  BARTENDERS  ${bartenderEmoji}`,
+                    value: `The Bartenders are sub-admins of The Local Pub. You will frequently see them moderating and playing within the community.\n‎`,
                 },
                 {
                     name: `${barKeepsEmoji}  BARKEEPS  ${barKeepsEmoji}`,
-                    value: `The Barkeeps are the server moderators of The Local Pub. You will frequently see them hosting our custom lobbies / games and moderating the server.\n‎`,
+                    value: `The Barkeeps are the community moderators of The Local Pub. You will frequently see them hosting our custom lobbies / games and moderating the community.\n‎`,
                 },
                 {
                     name: `${beerNutsEmoji}  BEER NUTS  ${beerNutsEmoji}`,
                     value: `The Beer Nuts are our custom lobby hosts and you will frequently see them hosting our custom lobbies / games.\n‎`,
                 },
                 {
+                    name: `${barflyEmoji}  BAR FLY  ${barflyEmoji}`,
+                    value: `The Bar Flies are the community members of The Local Pub who help keep the community a safe and fun environment.\n‎`,
+                },
+                {
                     name: `${bouncersEmoji}  BOUNCERS  ${bouncersEmoji}`,
-                    value: `The Bouncers are the bots of The Local Pub and help us manage the server.\n‎`,
+                    value: `The Bouncers are the bots of The Local Pub and help us manage the community.\n‎`,
                 },
                 {
                     name: `${artistEmoji}  PUB PATREON  ${artistEmoji}`,
@@ -291,7 +301,7 @@ module.exports = {
                 },
                 {
                     name: `${pubBoosterEmoji}  PUB BOOSTER  ${pubBoosterEmoji}`,
-                    value: `The Pub Boosters are members who server boost The Local Pub.\n‎`
+                    value: `The Pub Boosters are members who community boost The Local Pub.\n‎`
                 },
                 {
                     name: `${bigBrainEmoji}  BIG BRAIN  ${bigBrainEmoji}`,
@@ -303,7 +313,7 @@ module.exports = {
                 },
                 {
                     name: `${localcsEmoji}  LOCALS  ${localcsEmoji}`,
-                    value: `The Locals are the server members of The Local Pub.`
+                    value: `The Locals are the community members of The Local Pub.`
                 },
             )
 
@@ -321,7 +331,7 @@ module.exports = {
 
             const subRolesNavEmbed = new EmbedBuilder()
                 .setColor('#167301')
-                .setDescription(`Once you have gotten your main server roles, check out some of our sub roles in the <#${subRolesChannel}> thread!`)
+                .setDescription(`Once you have gotten your main community roles, check out some of our sub roles in the <#${subRolesChannel}> thread!`)
 
             message.reply({
                 embeds: [subRolesNavEmbed]

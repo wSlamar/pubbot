@@ -56,11 +56,11 @@ module.exports = {
                 },
                 {
                     name: `🚫  INTING  🚫`,
-                    value: `Hard inting and soft inting are both considered feeding and will not be tolerated. If this rule is not followed, this can be punishable by one strike.\n‎`
+                    value: `Inting is considered feeding and will not be tolerated. If this rule is not followed, this can be punishable by one strike.\n‎`
                 },
                 {
-                    name: `❤️  RESPECT EACH OTHER  ❤️`,
-                    value: `Please stay respectful in voice chat and in-game chat. If this rule is not followed, moderators will warn or punish at their own discretion.\n‎`
+                    name: `❤️  BE RESPECTFUL / SPORTSMANSHIP  ❤️`,
+                    value: `Please stay respectful to all members in voice chat and in-game chat. Do not be toxic and please have a respectable sportsmanlike conduct when playing in our customs. If this rule is not followed, moderators will warn or punish at their own discretion.\n‎`
                 },
                 {
                     name: `🧠  SKILL LEVEL  🧠`,
@@ -104,11 +104,11 @@ module.exports = {
                 },
                 {
                     name: `🚫  INTING  🚫`,
-                    value: `Hard inting and soft inting are both considered feeding and will not be tolerated. If this rule is not followed, this can be punishable by one strike.\n‎`
+                    value: `Inting is considered feeding and will not be tolerated. If this rule is not followed, this can be punishable by one strike.\n‎`
                 },
                 {
-                    name: `❤️  RESPECT EACH OTHER  ❤️`,
-                    value: `Please stay respectful in voice chat and in-game chat. If this rule is not followed, moderators will warn or punish at their own discretion.\n‎`
+                    name: `❤️  BE RESPECTFUL / SPORTSMANSHIP  ❤️`,
+                    value: `Please stay respectful to all members in voice chat and in-game chat. Do not be toxic and please have a respectable sportsmanlike conduct when playing in our customs. If this rule is not followed, moderators will warn or punish at their own discretion.\n‎`
                 },
                 {
                     name: `🧠  SKILL LEVEL  🧠`,
