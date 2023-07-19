@@ -17,7 +17,7 @@
     "dotenv": "^16.0.3",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.40",
+    "mysql": "^2.18.1",
     "node-worker-threads-pool": "^1.5.1"
   }
 }
-

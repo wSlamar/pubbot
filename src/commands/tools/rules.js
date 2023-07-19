@@ -29,10 +29,10 @@ module.exports = {
                 { name: 'Server Rules', value: 'Server Rules' },
                 { name: 'Admin Rules', value: 'Admin Rules' },
                 { name: 'Custom ARAM Rules', value: 'Custom ARAM Rules' },
-                { name: 'Custom Summoners Rift Rules', value: 'Custom Summoners Rift Rules' },
+                // { name: 'Custom Summoners Rift Rules', value: 'Custom Summoners Rift Rules' },
                 { name: 'Minecraft Rules', value: 'Minecraft Rules' },
                 { name: 'Movie Night Rules', value: 'Movie Night Rules' },
-                // { name: 'TFT Rules', value: 'TFT Rules' },
+                { name: 'TFT Rules', value: 'TFT Rules' },
             )
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
@@ -84,53 +84,53 @@ module.exports = {
                 },
             )
 
-        const summonersRiftRules = new EmbedBuilder()
-            .setColor('#167301')
-            .setThumbnail('https://i.imgur.com/2MaIHMp.png')
-            .setTitle(`${riftEmoji}  CUSTOM RIFT RULES AND GUIDELINES  ${riftEmoji}`)
-            .setDescription(`Please keep in mind our mods may punish at their own discretion depending on the situation. Warnings may not be necessary if the circumstances are too unruly. \n‎`)
-            .addFields(
-                {
-                    name: `🏆  TOURNAMENT MODE  🏆`,
-                    value: `Custom Rift lobbies will use the Tournament draft mode. \n‎`
-                },
-                {
-                    name: `🔱  ONE CHAMPION PER SESSION  🔱`,
-                    value: `You cannot play the same champion more than once per Customs session. If this rule is not followed, this can be punishable by one strike.\n‎`,
-                },
-                {
-                    name: `💤  SITTING AFK  💤`,
-                    value: `Sitting AFK in base while the game is still winnable is not permitted, although waiting on gold is allowed. If this rule is not followed, this can be punishable by one strike.\n‎`,
-                },
-                {
-                    name: `🚫  INTING  🚫`,
-                    value: `Inting is considered feeding and will not be tolerated. If this rule is not followed, this can be punishable by one strike.\n‎`
-                },
-                {
-                    name: `❤️  BE RESPECTFUL / SPORTSMANSHIP  ❤️`,
-                    value: `Please stay respectful to all members in voice chat and in-game chat. Do not be toxic and please have a respectable sportsmanlike conduct when playing in our customs. If this rule is not followed, moderators will warn or punish at their own discretion.\n‎`
-                },
-                {
-                    name: `🧠  SKILL LEVEL  🧠`,
-                    value: `We invite any skill level to participate in our Customs lobbies. We play the game to have fun at a competitive level. \n‎`
-                },
-                {
-                    name: `📝  IGN / NICKNAME  📝`,
-                    value: `If you are participating in Customs, please change your Discord nickname to your in game name to help reduce confusion. \n‎`
-                },
-                {
-                    name: `⏰  BE ON TIME  ⏰`,
-                    value: `We will allow a 5 minute window for players who sign up for the Custom lobby. If you are late or do not show up, this will be punishable by a warning for your first time, a strike for your second time, and a one week restriction on Customs your third time. \n‎`
-                },
-                {
-                    name: `👀  SPECTATORS  👀`,
-                    value: `We welcome spectators to join our custom lobbies but we ask that they stay respectful to the players that are currently playing. For example, do not give away positions or plays and do not be a distraction to the players.\n‎`
-                },
-                {
-                    name: `🎧  DEAFENED  🎧`,
-                    value: `If you are participating in Customs, we ask that you do not deafen yourself on Discord. Communication is key to winning games!`
-                },
-            )
+        // const summonersRiftRules = new EmbedBuilder()
+        //     .setColor('#167301')
+        //     .setThumbnail('https://i.imgur.com/2MaIHMp.png')
+        //     .setTitle(`${riftEmoji}  CUSTOM RIFT RULES AND GUIDELINES  ${riftEmoji}`)
+        //     .setDescription(`Please keep in mind our mods may punish at their own discretion depending on the situation. Warnings may not be necessary if the circumstances are too unruly. \n‎`)
+        //     .addFields(
+        //         {
+        //             name: `🏆  TOURNAMENT MODE  🏆`,
+        //             value: `Custom Rift lobbies will use the Tournament draft mode. \n‎`
+        //         },
+        //         {
+        //             name: `🔱  ONE CHAMPION PER SESSION  🔱`,
+        //             value: `You cannot play the same champion more than once per Customs session. If this rule is not followed, this can be punishable by one strike.\n‎`,
+        //         },
+        //         {
+        //             name: `💤  SITTING AFK  💤`,
+        //             value: `Sitting AFK in base while the game is still winnable is not permitted, although waiting on gold is allowed. If this rule is not followed, this can be punishable by one strike.\n‎`,
+        //         },
+        //         {
+        //             name: `🚫  INTING  🚫`,
+        //             value: `Inting is considered feeding and will not be tolerated. If this rule is not followed, this can be punishable by one strike.\n‎`
+        //         },
+        //         {
+        //             name: `❤️  BE RESPECTFUL / SPORTSMANSHIP  ❤️`,
+        //             value: `Please stay respectful to all members in voice chat and in-game chat. Do not be toxic and please have a respectable sportsmanlike conduct when playing in our customs. If this rule is not followed, moderators will warn or punish at their own discretion.\n‎`
+        //         },
+        //         {
+        //             name: `🧠  SKILL LEVEL  🧠`,
+        //             value: `We invite any skill level to participate in our Customs lobbies. We play the game to have fun at a competitive level. \n‎`
+        //         },
+        //         {
+        //             name: `📝  IGN / NICKNAME  📝`,
+        //             value: `If you are participating in Customs, please change your Discord nickname to your in game name to help reduce confusion. \n‎`
+        //         },
+        //         {
+        //             name: `⏰  BE ON TIME  ⏰`,
+        //             value: `We will allow a 5 minute window for players who sign up for the Custom lobby. If you are late or do not show up, this will be punishable by a warning for your first time, a strike for your second time, and a one week restriction on Customs your third time. \n‎`
+        //         },
+        //         {
+        //             name: `👀  SPECTATORS  👀`,
+        //             value: `We welcome spectators to join our custom lobbies but we ask that they stay respectful to the players that are currently playing. For example, do not give away positions or plays and do not be a distraction to the players.\n‎`
+        //         },
+        //         {
+        //             name: `🎧  DEAFENED  🎧`,
+        //             value: `If you are participating in Customs, we ask that you do not deafen yourself on Discord. Communication is key to winning games!`
+        //         },
+        //     )
 
         const minecraftRules = new EmbedBuilder()
             .setColor('#167301')
@@ -168,29 +168,29 @@ module.exports = {
                 },
             )
 
-        // const tftRules = new EmbedBuilder()
-        //     .setColor('#167301')
-        //     .setThumbnail('https://i.imgur.com/iZD4ihw.png')
-        //     .setTitle(`${tftEmoji}  TFT RULES AND GUIDELINES  ${tftEmoji}`)
-        //     .setDescription(`Please keep in mind our mods may punish at their own discretion depending on the situation. Warnings may not be necessary if the circumstances are too unruly. \n‎`)
-        //     .addFields(
-        //         {
-        //             name: `❤️  RESPECT EACH OTHER  ❤️`,
-        //             value: `Please stay respectful in voice chat and in-game chat. If this rule is not followed, moderators will warn or punish at their own discretion.\n‎`
-        //         },
-        //         {
-        //             name: `🧠  SKILL LEVEL  🧠`,
-        //             value: `We invite any skill level to participate in our Customs lobbies. We play the game to have fun at a competitive level. \n‎`
-        //         },
-        //         {
-        //             name: `📝  IGN / NICKNAME  📝`,
-        //             value: `If you are participating in Customs, please change your Discord nickname to your in game name to help reduce confusion. \n‎`
-        //         },
-        //         {
-        //             name: `👀  SPECTATORS  👀`,
-        //             value: `We welcome spectators to join our custom lobbies but we ask that they stay respectful to the players that are currently playing. For example, do not give away positions or plays and do not be a distraction to the players.`
-        //         }
-        //     )
+        const tftRules = new EmbedBuilder()
+            .setColor('#167301')
+            .setThumbnail('https://i.imgur.com/iZD4ihw.png')
+            .setTitle(`${tftEmoji}  TFT RULES AND GUIDELINES  ${tftEmoji}`)
+            .setDescription(`Please keep in mind our mods may punish at their own discretion depending on the situation. Warnings may not be necessary if the circumstances are too unruly. \n‎`)
+            .addFields(
+                {
+                    name: `❤️  RESPECT EACH OTHER  ❤️`,
+                    value: `Please stay respectful in voice chat and in-game chat. If this rule is not followed, moderators will warn or punish at their own discretion.\n‎`
+                },
+                {
+                    name: `🧠  SKILL LEVEL  🧠`,
+                    value: `We invite any skill level to participate in our Customs lobbies. We play the game to have fun at a competitive level. \n‎`
+                },
+                {
+                    name: `📝  IGN / NICKNAME  📝`,
+                    value: `If you are participating in Customs, please change your Discord nickname to your in game name to help reduce confusion. \n‎`
+                },
+                {
+                    name: `👀  SPECTATORS  👀`,
+                    value: `We welcome spectators to join our custom lobbies but we ask that they stay respectful to the players that are currently playing. For example, do not give away positions or plays and do not be a distraction to the players.`
+                }
+            )
 
         const serverRules = new EmbedBuilder()
             .setColor('#167301')
@@ -368,21 +368,21 @@ module.exports = {
             });
         }
 
-        if (ruleSet == 'Custom Summoners Rift Rules') {
-            const message = await channelComannd.send({
-                embeds: [summonersRiftRules],
-            });
-        }
+        // if (ruleSet == 'Custom Summoners Rift Rules') {
+        //     const message = await channelComannd.send({
+        //         embeds: [summonersRiftRules],
+        //     });
+        // }
         if (ruleSet == 'Movie Night Rules') {
             const message = await channelComannd.send({
                 embeds: [movieNightRules],
             });
         }
-        // if (ruleSet == 'TFT Rules') {
-        //     const message = await channelComannd.send({
-        //         embeds: [tftRules],
-        //     });
-        // }
+        if (ruleSet == 'TFT Rules') {
+            const message = await channelComannd.send({
+                embeds: [tftRules],
+            });
+        }
         if (ruleSet == 'Admin Rules') {
             const message = await channelComannd.send({
                 embeds: [adminRules],
