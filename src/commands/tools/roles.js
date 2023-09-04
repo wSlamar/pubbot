@@ -37,6 +37,16 @@ const { cinematographerEmoji } = process.env;
 const { bartenderEmoji } = process.env;
 const { barflyEmoji } = process.env;
 const { jukeboxChannel } = process.env;
+const { soberEmoji } = process.env;
+const { tipsyEmoji } = process.env;
+const { vibinEmoji } = process.env;
+const { buzzedEmoji } = process.env;
+const { toastedEmoji } = process.env;
+const { plasteredEmoji } = process.env;
+const { roastedEmoji } = process.env;
+const { hammeredEmoji } = process.env;
+const { friedEmoji } = process.env;
+const { crossfadedEmoji } = process.env;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -326,43 +336,43 @@ module.exports = {
             .setDescription(`Below are all of the Local Pub's XP Roles that are granted once you reach a certain XP level within the community. There are currently two ways to earn XP in the Local Pub.\n\n The first way is posting messages within the community chats. Bonus XP is granted to those who take time into their posts.\n\n The second way is being active within voice channels. You do get minor points for sitting mute but ultimately people who talk and engage in conversations will gain more.\n‎`)
             .addFields(
                 {
-                    name: `${barOwnerEmoji}  SOBER  ${barOwnerEmoji}`,
+                    name: `${soberEmoji}  SOBER  ${soberEmoji}`,
                     value: `The Sober role is granted at **Level 5**. This will grant you access to the <#${jukeboxChannel}> channel. Your role icon will change to the emoji above once you reach this level.\n‎`,
                 },
                 {
-                    name: `${bartenderEmoji}  TIPSY  ${bartenderEmoji}`,
+                    name: `${tipsyEmoji}  TIPSY  ${tipsyEmoji}`,
                     value: `The Tipsy role is granted at **Level 10**. Your role icon will change to the emoji above once you reach this level.\n‎`,
                 },
                 {
-                    name: `${barKeepsEmoji}  VIBIN  ${barKeepsEmoji}`,
+                    name: `${vibinEmoji}  VIBIN  ${vibinEmoji}`,
                     value: `The Vibin role is granted at **Level 15**. Your role icon will change to the emoji above once you reach this level.\n‎`,
                 },
                 {
-                    name: `${beerNutsEmoji}  BUZZED  ${beerNutsEmoji}`,
+                    name: `${buzzedEmoji}  BUZZED  ${buzzedEmoji}`,
                     value: `The Buzzed role is granted at **Level 20**. Your role icon will change to the emoji above once you reach this level.\n‎`,
                 },
                 {
-                    name: `${barflyEmoji}  TOASTED  ${barflyEmoji}`,
+                    name: `${toastedEmoji}  TOASTED  ${toastedEmoji}`,
                     value: `The Toasted role is granted at **Level 25**. This will grant you access to exclusive chat and voice lobbies. Your role icon will change to the emoji above once you reach this level.\n‎`,
                 },
                 {
-                    name: `${bouncersEmoji}  PLASTERED  ${bouncersEmoji}`,
+                    name: `${plasteredEmoji}  PLASTERED  ${plasteredEmoji}`,
                     value: `The Plastered role is granted at **Level 30**. Your role icon will change to the emoji above once you reach this level.\n‎`,
                 },
                 {
-                    name: `${artistEmoji}  ROASTED  ${artistEmoji}`,
+                    name: `${roastedEmoji}  ROASTED  ${roastedEmoji}`,
                     value: `The Roasted role is granted at **Level 35**. Your role icon will change to the emoji above once you reach this level.\n‎`,
                 },
                 {
-                    name: `${pubBoosterEmoji}  HAMMERED  ${pubBoosterEmoji}`,
+                    name: `${hammeredEmoji}  HAMMERED  ${hammeredEmoji}`,
                     value: `The Hammered role is granted at **Level 40**. Your role icon will change to the emoji above once you reach this level.\n‎`
                 },
                 {
-                    name: `${bigBrainEmoji}  FRIED  ${bigBrainEmoji}`,
+                    name: `${friedEmoji}  FRIED  ${friedEmoji}`,
                     value: `The Fried role is granted at **Level 45**. Your role icon will change to the emoji above once you reach this level.\n‎`,
                 },
                 {
-                    name: `${cinematographerEmoji}  CROSS FADED  ${cinematographerEmoji}`,
+                    name: `${crossfadedEmoji}  CROSS FADED  ${crossfadedEmoji}`,
                     value: `The Cross Faded role is granted at **Level 50**. This will grant you access to the Local Pub's giveaway channel where you have a chance to receive a free weekly giveaway (Steam Keys, Pub Merchandise, RP). Your role icon will change to the emoji above once you reach this level.`
                 },
             )
