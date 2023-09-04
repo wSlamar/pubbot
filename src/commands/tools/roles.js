@@ -36,6 +36,7 @@ const { bigBrainEmoji } = process.env;
 const { cinematographerEmoji } = process.env;
 const { bartenderEmoji } = process.env;
 const { barflyEmoji } = process.env;
+const { jukeboxChannel } = process.env;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -47,9 +48,10 @@ module.exports = {
             .setDescription("roles embed that will be sent")
             .setRequired(true)
             .addChoices(
-                { name: 'Main Roles', value: 'Main Roles' },
-                { name: 'Sub Roles', value: 'Sub Roles' },
-                { name: 'Roles Explanation', value: 'Roles Explanation' },
+                // { name: 'Main Roles', value: 'Main Roles' },
+                // { name: 'Sub Roles', value: 'Sub Roles' },
+                { name: 'XP Roles', value: 'XP Roles' },
+                { name: 'Who We Are', value: 'Roles Explanation' },
             )
         ),
     async execute(interaction, client) {
@@ -317,6 +319,54 @@ module.exports = {
                 },
             )
 
+        const xpRoles = new EmbedBuilder()
+            .setColor('#167301')
+            .setThumbnail('https://i.imgur.com/DKt79Ey.png')
+            .setTitle(`${localPubEmoji}  PUB XP ROLES  ${localPubEmoji}`)
+            .setDescription(`Below are all of the Local Pub's XP Roles that are granted once you reach a certain XP level within the community. There are currently two ways to earn XP in the Local Pub.\n\n The first way is posting messages within the community chats. Bonus XP is granted to those who take time into their posts.\n\n The second way is being active within voice channels. You do get minor points for sitting mute but ultimately people who talk and engage in conversations will gain more.\n‎`)
+            .addFields(
+                {
+                    name: `${barOwnerEmoji}  SOBER  ${barOwnerEmoji}`,
+                    value: `The Sober role is granted at **Level 5**. This will grant you access to the <#${jukeboxChannel}> channel. Your role icon will change to the emoji above once you reach this level.\n‎`,
+                },
+                {
+                    name: `${bartenderEmoji}  TIPSY  ${bartenderEmoji}`,
+                    value: `The Tipsy role is granted at **Level 10**. Your role icon will change to the emoji above once you reach this level.\n‎`,
+                },
+                {
+                    name: `${barKeepsEmoji}  VIBIN  ${barKeepsEmoji}`,
+                    value: `The Vibin role is granted at **Level 15**. Your role icon will change to the emoji above once you reach this level.\n‎`,
+                },
+                {
+                    name: `${beerNutsEmoji}  BUZZED  ${beerNutsEmoji}`,
+                    value: `The Buzzed role is granted at **Level 20**. Your role icon will change to the emoji above once you reach this level.\n‎`,
+                },
+                {
+                    name: `${barflyEmoji}  TOASTED  ${barflyEmoji}`,
+                    value: `The Toasted role is granted at **Level 25**. This will grant you access to exclusive chat and voice lobbies. Your role icon will change to the emoji above once you reach this level.\n‎`,
+                },
+                {
+                    name: `${bouncersEmoji}  PLASTERED  ${bouncersEmoji}`,
+                    value: `The Plastered role is granted at **Level 30**. Your role icon will change to the emoji above once you reach this level.\n‎`,
+                },
+                {
+                    name: `${artistEmoji}  ROASTED  ${artistEmoji}`,
+                    value: `The Roasted role is granted at **Level 35**. Your role icon will change to the emoji above once you reach this level.\n‎`,
+                },
+                {
+                    name: `${pubBoosterEmoji}  HAMMERED  ${pubBoosterEmoji}`,
+                    value: `The Hammered role is granted at **Level 40**. Your role icon will change to the emoji above once you reach this level.\n‎`
+                },
+                {
+                    name: `${bigBrainEmoji}  FRIED  ${bigBrainEmoji}`,
+                    value: `The Fried role is granted at **Level 45**. Your role icon will change to the emoji above once you reach this level.\n‎`,
+                },
+                {
+                    name: `${cinematographerEmoji}  CROSS FADED  ${cinematographerEmoji}`,
+                    value: `The Cross Faded role is granted at **Level 50**. This will grant you access to the Local Pub's giveaway channel where you have a chance to receive a free weekly giveaway (Steam Keys, Pub Merchandise, RP). Your role icon will change to the emoji above once you reach this level.`
+                },
+            )
+
         let channelComannd = client.channels.cache.get(interaction.channelId);
 
         const replyMessage = await interaction.reply({
@@ -351,6 +401,11 @@ module.exports = {
         if (rolesOption == 'Roles Explanation') {
             const message = await channelComannd.send({
                 embeds: [rolesExplanation],
+            });
+        }
+        if (rolesOption == 'XP Roles') {
+            const message = await channelComannd.send({
+                embeds: [xpRoles],
             });
         }
     }

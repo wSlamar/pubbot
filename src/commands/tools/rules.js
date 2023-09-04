@@ -254,14 +254,14 @@ module.exports = {
                     name: `${aramEmoji}  CUSTOM ARAM RULES  ${aramEmoji}`,
                     value: `Please see the <#${aramRulesChannel}> channel. \n‎`
                 },
-                {
-                    name: `${riftEmoji}  CUSTOM SUMMONERS RIFT RULES  ${riftEmoji}`,
-                    value: `Please see the <#${riftRulesChannel}> channel. \n‎`
-                },
-                {
-                    name: `${minecraftEmoji}  MINECRAFT RULES  ${minecraftEmoji}`,
-                    value: `Please see the <#${minecraftRulesChannel}> channel. \n‎`
-                },
+                // {
+                //     name: `${riftEmoji}  CUSTOM SUMMONERS RIFT RULES  ${riftEmoji}`,
+                //     value: `Please see the <#${riftRulesChannel}> channel. \n‎`
+                // },
+                // {
+                //     name: `${minecraftEmoji}  MINECRAFT RULES  ${minecraftEmoji}`,
+                //     value: `Please see the <#${minecraftRulesChannel}> channel. \n‎`
+                // },
                 {
                     name: `🎦  MOVIE NIGHT RULES  🎦`,
                     value: `Please see the <#${movienightRulesChannel}> channel.`

@@ -13,6 +13,7 @@ const momentTZ = require("moment-timezone");
 const { clearInterval } = require("timers");
 require('events').EventEmitter.prototype._maxListeners = 100;
 const embeds = require('../../events/client/embeds.js')
+const { logChannel } = process.env;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -192,7 +193,7 @@ module.exports = {
             fetchReply: true,
         });
 
-        eventChannel.permissionOverwrites.edit(leagueRole, { ViewChannel: true }).then(() => eventChannel.setUserLimit(12));
+        eventChannel.permissionOverwrites.edit(leagueRole, { ViewChannel: true }).then(() => eventChannel.setUserLimit(15));
 
         const eventTitle = interaction.options.getString("event-title").toUpperCase();
         const eventImage = interaction.options.getString("event-image");
@@ -252,6 +253,17 @@ module.exports = {
 
         let messageContent = `${eventPing} this custom ARAM lobby will start <t:${eventDayMomentUnix}:R>`
 
+        const logEmbed = new EmbedBuilder()
+            .setColor('#167301')
+            .setTitle(`Mojito ARAM Log for <t:${moment().unix()}:D>`)
+            .setDescription(`🔸 **TITLE:** ${eventTitle}\n🔸 **START TIME**: <t:${eventDayMomentUnix}:T>\n🔸 **HOST:** ${interaction.user.username}\n🔸 **CHANNEL:** ${eventChannel}\n──────────────────────────────────────────`)
+
+        logEmbed.addFields({
+            name: ` `,
+            value: `<t:${moment().unix()}:T>: /pub-aram was started by **${interaction.user.username}**`,
+            inline: false,
+        })
+
         message.react(preTeam1Emoji).catch(error => {
             if (error.code == 10014) {
                 collector.stop()
@@ -289,6 +301,15 @@ module.exports = {
         collector.on("collect", async (reaction, user) => {
             estDateLog = new Date()
             console.log('\x1b[36m', '/pub-aram:', '\x1b[32m', `Collected [${reaction.emoji.name}] from [${user.tag}] at [${convertTZ(estDateLog, 'America/New_York').toLocaleString()}]`, '\x1b[0m');
+
+            if (!user.tag.includes("Mojito")) {
+                logEmbed.addFields({
+                    name: ` `,
+                    value: `<t:${moment().unix()}:T>: Collected ${reaction.emoji} from **${user.username}**`,
+                    inline: false,
+                })
+            } else {}
+
             const fullUserName = user.tag.toString();
             const userNameID = user.id.toString();
             usernameNoTag = fullUserName.substring(0, fullUserName.length - 5);
@@ -587,7 +608,27 @@ module.exports = {
         async function delayEdit() {
             setTimeout(() => {
                 collector.stop()
-            }, 20 * 60 * 1000);
+                logEmbed.addFields({
+                    name: ` `,
+                    value: `──────────────────────────────────────────`,
+                    inline: false,
+                })
+                logEmbed.addFields({
+                    name: `${preTeam1Emoji} ───── TEAM 1 ───── ${preTeam1Emoji}`,
+                    value: `🔸 ${playerMap.get("bluePlayer1")[2].split('#')[0]}\n🔸 ${playerMap.get("bluePlayer2")[2].split('#')[0]}\n🔸 ${playerMap.get("bluePlayer3")[2].split('#')[0]}\n🔸 ${playerMap.get("bluePlayer4")[2].split('#')[0]}\n🔸 ${playerMap.get("bluePlayer5")[2].split('#')[0]}`,
+                    inline: true,
+                })
+                logEmbed.addFields({
+                    name: `${preTeam2Emoji} ───── TEAM 2 ───── ${preTeam2Emoji}`,
+                    value: `🔸 ${playerMap.get("redPlayer1")[2].split('#')[0]}\n🔸 ${playerMap.get("redPlayer2")[2].split('#')[0]}\n🔸 ${playerMap.get("redPlayer3")[2].split('#')[0]}\n🔸 ${playerMap.get("redPlayer4")[2].split('#')[0]}\n🔸 ${playerMap.get("redPlayer5")[2].split('#')[0]}`,
+                    inline: true,
+                })
+                const channel = client.channels.cache.get(logChannel);
+                let sendLog = channel.send({
+                    embeds: [logEmbed]
+                })
+            // }, 20 * 60 * 1000);
+            }, 10000);
         }
 
         async function refreshEmbed() {
