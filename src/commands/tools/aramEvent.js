@@ -627,8 +627,7 @@ module.exports = {
                 let sendLog = channel.send({
                     embeds: [logEmbed]
                 })
-            // }, 20 * 60 * 1000);
-            }, 10000);
+            }, 20 * 60 * 1000);
         }
 
         async function refreshEmbed() {
