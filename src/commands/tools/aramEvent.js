@@ -217,7 +217,7 @@ module.exports = {
 
         let eventMonth = interaction.options.getInteger("event-month").toString();
         let eventDay = interaction.options.getInteger("event-day").toString();
-        let eventYear = "2023"
+        let eventYear = "2024"
         let eventAmPm = interaction.options.getString("event-am-pm").toString();
         let eventMinute = interaction.options.getString("event-minute").toString();
         let eventHour = interaction.options.getString("event-hour");
