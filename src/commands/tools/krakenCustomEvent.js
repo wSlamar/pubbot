@@ -319,30 +319,17 @@ module.exports = {
         let messageContent = `${eventPing} this **${gameName}** event will start <t:${eventDayMomentUnix}:R>`
 
         function isDateTimeInPast(year, month, day, hour, minute, amPm, timezone) {
-            // Convert to 24-hour format
             if (amPm.toLowerCase() === "pm" && hour < 12) {
                 hour += 12;
             } else if (amPm.toLowerCase() === "am" && hour === 12) {
                 hour = 0;
             }
-        
-            // Create the provided date-time string
             const providedDateTimeStr = `${year}-${month}-${day} ${hour}:${minute}:00`;
-            console.log(`Provided DateTime string: ${providedDateTimeStr}`);
-        
-            // Parse the provided date-time string in the specified timezone
             let providedDateTime = momentTZ.tz(providedDateTimeStr, "YYYY-MM-DD HH:mm:ss", timezone);
-            console.log(`Provided DateTime after timezone conversion: ${providedDateTime.toString()}`);
-        
-            // Get the current date-time in the specified timezone
             const currentDateTime = momentTZ.tz(new Date(), timezone);
-            console.log(`Current DateTime in timezone ${timezone}: ${currentDateTime.toString()}`);
-        
-            // Compare the provided date-time with the current date-time
             return providedDateTime.isBefore(currentDateTime);
         }
         
-        // Example usage
         if (isDateTimeInPast(eventYear, eventMonth, eventDay, parseInt(eventHour), parseInt(eventMinute), eventAmPm, eventTimezone)) {
             return interaction.reply({
                 content: `⚠️ Unable to run this command because the date and time provided are in the past. You gave me **${eventMonth}/${eventDay}/${eventYear} ${eventHour}:${eventMinute} ${eventAmPm}** as your event date and time.`,

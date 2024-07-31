@@ -267,17 +267,15 @@ module.exports = {
         let messageContent = `${eventPing} this **Custom Arena** event will start <t:${eventDayMomentUnix}:R>`
 
         function isDateTimeInPast(year, month, day, hour, minute, amPm, timezone) {
-            // Convert to 24-hour format
             if (amPm.toLowerCase() === "pm" && hour < 12) {
                 hour += 12;
             } else if (amPm.toLowerCase() === "am" && hour === 12) {
                 hour = 0;
             }
-        
-            let providedDateTime = new Date(`${year}-${month}-${day}T${hour}:${minute}:00`);
-            providedDateTime = momentTZ.tz(providedDateTime, timezone).toDate();
-            const currentDateTime = momentTZ.tz(new Date(), timezone).toDate();
-            return providedDateTime < currentDateTime;
+            const providedDateTimeStr = `${year}-${month}-${day} ${hour}:${minute}:00`;
+            let providedDateTime = momentTZ.tz(providedDateTimeStr, "YYYY-MM-DD HH:mm:ss", timezone);
+            const currentDateTime = momentTZ.tz(new Date(), timezone);
+            return providedDateTime.isBefore(currentDateTime);
         }
         
         if (isDateTimeInPast(eventYear, eventMonth, eventDay, parseInt(eventHour), parseInt(eventMinute), eventAmPm, eventTimezone)) {
