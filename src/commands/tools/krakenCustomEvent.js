@@ -325,27 +325,23 @@ module.exports = {
             } else if (amPm.toLowerCase() === "am" && hour === 12) {
                 hour = 0;
             }
-
+        
             // Create the provided date-time string
             const providedDateTimeStr = `${year}-${month}-${day} ${hour}:${minute}:00`;
             console.log(`Provided DateTime string: ${providedDateTimeStr}`);
-
-            // Parse the provided date-time string
-            let providedDateTime = moment(providedDateTimeStr, "YYYY-MM-DD HH:mm:ss");
-            console.log(`Provided DateTime before timezone conversion: ${providedDateTime.toString()}`);
-
-            // Convert to the specified timezone
-            providedDateTime = momentTZ.tz(providedDateTime, timezone);
+        
+            // Parse the provided date-time string in the specified timezone
+            let providedDateTime = momentTZ.tz(providedDateTimeStr, "YYYY-MM-DD HH:mm:ss", timezone);
             console.log(`Provided DateTime after timezone conversion: ${providedDateTime.toString()}`);
-
+        
             // Get the current date-time in the specified timezone
             const currentDateTime = momentTZ.tz(new Date(), timezone);
             console.log(`Current DateTime in timezone ${timezone}: ${currentDateTime.toString()}`);
-
+        
             // Compare the provided date-time with the current date-time
             return providedDateTime.isBefore(currentDateTime);
         }
-
+        
         // Example usage
         if (isDateTimeInPast(eventYear, eventMonth, eventDay, parseInt(eventHour), parseInt(eventMinute), eventAmPm, eventTimezone)) {
             return interaction.reply({
