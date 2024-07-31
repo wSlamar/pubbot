@@ -1,4 +1,4 @@
-const twoTeamCustoms = require("../../commands/tools/aramEvent");
+//const twoTeamCustoms = require("../../commands/tools/aramEvent");
 
 module.exports = {
     name: 'interactionCreate',

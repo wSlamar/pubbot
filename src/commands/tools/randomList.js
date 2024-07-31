@@ -1,10 +1,11 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const { EmbedBuilder } = require("discord.js");
+const { pinkDiamondEmoji } = process.env;
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("pub-list")
-        .setDescription("Returns a random list based on what is input")
+        .setName("kraken-list")
+        .setDescription("Command for creating a random list based on the input values that you provide.")
         .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog)
         .addStringOption((option) => option
             .setName("input-list")
@@ -17,7 +18,7 @@ module.exports = {
             .setRequired(true)
         ),
     async execute(interaction, client) {
-        console.log('\x1b[36m','/pub-list has been kicked off','\x1b[0m')
+        console.log('\x1b[36m','/kraken-list has been kicked off','\x1b[0m')
         const inputList = interaction.options.getString("input-list");
         const outputNumber = interaction.options.getInteger("output-number").toString();
         const listArray = inputList.split(";")
@@ -25,9 +26,9 @@ module.exports = {
         const fixFormatArray = ['5', '8', '11', '14', '17', '20', '23', '26']
 
         const listEmbed = new EmbedBuilder()
-            .setColor('#167301')
+            .setColor('#ff7ee2')
             .setThumbnail('https://i.imgur.com/hYuwLn9.png')
-            .setTitle(`MOJITOS RANDOM LIST`)
+            .setTitle(`KRAKENS RANDOM LIST`)
             .setDescription(`Here is the random list that I have generated for you based on the input values that you have given me!`)
 
         function shuffle(array) {
@@ -65,8 +66,8 @@ module.exports = {
         if (outputNumber > listArray.length) {
             const numberErrorEmbed = new EmbedBuilder()
                 .setTitle('OUTPUT NUMBER ERROR')
-                .setColor('#167301')
-                .setDescription('🔸 The output number that you have provided is larger than the input list\n🔸 The `input-list` must be greater than or equal to the `output-number`')
+                .setColor('#ff7ee2')
+                .setDescription(`${pinkDiamondEmoji} The output number that you have provided is larger than the input list\n${pinkDiamondEmoji} The **input-list** must be greater than or equal to the **output-number**`)
 
             const message = await interaction.reply({
                 embeds: [numberErrorEmbed],

@@ -26,10 +26,9 @@ module.exports = Object.freeze({
         ),
 
     formatEmbed: new EmbedBuilder()
-        .setColor('#167301')
-        .setTitle('INCORRECT DAY ERROR')
-        .setURL('https://youneedawiki.com/app/page/1Th5IlY3BP6nHH6hNliqa_xQ7fYxbnI1v')
-        .setDescription(`Looks like you didn't enter in event-day parameter correctly.\nClick the link above for more information.`),
+        .setColor('#ff7ee2')
+        .setTitle('UNKNOWN ERROR')
+        .setDescription(`Zoo Wee Mama! Something went wrong and you should not being seeing this error message! Please tell meatbuck if you see this!`),
 
     customsEmbed2: new EmbedBuilder()
         .setColor('#167301')
