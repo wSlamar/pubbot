@@ -281,7 +281,7 @@ module.exports = {
         if (!isValidDate(eventYear, eventMonth, eventDay)) {
             return interaction.reply({
                 content: `⚠️ Unable to run this command because you gave me an invalid date. You gave me **${eventMonth}/${eventDay}/${eventYear}** as your event date.`,
-                ephemeral: true 
+                ephemeral: true
             });
         }
 
@@ -325,23 +325,27 @@ module.exports = {
             } else if (amPm.toLowerCase() === "am" && hour === 12) {
                 hour = 0;
             }
-        
-            // Create the provided date-time object
-            let providedDateTime = new Date(`${year}-${month}-${day}T${hour}:${minute}:00`);
-            console.log(`Provided DateTime before timezone conversion: ${providedDateTime}`);
-        
+
+            // Create the provided date-time string
+            const providedDateTimeStr = `${year}-${month}-${day} ${hour}:${minute}:00`;
+            console.log(`Provided DateTime string: ${providedDateTimeStr}`);
+
+            // Parse the provided date-time string
+            let providedDateTime = moment(providedDateTimeStr, "YYYY-MM-DD HH:mm:ss");
+            console.log(`Provided DateTime before timezone conversion: ${providedDateTime.toString()}`);
+
             // Convert to the specified timezone
-            providedDateTime = momentTZ.tz(providedDateTime, timezone).toDate();
-            console.log(`Provided DateTime after timezone conversion: ${providedDateTime}`);
-        
+            providedDateTime = momentTZ.tz(providedDateTime, timezone);
+            console.log(`Provided DateTime after timezone conversion: ${providedDateTime.toString()}`);
+
             // Get the current date-time in the specified timezone
-            const currentDateTime = momentTZ.tz(new Date(), timezone).toDate();
-            console.log(`Current DateTime in timezone ${timezone}: ${currentDateTime}`);
-        
+            const currentDateTime = momentTZ.tz(new Date(), timezone);
+            console.log(`Current DateTime in timezone ${timezone}: ${currentDateTime.toString()}`);
+
             // Compare the provided date-time with the current date-time
-            return providedDateTime < currentDateTime;
+            return providedDateTime.isBefore(currentDateTime);
         }
-        
+
         // Example usage
         if (isDateTimeInPast(eventYear, eventMonth, eventDay, parseInt(eventHour), parseInt(eventMinute), eventAmPm, eventTimezone)) {
             return interaction.reply({
