@@ -40,17 +40,20 @@ module.exports = {
             });
         }
 
-        async function cleanupGamesCategory() {
+        async function cleanupGamesCategory(ignoreChannelId) {
             gamesChildrenIds.forEach(async childId => {
                 const channel = client.channels.cache.get(childId);
                 if (channel.type === 2) { 
+                    if (channel.id === ignoreChannelId) {
+                        return;
+                    }
                     await channel.setUserLimit(0);
                     await channel.permissionOverwrites.edit(localGamesRole, { ViewChannel: false });
                 }
             });
         }
 
-        cleanupAllTextChannels().then(() => cleanupLeagueCategory().then(() => cleanupGamesCategory()));
+        cleanupAllTextChannels().then(() => cleanupLeagueCategory().then(() => cleanupGamesCategory('1268351558341361728')));
 
         const message = await interaction.editReply({
             content: `Successfully deleted messages, locked channels and changed user limits!`,
