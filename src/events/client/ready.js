@@ -4,6 +4,7 @@ const { gamesCategoryEnv } = process.env;
 const { leagueRole } = process.env;
 const { localGamesRole } = process.env;
 const { CronJob } = require('cron');
+const { ignoredVoiceChannels } = process.env;
 
 module.exports = {
     name: 'ready',
@@ -16,7 +17,7 @@ module.exports = {
             function convertTZ(date, tzString) {
                 return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", { timeZone: tzString }));
             }
-            console.log('\x1b[36m', `cleanup cron job executing at [${convertTZ(estDateLog, 'America/New_York').toLocaleString()}]`, '\x1b[0m')
+            console.log('\x1b[37m', `CLEANUP CRON JOB EXECUTING AT [${convertTZ(estDateLog, 'America/New_York').toLocaleString()}]`, '\x1b[0m')
             
             const leagueCategory = client.channels.cache.get(leagueCategoryEnv);
             const leagueChildrenIds = leagueCategory.children.cache.map(c => c.id);
@@ -33,21 +34,28 @@ module.exports = {
                 }
             }
 
-            async function cleanupLeagueCategory() {
+            async function cleanupLeagueCategory(ignored) {
+                const ignoreIdsArray = ignored.split(',');
+            
                 leagueChildrenIds.forEach(async childId => {
                     const channel = client.channels.cache.get(childId);
                     if (channel.type === 2) { 
+                        if (ignoreIdsArray.includes(channel.id)) {
+                            return;
+                        }
                         await channel.setUserLimit(0);
                         await channel.permissionOverwrites.edit(leagueRole, { ViewChannel: false });
                     }
                 });
             }
-
-            async function cleanupGamesCategory(ignoreChannelId) {
+    
+            async function cleanupGamesCategory(ignored) {
+                const ignoreIdsArray = ignored.split(',');
+            
                 gamesChildrenIds.forEach(async childId => {
                     const channel = client.channels.cache.get(childId);
                     if (channel.type === 2) { 
-                        if (channel.id === ignoreChannelId) {
+                        if (ignoreIdsArray.includes(channel.id)) {
                             return;
                         }
                         await channel.setUserLimit(0);
@@ -57,8 +65,8 @@ module.exports = {
             }
 
             await cleanupAllTextChannels();
-            await cleanupLeagueCategory();
-            await cleanupGamesCategory('1268351558341361728');
+            await cleanupLeagueCategory(ignoredVoiceChannels);
+            await cleanupGamesCategory(ignoredVoiceChannels);
         }
 
         const job = new CronJob('30 5 * * *', async () => {

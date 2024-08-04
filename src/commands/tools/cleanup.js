@@ -4,6 +4,7 @@ const { leagueCategoryEnv } = process.env;
 const { gamesCategoryEnv } = process.env;
 const { leagueRole } = process.env;
 const { localGamesRole } = process.env;
+const { ignoredVoiceChannels } = process.env;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -30,21 +31,28 @@ module.exports = {
             }
         }
         
-        async function cleanupLeagueCategory() {
+        async function cleanupLeagueCategory(ignored) {
+            const ignoreIdsArray = ignored.split(',');
+        
             leagueChildrenIds.forEach(async childId => {
                 const channel = client.channels.cache.get(childId);
                 if (channel.type === 2) { 
+                    if (ignoreIdsArray.includes(channel.id)) {
+                        return;
+                    }
                     await channel.setUserLimit(0);
                     await channel.permissionOverwrites.edit(leagueRole, { ViewChannel: false });
                 }
             });
         }
 
-        async function cleanupGamesCategory(ignoreChannelId) {
+        async function cleanupGamesCategory(ignored) {
+            const ignoreIdsArray = ignored.split(',');
+        
             gamesChildrenIds.forEach(async childId => {
                 const channel = client.channels.cache.get(childId);
                 if (channel.type === 2) { 
-                    if (channel.id === ignoreChannelId) {
+                    if (ignoreIdsArray.includes(channel.id)) {
                         return;
                     }
                     await channel.setUserLimit(0);
@@ -53,7 +61,7 @@ module.exports = {
             });
         }
 
-        cleanupAllTextChannels().then(() => cleanupLeagueCategory().then(() => cleanupGamesCategory('1268351558341361728')));
+        cleanupAllTextChannels().then(() => cleanupLeagueCategory(ignoredVoiceChannels).then(() => cleanupGamesCategory(ignoredVoiceChannels)));
 
         const message = await interaction.editReply({
             content: `Successfully deleted messages, locked channels and changed user limits!`,

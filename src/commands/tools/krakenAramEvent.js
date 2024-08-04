@@ -130,6 +130,7 @@ module.exports = {
             .setName("event-voice-channel")
             .setDescription("voice channel that the event will take place in")
             .setRequired(true)
+            .addChannelTypes(2)
         ),
 
     async execute(interaction, client) {

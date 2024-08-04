@@ -152,16 +152,19 @@ module.exports = {
             .setName("team-1-voice-channel")
             .setDescription("voice channel that team 1 will be held")
             .setRequired(true)
+            .addChannelTypes(2)
         )
         .addChannelOption((option) => option
             .setName("team-2-voice-channel")
             .setDescription("voice channel that team 2 will be held")
             .setRequired(true)
+            .addChannelTypes(2)
         )
         .addChannelOption((option) => option
             .setName("waiting-lobby-voice-channel")
             .setDescription("waiting lobby that team 1 and 2 will use")
             .setRequired(true)
+            .addChannelTypes(2)
         ),
 
     async execute(interaction, client) {
