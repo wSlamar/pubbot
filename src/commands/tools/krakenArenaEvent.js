@@ -192,7 +192,7 @@ module.exports = {
 
         const signupButton = new ButtonBuilder()
             .setCustomId('signup')
-            .setLabel('SIGNUP')
+            .setLabel('SIGN UP')
             .setStyle(ButtonStyle.Primary)
 
         const removeYourselfButton = new ButtonBuilder()
@@ -200,18 +200,18 @@ module.exports = {
             .setLabel('REMOVE')
             .setStyle(ButtonStyle.Danger)
 
-        const pin = new ButtonBuilder()
-            .setCustomId('pin')
+        const info = new ButtonBuilder()
+            .setCustomId('info')
             .setStyle(ButtonStyle.Secondary)
-            .setEmoji('📌')
+            .setEmoji('🔍')
 
-        const hammer = new ButtonBuilder()
-            .setCustomId('hammer')
+        const settings = new ButtonBuilder()
+            .setCustomId('settings')
             .setStyle(ButtonStyle.Secondary)
-            .setEmoji('🔨')
+            .setEmoji('⚙️')
 
         const row = new ActionRowBuilder()
-            .addComponents(signupButton, removeYourselfButton, pin, hammer);
+            .addComponents(signupButton, removeYourselfButton, info, settings);
 
         // This line updates the permissions for the 'leagueRole' to view the 'eventChannel', and then sets the user limit of the channel to 11.
         eventChannel.permissionOverwrites.edit(leagueRole, { ViewChannel: true }).then(() => eventChannel.setUserLimit(18));
@@ -230,7 +230,7 @@ module.exports = {
         if (!isValidDate(eventYear, eventMonth, eventDay)) {
             return interaction.reply({
                 content: `⚠️ Unable to run this command because you gave me an invalid date. You gave me **${eventMonth}/${eventDay}/${eventYear}** as your event date.`,
-                ephemeral: true 
+                ephemeral: true
             });
         }
 
@@ -278,7 +278,7 @@ module.exports = {
             const currentDateTime = momentTZ.tz(new Date(), timezone);
             return providedDateTime.isBefore(currentDateTime);
         }
-        
+
         if (isDateTimeInPast(eventYear, eventMonth, eventDay, parseInt(eventHour), parseInt(eventMinute), eventAmPm, eventTimezone)) {
             return interaction.reply({
                 content: `⚠️ Unable to run this command because the date and time provided are in the past. You gave me **${eventMonth}/${eventDay}/${eventYear} ${eventHour}:${eventMinute} ${eventAmPm}** as your event date and time.`,
@@ -451,6 +451,155 @@ module.exports = {
                 }
             } else if (interaction.customId === "pin" && !interaction.member.permissions.has(PermissionFlagsBits.MuteMembers)) {
                 interaction.reply({ content: `⚠️ You do not have the correct permissions to use this button.`, ephemeral: true });
+            }
+
+            if (interaction.customId === "settings" && interaction.member.permissions.has(PermissionFlagsBits.MuteMembers)) {
+                const pin = new ButtonBuilder()
+                    .setCustomId('pin')
+                    .setStyle(ButtonStyle.Secondary)
+                    .setLabel('REMINDER MESSAGE')
+                    .setEmoji('📌')
+
+                const hammer = new ButtonBuilder()
+                    .setCustomId('hammer')
+                    .setStyle(ButtonStyle.Secondary)
+                    .setLabel('REMOVE PLAYER')
+                    .setEmoji('🔨')
+
+                const settingsRow = new ActionRowBuilder()
+                    .addComponents(pin, hammer);
+
+                await interaction.reply({
+                    content: `⚠️ What would you like to do? Make a selection <t:${moment().add(60, 'seconds').unix()}:R>.\n`,
+                    components: [settingsRow],
+                    ephemeral: true
+                });
+
+                const filter = i => i.user.id === interaction.user.id;
+                const settingsButtonCollector = interaction.channel.createMessageComponentCollector({ filter, time: 60000 });
+
+                settingsButtonCollector.on('collect', async i => {
+                    console.log('\x1b[36m', '/kraken-arena:', '\x1b[32m', `Collected [${i.customId.toUpperCase()}] from [${i.user.username}] at [${convertTZ(estDateLog, 'America/New_York').toLocaleString()}]`, '\x1b[0m');
+                    if (i.customId === 'pin') {
+                        if (i.member.permissions.has(PermissionFlagsBits.MuteMembers)) {
+                            let countOfEmpty = Array.from(playerMap.values()).filter(value => value[2] === '[EMPTY SPOT]').length;
+                            if (countOfEmpty > 0) {
+                                const channel = client.channels.cache.get(leagueChatChannel);
+                                let spotsText = countOfEmpty === 1 ? "spot" : "spots";
+                                await channel.send({
+                                    content: `${eventPing} There ${countOfEmpty === 1 ? "is" : "are"} **${countOfEmpty}** ${spotsText} open in the **Custom Arena** event! Go to <#${mojitoArenaChannel}> to sign up!`,
+                                });
+                                await i.update({ content: `✅ Successfully sent a reminder message.`, components: [], ephemeral: true });
+                                settingsButtonCollector.stop();
+
+                            } else {
+                                await i.update({ content: `⚠️ Unable to send a reminder message as this event is full.`, components: [], ephemeral: true });
+                                settingsButtonCollector.stop();
+                            }
+                        } else {
+                            await i.update({ content: `⚠️ You do not have the correct permissions to use this button.`, components: [], ephemeral: true });
+                            settingsButtonCollector.stop();
+                        }
+                    } else if (i.customId === 'hammer') {
+                        if (i.member.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
+                            const allEmpty = Array.from(playerMap.values()).every(value => value[2] === "[EMPTY SPOT]");
+                            if (!allEmpty) {
+                                const playerSelectMenu = new StringSelectMenuBuilder()
+                                    .setCustomId('playerSelect')
+                                    .setPlaceholder('Select a player to remove')
+                                    .addOptions(
+                                        Array.from(playerMap.entries())
+                                            .filter(([key, value]) => value[2] !== "[EMPTY SPOT]")
+                                            .map(([key, value]) => ({
+                                                label: value[2],
+                                                value: key, // Use the key as the value to ensure correct mapping
+                                            }))
+                                    );
+
+                                const row = new ActionRowBuilder().addComponents(playerSelectMenu);
+
+                                // Use i.reply or i.followUp based on whether you've already replied to the interaction
+                                await i.reply({
+                                    content: `What player would you like to remove? Make a selection <t:${moment().add(60, 'seconds').unix()}:R>.\n`,
+                                    components: [row],
+                                    ephemeral: true
+                                });
+
+                                const filter = (interaction) => interaction.customId === 'playerSelect' && interaction.user.id === userNameID;
+                                const removePlayerCollector = i.channel.createMessageComponentCollector({ filter, time: 60000 });
+
+                                removePlayerCollector.on('collect', async (interaction) => {
+                                    const selectedValue = interaction.values[0];
+                                    let tempPlayer = playerMap.get(selectedValue)[2];
+                                    setDefault(playerMap.get(selectedValue)[1]);
+                                    await interaction.update({ content: `✅ The player **${tempPlayer}** has been removed from this event.`, components: [] });
+                                    removePlayerCollector.stop();
+                                    settingsButtonCollector.stop();
+                                });
+
+                                removePlayerCollector.on('end', collected => {
+                                    if (!collected.size) i.editReply({ content: '⚠️ No selection was made.', components: [] });
+                                });
+                            } else if (allEmpty) {
+                                settingsButtonCollector.stop();
+                                i.reply({ content: `⚠️ There are not any players signed up for this event for me to remove.`, ephemeral: true });
+                            }
+                        } else if (!i.member.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
+                            settingsButtonCollector.stop();
+                            i.reply({ content: `⚠️ You do not have the correct permissions to use this button.`, ephemeral: true });
+                        }
+                    }
+                });
+
+                settingsButtonCollector.on('end', collected => {
+                    if (!collected.size) {
+                        interaction.editReply({ content: '⚠️ No selection was made.', components: [], ephemeral: true });
+                    }
+                });
+            } else if (interaction.customId === "settings" && !interaction.member.permissions.has(PermissionFlagsBits.MuteMembers)) {
+                interaction.reply({ content: `⚠️ You do not have the correct permissions to use this button.`, ephemeral: true });
+            }
+
+            if (interaction.customId === "info") {
+                let playerValues = [
+                    playerMap.get("bluePlayer1")[0],
+                    playerMap.get("bluePlayer2")[0],
+                    playerMap.get("bluePlayer3")[0],
+                    playerMap.get("bluePlayer4")[0],
+                    playerMap.get("bluePlayer5")[0],
+                    playerMap.get("bluePlayer6")[0],
+                    playerMap.get("bluePlayer7")[0],
+                    playerMap.get("bluePlayer8")[0],
+                    playerMap.get("bluePlayer9")[0],
+                    playerMap.get("bluePlayer10")[0],
+                    playerMap.get("bluePlayer11")[0],
+                    playerMap.get("bluePlayer12")[0],
+                    playerMap.get("bluePlayer13")[0],
+                    playerMap.get("bluePlayer14")[0],
+                    playerMap.get("bluePlayer15")[0],
+                    playerMap.get("bluePlayer16")[0]
+                ];
+
+                let filteredValues = playerValues.filter(value => !value.includes("OPEN SPOT]"));
+                let result = filteredValues.join(', ');
+
+                if (result) {
+                    let playerNames = result.split(', ');
+                    let message;
+
+                    if (playerNames.length === 1) {
+                        message = `✅ The player currently signed up for this event is ${playerNames[0]}.`;
+                    } else if (playerNames.length === 2) {
+                        message = `✅ The players currently signed up for this event are ${playerNames[0]} and ${playerNames[1]}.`;
+                    } else {
+                        let lastPlayer = playerNames.pop();
+                        message = `✅ The players currently signed up for this event are ${playerNames.join(', ')}, and ${lastPlayer}.`;
+                    }
+
+                    interaction.reply({ content: message, ephemeral: true });
+                } else {
+                    interaction.reply({ content: `⚠️ Unable to fetch player information for this event because nobody has signed up yet.`, ephemeral: true });
+                }
             }
 
             // This function sets the default values for a user in the playerMap.

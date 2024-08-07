@@ -351,3 +351,25 @@ MigrationBackup/
 
 # .env file for passwords and tokens
 .env
+
+# VS Code cache and settings
+Cache/
+CachedData/
+Code Cache/
+Crashpad/
+DawnGraphiteCache/
+DawnWebGPUCache/
+GPUCache/
+Local State
+Local Storage/
+Network/
+Preferences
+Service Worker/
+Session Storage/
+Shared Dictionary/
+SharedStorage
+User/
+WebStorage/
+databases/
+languagepacks.json
+machineid
