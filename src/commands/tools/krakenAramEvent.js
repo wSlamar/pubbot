@@ -12,7 +12,8 @@ const moment = require("moment");
 const momentTZ = require("moment-timezone");
 const { clearInterval } = require("timers");
 require('events').EventEmitter.prototype._maxListeners = 100;
-const embeds = require('../../events/client/embeds.js')
+const embeds = require('../../events/client/embeds.js');
+const { time } = require("console");
 const { logChannel } = process.env;
 const { pinkDiamondEmoji } = process.env;
 
@@ -317,7 +318,7 @@ module.exports = {
 
         // Quick reminder message for the ARAM command. This message is sent as an ephemeral reply to the user who used the command.
         const replyMessage = await interaction.reply({
-            content: `**ARAM COMMAND REMINDERS:**\n${pinkDiamondEmoji} You can use the 📌 button to send a reminder message in the league chat channel.\n${pinkDiamondEmoji} Admins can use the 🔨 button to remove a player manually if needed.`,
+            content: `✅ Successfully created your event! Don't forget that you can click the ⚙️ button for the mod menu! `,
             ephemeral: true
         });
 
@@ -561,19 +562,31 @@ module.exports = {
         const second = 1000;
         // Functionality for starting and stopping the event. This function is called when the event time is reached. 
         async function intervals() {
-            const countDownFn = () => {
-                const today = convertTZ(`${moment()}`, `${eventTimezone}`)
-                const timeSpan = eventDayMoment.diff(today);
-                if (timeSpan <= -today || timeSpan <= 0) {
-                    clearInterval(interval);
-                    if (timeSpan <= 0) {
-                        startEvent();
-                    } else {
-                        buttonCollector.stop();
+            const countDownFn = async () => {
+                try {
+                    await message.fetch();
+                    const today = convertTZ(`${moment()}`, `${eventTimezone}`);
+                    const timeSpan = eventDayMoment.diff(today);
+        
+                    if (timeSpan <= -today || timeSpan <= 0) {
+                        clearInterval(interval);
+                        if (timeSpan <= 0) {
+                            startEvent();
+                        } else {
+                            buttonCollector.stop();
+                        }
+                        return;
+                    } else if (!eventDayMoment.isValid()) {
+                        stopIntervalWithError();
                     }
-                    return;
-                } else if (!eventDayMoment.isValid()) {
-                    stopIntervalWithError();
+                } catch (error) {
+                    if (error.code === 10008) { // Unknown Message error code
+                        console.log('\x1b[36m', '/kraken-aram:', '\x1b[31m', `Message was deleted, stopping interval`, '\x1b[0m');
+                        clearInterval(interval);
+                        buttonCollector.stop();
+                    } else {
+                        handleError(error);
+                    }
                 }
             };
 
