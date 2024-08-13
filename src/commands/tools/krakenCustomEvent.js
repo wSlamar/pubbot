@@ -183,7 +183,7 @@ module.exports = {
             return interaction.reply({
                 content: `⚠️ Unable to run this command because you gave me an invalid voice channel. You gave me ${eventChannel} as your event voice channel.`,
                 ephemeral: true
-            });
+            }).catch(error => console.error('An error occurred:', error));
         }
 
         let eventPing;
@@ -283,7 +283,7 @@ module.exports = {
             return interaction.reply({
                 content: `⚠️ Unable to run this command because you gave me an invalid date. You gave me **${eventMonth}/${eventDay}/${eventYear}** as your event date.`,
                 ephemeral: true
-            });
+            }).catch(error => console.error('An error occurred:', error));
         }
 
         let eventAmPm = interaction.options.getString("event-am-pm").toString();
@@ -335,7 +335,7 @@ module.exports = {
             return interaction.reply({
                 content: `⚠️ Unable to run this command because the date and time provided are in the past. You gave me **${eventMonth}/${eventDay}/${eventYear} ${eventHour}:${eventMinute} ${eventAmPm}** as your event date and time.`,
                 ephemeral: true
-            });
+            }).catch(error => console.error('An error occurred:', error));
         }
 
         const customsEmbed = new EmbedBuilder()
@@ -374,7 +374,7 @@ module.exports = {
         const replyMessage = await interaction.reply({
             content: `✅ Successfully created your event! Don't forget that you can click the ⚙️ button for the mod menu! `,
             ephemeral: true
-        });
+        }).catch(error => console.error('An error occurred:', error));
 
         // This line sends the initial event message with the embed and buttons. It also fetches the message for the collector.
         const message = await channelComannd.send({
@@ -426,16 +426,16 @@ module.exports = {
                     if (playerNumber && playerMap.get(player).includes(`[PLAYER ${playerNumber} OPEN SPOT]`)) {
                         playerMap.set(player, [`<@${userNameID}>`, userNameID, fullUserName]);
                         await checkIDs(userNameID);
-                        await interaction.reply({ content: `✅ You have been successfully added to this event!`, ephemeral: true });
+                        await interaction.reply({ content: `✅ You have been successfully added to this event!`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
                         openSpotFound = true;
                         break;
                     }
                 }
                 if (!openSpotFound) {
-                    await interaction.reply({ content: `⚠️ All spots have been filled for this event. Unable to sign you up.`, ephemeral: true });
+                    await interaction.reply({ content: `⚠️ All spots have been filled for this event. Unable to sign you up.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
                 }
             } else if (interaction.customId === "signup" && valuesArray.includes(true)) {
-                await interaction.reply({ content: `⚠️ You are already signed up for this event.`, ephemeral: true });
+                await interaction.reply({ content: `⚠️ You are already signed up for this event.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
             }
 
             // This line checks if the interaction is a button. If it's not, the function returns.
@@ -443,9 +443,9 @@ module.exports = {
                 await checkIDs(userNameID); // Ensure this is awaited so valuesArray is populated
                 if (valuesArray.includes(true)) {
                     setDefault(userNameID);
-                    interaction.reply({ content: `✅ You have been successfully removed from this event.`, ephemeral: true });
+                    interaction.reply({ content: `✅ You have been successfully removed from this event.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
                 } else {
-                    interaction.reply({ content: `⚠️ Unable to remove you as you have not signed up for this event.`, ephemeral: true });
+                    interaction.reply({ content: `⚠️ Unable to remove you as you have not signed up for this event.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
                 }
             }
 
@@ -473,7 +473,7 @@ module.exports = {
                         content: `What player would you like to remove? Make a selection <t:${moment().add(60, 'seconds').unix()}:R>.\n`,
                         components: [row],
                         ephemeral: true
-                    });
+                    }).catch(error => console.error('An error occurred:', error));
 
                     const filter = (i) => i.customId === 'playerSelect' && i.user.id === userNameID;
                     const collector = interaction.channel.createMessageComponentCollector({ filter, time: 60000 });
@@ -487,13 +487,13 @@ module.exports = {
                     });
 
                     collector.on('end', collected => {
-                        if (!collected.size) interaction.editReply({ content: 'No selection was made.', components: [] });
+                        if (!collected.size) interaction.editReply({ content: 'No selection was made.', components: [] }).catch(error => console.error('An error occurred:', error));
                     });
                 } else if (allEmpty) {
-                    interaction.reply({ content: `⚠️ There are not any players signed up for this event for me to remove.`, ephemeral: true });
+                    interaction.reply({ content: `⚠️ There are not any players signed up for this event for me to remove.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
                 }
             } else if (interaction.customId === "hammer" && !interaction.member.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
-                interaction.reply({ content: `⚠️ You do not have the correct permissions to use this button.`, ephemeral: true });
+                interaction.reply({ content: `⚠️ You do not have the correct permissions to use this button.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
             }
 
             if (interaction.customId === "pin" && interaction.member.permissions.has(PermissionFlagsBits.MuteMembers)) {
@@ -504,12 +504,12 @@ module.exports = {
                     let reminder = await channel.send({
                         content: `${eventPing} There ${countOfEmpty === 1 ? "is" : "are"} **${countOfEmpty}** ${spotsText} open in the **${gameName}** event! Go to <#${mojitoGamesChannel}> to sign up!`,
                     });
-                    interaction.reply({ content: `✅ Successfully sent a reminder message.`, ephemeral: true });
+                    interaction.reply({ content: `✅ Successfully sent a reminder message.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
                 } else if (!countOfEmpty > 0) {
-                    interaction.reply({ content: `⚠️ Unable to send a reminder message as this event is full.`, ephemeral: true });
+                    interaction.reply({ content: `⚠️ Unable to send a reminder message as this event is full.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
                 }
             } else if (interaction.customId === "pin" && !interaction.member.permissions.has(PermissionFlagsBits.MuteMembers)) {
-                interaction.reply({ content: `⚠️ You do not have the correct permissions to use this button.`, ephemeral: true });
+                interaction.reply({ content: `⚠️ You do not have the correct permissions to use this button.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
             }
 
             if (interaction.customId === "settings" && interaction.member.permissions.has(PermissionFlagsBits.MuteMembers)) {
@@ -532,7 +532,7 @@ module.exports = {
                     content: `⚠️ What would you like to do? Make a selection <t:${moment().add(60, 'seconds').unix()}:R>.\n`,
                     components: [settingsRow],
                     ephemeral: true
-                });
+                }).catch(error => console.error('An error occurred:', error));
 
                 const filter = i => i.user.id === interaction.user.id;
                 const settingsButtonCollector = interaction.channel.createMessageComponentCollector({ filter, time: 60000 });
@@ -582,7 +582,7 @@ module.exports = {
                                     content: `What player would you like to remove? Make a selection <t:${moment().add(60, 'seconds').unix()}:R>.\n`,
                                     components: [row],
                                     ephemeral: true
-                                });
+                                }).catch(error => console.error('An error occurred:', error));
 
                                 const filter = (interaction) => interaction.customId === 'playerSelect' && interaction.user.id === userNameID;
                                 const removePlayerCollector = i.channel.createMessageComponentCollector({ filter, time: 60000 });
@@ -591,32 +591,32 @@ module.exports = {
                                     const selectedValue = interaction.values[0];
                                     let tempPlayer = playerMap.get(selectedValue)[2];
                                     setDefault(playerMap.get(selectedValue)[1]);
-                                    await interaction.update({ content: `✅ The player **${tempPlayer}** has been removed from this event.`, components: [] });
+                                    await interaction.update({ content: `✅ The player **${tempPlayer}** has been removed from this event.`, components: [] }).catch(error => console.error('An error occurred:', error));
                                     removePlayerCollector.stop();
                                     settingsButtonCollector.stop();
                                 });
 
                                 removePlayerCollector.on('end', collected => {
-                                    if (!collected.size) i.editReply({ content: '⚠️ No selection was made.', components: [] });
+                                    if (!collected.size) i.editReply({ content: '⚠️ No selection was made.', components: [] }).catch(error => console.error('An error occurred:', error));
                                 });
                             } else if (allEmpty) {
                                 settingsButtonCollector.stop();
-                                i.reply({ content: `⚠️ There are not any players signed up for this event for me to remove.`, ephemeral: true });
+                                i.reply({ content: `⚠️ There are not any players signed up for this event for me to remove.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
                             }
                         } else if (!i.member.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
                             settingsButtonCollector.stop();
-                            i.reply({ content: `⚠️ You do not have the correct permissions to use this button.`, ephemeral: true });
+                            i.reply({ content: `⚠️ You do not have the correct permissions to use this button.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
                         }
                     }
                 });
 
                 settingsButtonCollector.on('end', collected => {
                     if (!collected.size) {
-                        interaction.editReply({ content: '⚠️ No selection was made.', components: [], ephemeral: true });
+                        interaction.editReply({ content: '⚠️ No selection was made.', components: [], ephemeral: true }).catch(error => console.error('An error occurred:', error));
                     }
                 });
             } else if (interaction.customId === "settings" && !interaction.member.permissions.has(PermissionFlagsBits.MuteMembers)) {
-                interaction.reply({ content: `⚠️ You do not have the correct permissions to use this button.`, ephemeral: true });
+                interaction.reply({ content: `⚠️ You do not have the correct permissions to use this button.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
             }
 
             if (interaction.customId === "info") {
@@ -645,9 +645,9 @@ module.exports = {
                         message = `✅ The players currently signed up for this event are ${playerNames.join(', ')}, and ${lastPlayer}.`;
                     }
 
-                    interaction.reply({ content: message, ephemeral: true });
+                    interaction.reply({ content: message, ephemeral: true }).catch(error => console.error('An error occurred:', error));
                 } else {
-                    interaction.reply({ content: `⚠️ Unable to fetch player information for this event because nobody has signed up yet.`, ephemeral: true });
+                    interaction.reply({ content: `⚠️ Unable to fetch player information for this event because nobody has signed up yet.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
                 }
             }
 
@@ -718,7 +718,7 @@ module.exports = {
                 interaction.followUp({
                     embeds: [embeds.formatEmbed],
                     ephemeral: true
-                });
+                }).catch(error => console.error('An error occurred:', error));
                 message.delete().catch(handleError);
             };
 
