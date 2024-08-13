@@ -429,15 +429,15 @@ module.exports = {
                                 await channel.send({
                                     content: `${eventPing} There ${countOfEmpty === 1 ? "is" : "are"} **${countOfEmpty}** ${spotsText} open in the **Custom ARAM** event! Go to <#${mojitoAramChannel}> to sign up!`,
                                 });
-                                await i.update({ content: `✅ Successfully sent a reminder message.`, components: [], ephemeral: true });
+                                await i.update({ content: `✅ Successfully sent a reminder message.`, components: [], ephemeral: true }).catch(error => console.error('An error occurred:', error));
                                 settingsButtonCollector.stop();
 
                             } else {
-                                await i.update({ content: `⚠️ Unable to send a reminder message as this event is full.`, components: [], ephemeral: true });
+                                await i.update({ content: `⚠️ Unable to send a reminder message as this event is full.`, components: [], ephemeral: true }).catch(error => console.error('An error occurred:', error));
                                 settingsButtonCollector.stop();
                             }
                         } else {
-                            await i.update({ content: `⚠️ You do not have the correct permissions to use this button.`, components: [], ephemeral: true });
+                            await i.update({ content: `⚠️ You do not have the correct permissions to use this button.`, components: [], ephemeral: true }).catch(error => console.error('An error occurred:', error));
                             settingsButtonCollector.stop();
                         }
                     } else if (i.customId === 'hammer') {
