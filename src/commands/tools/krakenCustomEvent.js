@@ -671,6 +671,7 @@ module.exports = {
         const eventDayMoment = moment(`${eventYear}-${eventMonth}-${eventDay} ${timeMilitary}`);
         const second = 1000;
         // Functionality for starting and stopping the event. This function is called when the event time is reached. 
+        let inviteSent = false;
         async function intervals() {
             const countDownFn = async () => {
                 try {
@@ -701,15 +702,17 @@ module.exports = {
             };
 
             const startEvent = () => {
+                clearInterval(interval);
                 buttonCollector.stop();
-                eventChannel.createInvite()
+                if (!inviteSent) {
+                    eventChannel.createInvite()
                     .then(invite => message.reply({
                         content: `${eventPing} **${eventTitle}** has started!\nAll players will join ${invite}`
                     })).catch(handleError);
-
+                    inviteSent = true;
+                }
                 messageContent = `${eventPing}`
                 message.edit({ content: `${messageContent}` }).catch(handleError);
-                delayEdit();
             };
 
             const stopIntervalWithError = () => {
@@ -732,12 +735,6 @@ module.exports = {
         }
 
         intervals();
-        // This function stops the reaction collector after a delay of 20 minutes. It uses the setTimeout function to schedule the collector.stop() call.
-        async function delayEdit() {
-            setTimeout(() => {
-                buttonCollector.stop();
-            }, 20 * 60 * 1000);
-        }
 
         // This function refreshes the embed for the Arena lobby message.
         function refreshEmbed() {
