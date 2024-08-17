@@ -322,6 +322,7 @@ module.exports = {
         // Button filter and button collector for the Arena lobby message. The filter checks if the interaction is a button and if the customId is "team1" or "team2".
         const buttonFilter = (interaction) => interaction.isButton() && ['signup'].includes(interaction.customId);
         const buttonCollector = message.createMessageComponentCollector({ buttonFilter, dispose: true });
+        let isCollectorActive = false;
         // This event is triggered when a button is collected. It logs the button, user, and time.
         buttonCollector.on('collect', async (interaction) => {
             estDateLog = new Date()
@@ -379,6 +380,11 @@ module.exports = {
             refreshEmbed();
 
             if (interaction.customId === "settings" && interaction.member.permissions.has(PermissionFlagsBits.MuteMembers)) {
+                if (isCollectorActive) {
+                    await interaction.reply({ content: `⚠️ You already have a settions option active. Make a selection from the message above or try again.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
+                    return;
+                }
+                isCollectorActive = true;
                 const pin = new ButtonBuilder()
                     .setCustomId('pin')
                     .setStyle(ButtonStyle.Secondary)
@@ -404,8 +410,8 @@ module.exports = {
                 const settingsButtonCollector = interaction.channel.createMessageComponentCollector({ filter, time: 60000 });
 
                 settingsButtonCollector.on('collect', async i => {
-                    console.log('\x1b[36m', '/kraken-tft:', '\x1b[32m', `Collected [${i.customId.toUpperCase()}] from [${i.user.username}] at [${convertTZ(estDateLog, 'America/New_York').toLocaleString()}]`, '\x1b[0m');
                     if (i.customId === 'pin') {
+                        console.log('\x1b[36m', '/kraken-tft:', '\x1b[32m', `Collected [${i.customId.toUpperCase()}] from [${i.user.username}] at [${convertTZ(estDateLog, 'America/New_York').toLocaleString()}]`, '\x1b[0m');
                         if (i.member.permissions.has(PermissionFlagsBits.MuteMembers)) {
                             let countOfEmpty = Array.from(playerMap.values()).filter(value => value[2] === '[EMPTY SPOT]').length;
                             if (countOfEmpty > 0) {
@@ -426,6 +432,7 @@ module.exports = {
                             settingsButtonCollector.stop();
                         }
                     } else if (i.customId === 'hammer') {
+                        console.log('\x1b[36m', '/kraken-tft:', '\x1b[32m', `Collected [${i.customId.toUpperCase()}] from [${i.user.username}] at [${convertTZ(estDateLog, 'America/New_York').toLocaleString()}]`, '\x1b[0m');
                         if (i.member.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
                             const allEmpty = Array.from(playerMap.values()).every(value => value[2] === "[EMPTY SPOT]");
                             if (!allEmpty) {
@@ -480,6 +487,7 @@ module.exports = {
                     if (!collected.size) {
                         interaction.editReply({ content: '⚠️ No selection was made.', components: [], ephemeral: true }).catch(error => console.error('An error occurred:', error));
                     }
+                    isCollectorActive = false;
                 });
             } else if (interaction.customId === "settings" && !interaction.member.permissions.has(PermissionFlagsBits.MuteMembers)) {
                 interaction.reply({ content: `⚠️ You do not have the correct permissions to use this button.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));

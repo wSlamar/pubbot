@@ -336,6 +336,7 @@ module.exports = {
         // Button filter and button collector for the Arena lobby message. The filter checks if the interaction is a button and if the customId is "team1" or "team2".
         const buttonFilter = (interaction) => interaction.isButton() && ['signup'].includes(interaction.customId);
         const buttonCollector = message.createMessageComponentCollector({ buttonFilter, dispose: true });
+        let isCollectorActive = false;
         // This event is triggered when a button is collected. It logs the button, user, and time.
         buttonCollector.on('collect', async (interaction) => {
             estDateLog = new Date()
@@ -392,68 +393,12 @@ module.exports = {
 
             refreshEmbed();
 
-            if (interaction.customId === "hammer" && interaction.member.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
-                const allEmpty = Array.from(playerMap.values()).every(value => value[2] === "[EMPTY SPOT]");
-                if (!allEmpty) {
-                    const playerSelectMenu = new StringSelectMenuBuilder()
-                        .setCustomId('playerSelect')
-                        .setPlaceholder('Select a player to remove')
-                        .addOptions(
-                            Array.from(playerMap.entries())
-                                .filter(([key, value]) => value[2] !== "[EMPTY SPOT]")
-                                .map(([key, value], index) => ({
-                                    label: value[2],
-                                    value: `bluePlayer${index + 1}`,
-                                }))
-                        );
-
-                    const row = new ActionRowBuilder().addComponents(playerSelectMenu);
-
-                    // Use interaction.reply or interaction.followUp based on whether you've already replied to the interaction
-                    await interaction.reply({
-                        content: `What player would you like to remove? Make a selection <t:${moment().add(60, 'seconds').unix()}:R>.\n`,
-                        components: [row],
-                        ephemeral: true
-                    }).catch(error => console.error('An error occurred:', error));
-
-                    const filter = (i) => i.customId === 'playerSelect' && i.user.id === userNameID;
-                    const collector = interaction.channel.createMessageComponentCollector({ filter, time: 60000 });
-
-                    collector.on('collect', async (i) => {
-                        const selectedValue = i.values[0];
-                        let tempPlayer = playerMap.get(selectedValue)[2];
-                        setDefault(playerMap.get(selectedValue)[1]);
-                        await i.update({ content: `✅ The player **${tempPlayer}** has been removed from this event.`, components: [] }).catch(error => console.error('An error occurred:', error));
-                        collector.stop();
-                    });
-
-                    collector.on('end', collected => {
-                        if (!collected.size) interaction.editReply({ content: 'No selection was made.', components: [] }).catch(error => console.error('An error occurred:', error));
-                    });
-                } else if (allEmpty) {
-                    interaction.reply({ content: `⚠️ There are not any players signed up for this event for me to remove.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
-                }
-            } else if (interaction.customId === "hammer" && !interaction.member.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
-                interaction.reply({ content: `⚠️ You do not have the correct permissions to use this button.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
-            }
-
-            if (interaction.customId === "pin" && interaction.member.permissions.has(PermissionFlagsBits.MuteMembers)) {
-                let countOfEmpty = Array.from(playerMap.values()).filter(value => value[2] === '[EMPTY SPOT]').length;
-                if (countOfEmpty > 0) {
-                    const channel = client.channels.cache.get(leagueChatChannel);
-                    let spotsText = countOfEmpty === 1 ? "spot" : "spots";
-                    let reminder = await channel.send({
-                        content: `${eventPing} There ${countOfEmpty === 1 ? "is" : "are"} **${countOfEmpty}** ${spotsText} open in the **Custom Arena** event! Go to <#${mojitoArenaChannel}> to sign up!`,
-                    });
-                    interaction.reply({ content: `✅ Successfully sent a reminder message.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
-                } else if (!countOfEmpty > 0) {
-                    interaction.reply({ content: `⚠️ Unable to send a reminder message as this event is full.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
-                }
-            } else if (interaction.customId === "pin" && !interaction.member.permissions.has(PermissionFlagsBits.MuteMembers)) {
-                interaction.reply({ content: `⚠️ You do not have the correct permissions to use this button.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
-            }
-
             if (interaction.customId === "settings" && interaction.member.permissions.has(PermissionFlagsBits.MuteMembers)) {
+                if (isCollectorActive) {
+                    await interaction.reply({ content: `⚠️ You already have a settions option active. Make a selection from the message above or try again.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
+                    return;
+                }
+                isCollectorActive = true;
                 const pin = new ButtonBuilder()
                     .setCustomId('pin')
                     .setStyle(ButtonStyle.Secondary)
@@ -479,8 +424,8 @@ module.exports = {
                 const settingsButtonCollector = interaction.channel.createMessageComponentCollector({ filter, time: 60000 });
 
                 settingsButtonCollector.on('collect', async i => {
-                    console.log('\x1b[36m', '/kraken-arena:', '\x1b[32m', `Collected [${i.customId.toUpperCase()}] from [${i.user.username}] at [${convertTZ(estDateLog, 'America/New_York').toLocaleString()}]`, '\x1b[0m');
                     if (i.customId === 'pin') {
+                        console.log('\x1b[36m', '/kraken-arena:', '\x1b[32m', `Collected [${i.customId.toUpperCase()}] from [${i.user.username}] at [${convertTZ(estDateLog, 'America/New_York').toLocaleString()}]`, '\x1b[0m');
                         if (i.member.permissions.has(PermissionFlagsBits.MuteMembers)) {
                             let countOfEmpty = Array.from(playerMap.values()).filter(value => value[2] === '[EMPTY SPOT]').length;
                             if (countOfEmpty > 0) {
@@ -501,6 +446,7 @@ module.exports = {
                             settingsButtonCollector.stop();
                         }
                     } else if (i.customId === 'hammer') {
+                        console.log('\x1b[36m', '/kraken-arena:', '\x1b[32m', `Collected [${i.customId.toUpperCase()}] from [${i.user.username}] at [${convertTZ(estDateLog, 'America/New_York').toLocaleString()}]`, '\x1b[0m');
                         if (i.member.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
                             const allEmpty = Array.from(playerMap.values()).every(value => value[2] === "[EMPTY SPOT]");
                             if (!allEmpty) {
@@ -555,6 +501,7 @@ module.exports = {
                     if (!collected.size) {
                         interaction.editReply({ content: '⚠️ No selection was made.', components: [], ephemeral: true }).catch(error => console.error('An error occurred:', error));
                     }
+                    isCollectorActive = false;
                 });
             } else if (interaction.customId === "settings" && !interaction.member.permissions.has(PermissionFlagsBits.MuteMembers)) {
                 interaction.reply({ content: `⚠️ You do not have the correct permissions to use this button.`, ephemeral: true }).catch(error => console.error('An error occurred:', error));
