@@ -272,7 +272,7 @@ module.exports = {
         const eventTitle = interaction.options.getString("event-title").toUpperCase();
         let eventMonth = interaction.options.getInteger("event-month").toString();
         let eventDay = interaction.options.getInteger("event-day").toString();
-        let eventYear = "2024"
+        let eventYear = "2025"
 
         function isValidDate(year, month, day) {
             const date = new Date(year, month - 1, day);

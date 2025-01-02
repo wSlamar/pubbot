@@ -217,7 +217,7 @@ module.exports = {
         const eventImage = "https://i.imgur.com/vQOcdtX.png";
         let eventMonth = interaction.options.getInteger("event-month").toString();
         let eventDay = interaction.options.getInteger("event-day").toString();
-        let eventYear = "2024"
+        let eventYear = "2025"
 
         function isValidDate(year, month, day) {
             const date = new Date(year, month - 1, day);
